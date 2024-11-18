@@ -1,4 +1,5 @@
 <script setup>
+import Dropdown from '@/Components/Dropdown.vue';
 import NavLink from '@/Components/NavLink.vue';
 import { Link } from '@inertiajs/vue3';
 </script>
@@ -12,7 +13,11 @@ import { Link } from '@inertiajs/vue3';
                 <div class="min-w-0 flex-1 text-white">
                     <nav class="flex flex-1 items-center gap-4 py-2.5">
                         <span class="relative max-lg:hidden">
-                            <Link href="/" class="p-2 font-poppins">Leles</Link>
+                            <Link
+                                :href="route('dashboard')"
+                                class="p-2 font-bold"
+                                >LHD</Link
+                            >
                         </span>
 
                         <div
@@ -22,15 +27,43 @@ import { Link } from '@inertiajs/vue3';
 
                         <div class="flex items-center gap-3 max-lg:hidden">
                             <NavLink
-                                :href="route('home')"
-                                :is-active="route().current('home')"
-                                >Home</NavLink
+                                :href="route('dashboard')"
+                                :is-active="route().current('dashboard')"
+                                >Dashboard</NavLink
+                            >
+                            <NavLink
+                                :href="route('customer.index')"
+                                :is-active="route().current('customer.index')"
+                                >Customers</NavLink
                             >
                         </div>
 
                         <div class="-ml-4 flex-1" aria-hidden="true"></div>
 
-                        <!-- <div class="flex items-center gap-3"></div> -->
+                        <div class="flex items-center gap-3">
+                            <Dropdown>
+                                <template #trigger>
+                                    <div
+                                        class="flex cursor-pointer items-center gap-x-3"
+                                    >
+                                        <img
+                                            src="//picsum.photos/64"
+                                            alt=""
+                                            class="size-7 rounded-md"
+                                        />
+                                        <p class="text-sm font-bold">
+                                            {{ $page.props.auth.user.name }}
+                                        </p>
+                                    </div>
+                                </template>
+
+                                <template #content>
+                                    <div class="text-black">
+                                        <p>This is the content.</p>
+                                    </div>
+                                </template>
+                            </Dropdown>
+                        </div>
                     </nav>
                 </div>
             </header>
