@@ -1,7 +1,12 @@
 <script setup>
 import Dropdown from '@/Components/Dropdown.vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+
+const handleLogout = () => {
+    router.post(route('logout'));
+};
 </script>
 
 <template>
@@ -55,8 +60,12 @@ import { Link } from '@inertiajs/vue3';
                                 </template>
 
                                 <template #content>
-                                    <div class="text-black">
-                                        <p>This is the content.</p>
+                                    <div class="p-2 text-black">
+                                        <DropdownLink
+                                            @click="handleLogout"
+                                            href="#!"
+                                            >Logout</DropdownLink
+                                        >
                                     </div>
                                 </template>
                             </Dropdown>
