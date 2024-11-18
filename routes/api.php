@@ -14,3 +14,5 @@ Route::group([
 ], function () {
     Route::get('/', [CustomerController::class, 'index'])->name('api.customer.index');
 });
+
+Route::get('/customer/id/verify', [CustomerController::class, 'verifyId'])->name('api.customer.id.verify');

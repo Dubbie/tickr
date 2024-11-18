@@ -22,4 +22,24 @@ class CustomerController extends Controller
 
         return $customersQuery->orderBy('name')->get();
     }
+
+    public function verifyId(Request $request)
+    {
+        $data = $request->validate([
+            'customerId' => 'required'
+        ]);
+
+        $customerExists = Customer::where('id', $data['customerId'])->exists();
+        if (!$customerExists) {
+            return response()->json([
+                'message' => 'Not found',
+                'success' => false,
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Verified',
+            'success' => true,
+        ]);
+    }
 }

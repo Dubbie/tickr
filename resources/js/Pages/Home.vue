@@ -7,12 +7,64 @@ import TheButton from '@/Components/TheButton.vue';
 import AppGuestLayout from '@/Layouts/AppGuestLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import { IconBook, IconMail, IconUser } from '@tabler/icons-vue';
+import { ref, watch } from 'vue';
+
+const verified = ref(null);
+const loadingVerification = ref(false);
+let abortController = null;
+const debounceTimeout = ref(false);
 
 const form = useForm({
     customerId: '',
     customerEmail: '',
     message: '',
 });
+
+const verifyCustomerId = async () => {
+    if (abortController) {
+        abortController.abort();
+    }
+
+    if (form.customerId.length < 3) {
+        verified.value = null;
+        return;
+    }
+
+    abortController = new AbortController();
+    loadingVerification.value = true;
+
+    const customerId = form.customerId;
+
+    try {
+        const response = await axios.get(route('api.customer.id.verify'), {
+            params: { customerId },
+            signal: abortController.signal,
+        });
+
+        // Check if successfull
+        verified.value = response.data.success;
+    } catch (err) {
+        if (axios.isCancel(err)) {
+            console.log('Request Canceled');
+        } else {
+            console.log('Error while verifying customer id.');
+            console.log(err);
+        }
+    } finally {
+        loadingVerification.value = false;
+    }
+};
+
+watch(
+    () => form.customerId,
+    () => {
+        clearTimeout(debounceTimeout.value);
+
+        debounceTimeout.value = setTimeout(() => {
+            verifyCustomerId();
+        }, 300);
+    },
+);
 </script>
 
 <template>
@@ -35,6 +87,12 @@ const form = useForm({
                         placeholder="Enter your customer ID..."
                     />
                 </TextInputGuestContainer>
+
+                <p v-if="loadingVerification">Checking customer id...</p>
+                <template v-if="verified !== null">
+                    <p v-if="verified">Good news, we found the customer!</p>
+                    <p v-else>Bad news, this customer id is wrong.</p>
+                </template>
             </div>
 
             <!-- Customer Email -->
