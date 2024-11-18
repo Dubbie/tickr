@@ -59,7 +59,7 @@ watch(
 
 <template>
     <AppLayout>
-        <h1 class="mb-6 text-xl font-bold">Customers</h1>
+        <h1 class="mb-6 text-xl font-bold text-zinc-800">Customers</h1>
 
         <TextInput v-model="form.query" class="mb-6 w-full text-sm" />
 
@@ -78,7 +78,7 @@ watch(
                 :key="customer.id"
                 class="grid grid-cols-3 gap-x-3"
             >
-                <p>{{ customer.name }}</p>
+                <p class="font-semibold">{{ customer.name }}</p>
                 <p>{{ customer.email }}</p>
                 <p>{{ customer.id }}</p>
             </div>

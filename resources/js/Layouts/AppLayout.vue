@@ -15,8 +15,8 @@ import { Link } from '@inertiajs/vue3';
                         <span class="relative max-lg:hidden">
                             <Link
                                 :href="route('dashboard')"
-                                class="p-2 font-bold text-zinc-800"
-                                >LHD</Link
+                                class="p-2 text-sm font-semibold text-zinc-800"
+                                >LaraDesk</Link
                             >
                         </span>
 
@@ -44,7 +44,7 @@ import { Link } from '@inertiajs/vue3';
                             <Dropdown>
                                 <template #trigger>
                                     <div
-                                        class="flex cursor-pointer items-center gap-x-3"
+                                        class="flex cursor-pointer items-center gap-x-3 rounded-lg p-1.5 hover:bg-zinc-950/10"
                                     >
                                         <img
                                             src="//picsum.photos/64"
