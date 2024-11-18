@@ -6,6 +6,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    rows: {
+        type: Number,
+        default: 6,
+    },
 });
 
 const model = defineModel({
@@ -33,10 +37,11 @@ defineExpose({ focus: () => input.value.focus() });
 </script>
 
 <template>
-    <input
+    <textarea
         class="border-none ring-1 ring-inset ring-black/15 hover:ring-black/30 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
         :class="[roundingClass, paddingClass]"
         v-model="model"
         ref="input"
+        :rows="rows"
     />
 </template>
