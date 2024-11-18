@@ -5,23 +5,23 @@ import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <div class="bg-zinc-900 text-white antialiased lg:bg-zinc-950">
+    <div class="antialiased lg:bg-zinc-100">
         <div
-            class="relative isolate flex min-h-svh w-full flex-col bg-zinc-900 lg:bg-zinc-950"
+            class="relative isolate flex min-h-svh w-full flex-col bg-white lg:bg-zinc-100"
         >
             <header class="flex items-center px-4">
-                <div class="min-w-0 flex-1 text-white">
+                <div class="min-w-0 flex-1">
                     <nav class="flex flex-1 items-center gap-4 py-2.5">
                         <span class="relative max-lg:hidden">
                             <Link
                                 :href="route('dashboard')"
-                                class="p-2 font-bold"
+                                class="p-2 font-bold text-zinc-800"
                                 >LHD</Link
                             >
                         </span>
 
                         <div
-                            class="h-6 w-px bg-zinc-950/10 max-lg:hidden dark:bg-white/10"
+                            class="h-6 w-px bg-zinc-950/10 max-lg:hidden"
                             aria-hidden="true"
                         ></div>
 
@@ -49,11 +49,8 @@ import { Link } from '@inertiajs/vue3';
                                         <img
                                             src="//picsum.photos/64"
                                             alt=""
-                                            class="size-7 rounded-md"
+                                            class="size-6 rounded-md"
                                         />
-                                        <p class="text-sm font-bold">
-                                            {{ $page.props.auth.user.name }}
-                                        </p>
                                     </div>
                                 </template>
 
@@ -70,7 +67,7 @@ import { Link } from '@inertiajs/vue3';
 
             <main class="flex flex-1 flex-col pb-2 lg:px-2">
                 <div
-                    class="grow p-6 lg:rounded-lg lg:bg-zinc-900 lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-white/10"
+                    class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5"
                 >
                     <div class="mx-auto max-w-6xl">
                         <slot />

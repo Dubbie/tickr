@@ -17,8 +17,8 @@ defineProps({
         :href="href"
         class="p-2 text-sm font-semibold"
         :class="{
-            'text-white': isActive,
-            'text-white/50 hover:text-white': !isActive,
+            'text-zinc-800': isActive,
+            'text-zinc-600 hover:text-zinc-800': !isActive,
         }"
     >
         <slot />
