@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -32,6 +33,14 @@ const maxWidthClass = computed(() => {
             <div class="mt-12">
                 <slot />
             </div>
+
+            <footer class="py-6 text-center text-xs">
+                <Link
+                    :href="route('login')"
+                    class="font-medium text-zinc-400 hover:text-zinc-900"
+                    >Admin login</Link
+                >
+            </footer>
         </div>
     </div>
 </template>
