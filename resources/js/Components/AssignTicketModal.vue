@@ -96,7 +96,9 @@ onMounted(() => {
                 <TheButton variant="ghost" @click="$emit('close')"
                     >Cancel</TheButton
                 >
-                <TheButton @click="assignToUser">Assign to user</TheButton>
+                <TheButton variant="primary" @click="assignToUser"
+                    >Assign to user</TheButton
+                >
             </div>
         </div>
     </Modal>
