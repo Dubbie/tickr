@@ -1,0 +1,28 @@
+<script setup>
+defineProps({
+    reply: {
+        type: Object,
+        required: true,
+    },
+});
+</script>
+
+<template>
+    <div class="flex items-start gap-x-3 text-sm">
+        <div>
+            <img src="//picsum.photos/96" alt="" class="size-8 rounded-md" />
+        </div>
+
+        <div class="grow">
+            <div class="flex items-start justify-between">
+                <p class="font-semibold text-zinc-900">
+                    {{ reply.replier.name }}
+                </p>
+
+                <p class="text-xs text-zinc-500">{{ reply.created_at }}</p>
+            </div>
+
+            <p class="font-medium text-zinc-600">{{ reply.message }}</p>
+        </div>
+    </div>
+</template>

@@ -3,18 +3,24 @@ import TextareaInput from '@/Components/TextareaInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import TheCard from '@/Components/TheCard.vue';
 import TicketPriority from '@/Components/TicketPriority.vue';
+import TicketReply from '@/Components/TicketReply.vue';
 import TicketStatus from '@/Components/TicketStatus.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import { IconArrowLeft } from '@tabler/icons-vue';
+import axios from 'axios';
+import { computed, onMounted, ref } from 'vue';
 
-defineProps({
+const { ticket } = defineProps({
     ticket: {
         type: Object,
         required: true,
     },
 });
 
+const replies = ref([]);
+const savingReply = ref(false);
+const loadingReplies = ref(false);
 const form = useForm({
     message: '',
 });
@@ -22,6 +28,61 @@ const form = useForm({
 const handleBack = () => {
     window.history.back();
 };
+
+const handleReply = async () => {
+    savingReply.value = true;
+
+    try {
+        await axios.post(
+            route('api.ticket.reply.store', ticket.ticket_number),
+            {
+                message: form.message,
+            },
+        );
+
+        fetchReplies();
+        form.reset();
+    } catch (err) {
+        console.log('Error while saving ticket reply.');
+        console.log(err);
+    } finally {
+        savingReply.value = false;
+    }
+};
+
+const fetchReplies = async () => {
+    loadingReplies.value = true;
+
+    try {
+        const response = await axios.get(
+            route('api.ticket.reply.index', ticket.ticket_number),
+        );
+
+        replies.value = response.data.replies;
+    } catch (err) {
+        console.log('Error while loading replies.');
+        console.log(err);
+    } finally {
+        loadingReplies.value = false;
+    }
+};
+
+const lastReplier = computed(() => {
+    if (replies.value.length === 0) return 'Nobody';
+
+    // Sort replies by created_at in descending order
+    const sortedReplies = [...replies.value].sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+    });
+
+    // Get the latest reply and return the replier's name
+    const latestReply = sortedReplies[0];
+    return latestReply.replier.name;
+});
+
+onMounted(() => {
+    fetchReplies();
+});
 </script>
 
 <template>
@@ -52,6 +113,13 @@ const handleBack = () => {
                 </TheCard>
 
                 <!-- Replies should go here -->
+                <div v-if="replies.length > 0" class="mt-6 space-y-3">
+                    <TicketReply
+                        v-for="reply in replies"
+                        :key="reply.id"
+                        :reply="reply"
+                    />
+                </div>
 
                 <!-- Reply here -->
                 <div class="mt-6">
@@ -72,7 +140,7 @@ const handleBack = () => {
                 </div>
 
                 <div class="ml-11 mt-3">
-                    <TheButton>Submit reply</TheButton>
+                    <TheButton @click="handleReply">Submit reply</TheButton>
                 </div>
             </div>
 
@@ -151,7 +219,7 @@ const handleBack = () => {
                         <div class="grid grid-cols-3 gap-x-3 text-xs">
                             <p class="font-medium text-zinc-500">Replies</p>
 
-                            <p class="col-span-2">0</p>
+                            <p class="col-span-2">{{ replies.length }}</p>
                         </div>
 
                         <div class="grid grid-cols-3 gap-x-3 text-xs">
@@ -159,7 +227,7 @@ const handleBack = () => {
                                 Last replier
                             </p>
 
-                            <p class="col-span-2">Nobody</p>
+                            <p class="col-span-2">{{ lastReplier }}</p>
                         </div>
                     </div>
                 </TheCard>

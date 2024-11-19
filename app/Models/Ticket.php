@@ -34,6 +34,11 @@ class Ticket extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function replies()
+    {
+        return $this->hasMany(TicketReply::class);
+    }
+
     public function formattedCreatedAt(): Attribute
     {
         return Attribute::make(

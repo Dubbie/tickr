@@ -22,5 +22,7 @@ Route::middleware('auth')->group(function () {
     // Tickets
     Route::prefix('ticket')->group(function () {
         Route::get('/', [TicketController::class, 'index'])->name('api.ticket.index');
+        Route::get('/{ticketNumber}/reply/index', [TicketController::class, 'replies'])->name('api.ticket.reply.index');
+        Route::post('/{ticketNumber}/reply/store', [TicketController::class, 'reply'])->name('api.ticket.reply.store');
     });
 });
