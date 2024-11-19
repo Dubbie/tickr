@@ -67,7 +67,7 @@ watch(
         <div class="mb-3 grid grid-cols-5 gap-x-3 text-sm font-bold">
             <p>Customer</p>
             <p>Subject</p>
-            <p>Assignee</p>
+            <p>Assigned to</p>
             <p class="text-center">Status</p>
             <p class="text-center">Created at</p>
         </div>
@@ -94,7 +94,10 @@ watch(
                     {{ ticket.subject }}
                 </p>
                 <div>
-                    <p class="text-sm">
+                    <p
+                        class="text-sm"
+                        :class="{ 'text-zinc-400': !ticket.assignee }"
+                    >
                         {{ ticket.assignee?.name ?? 'Nobody' }}
                     </p>
                 </div>

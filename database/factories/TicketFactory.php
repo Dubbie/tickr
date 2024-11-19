@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Customer;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -39,13 +40,21 @@ class TicketFactory extends Factory
         // Format the ticket number
         $ticketNumber = sprintf('%s-%03d', $prefix, $nextNumber);
 
+        $status = $this->faker->randomElement(Ticket::STATUSES);
+
+        $assignedTo = null;
+        if ($status !== Ticket::STATUSES['0']) {
+            $assignedTo = User::inRandomOrder()->first()->id;
+        }
+
         return [
             'ticket_number' => $ticketNumber,
             'customer_uuid' => $customer->uuid,
             'contact_email' => $customer->email,
+            'assigned_to' => $assignedTo,
             'subject' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'status' => $this->faker->randomElement(Ticket::STATUSES),
+            'status' => $status,
             'priority' => $this->faker->randomElement(Ticket::PRIORITIES),
             'created_at' => now(),
             'updated_at' => now()
