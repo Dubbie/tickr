@@ -2,7 +2,7 @@
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 
 const handleLogout = () => {
     router.post(route('logout'));
@@ -57,8 +57,11 @@ const handleLogout = () => {
                                         class="flex cursor-pointer items-center gap-x-3 rounded-lg p-1.5 hover:bg-zinc-950/10"
                                     >
                                         <img
-                                            src="//picsum.photos/64"
-                                            alt=""
+                                            :src="
+                                                $page.props.auth.user
+                                                    .profile_photo_url
+                                            "
+                                            :alt="`${$page.props.auth.user.name}'s profile photo`"
                                             class="size-6 rounded-md"
                                         />
                                     </div>

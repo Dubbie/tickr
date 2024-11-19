@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,5 +46,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected $appends = ['profile_photo_url'];
+
+    public function profilePhotoUrl(): Attribute
+    {
+        $defaultType = 'identicon';
+        $params = [
+            'd' => htmlentities($defaultType)
+        ];
+        $address = strtolower(trim($this->email));
+        $hash = hash('sha256', $address);
+        $query = http_build_query($params);
+        $path = sprintf('%s?%s', $hash, $query);
+
+        return Attribute::make(
+            get: fn() => '//www.gravatar.com/avatar/' . $path
+        );
     }
 }

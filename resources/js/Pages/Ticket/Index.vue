@@ -94,12 +94,25 @@ watch(
                     {{ ticket.subject }}
                 </p>
                 <div>
-                    <p
-                        class="text-sm"
-                        :class="{ 'text-zinc-400': !ticket.assignee }"
-                    >
-                        {{ ticket.assignee?.name ?? 'Nobody' }}
-                    </p>
+                    <div class="flex space-x-3 text-sm font-medium">
+                        <template v-if="ticket.assignee">
+                            <img
+                                :src="ticket.assignee.profile_photo_url"
+                                :alt="`${ticket.assignee.name}'s profile photo`"
+                                class="size-6 rounded-md"
+                            />
+                            <p>
+                                {{ ticket.assignee.name }}
+                            </p>
+                        </template>
+                        <template v-else>
+                            <div
+                                class="size-6 rounded-md border border-dashed border-zinc-400"
+                            ></div>
+
+                            <p class="text-zinc-400">Noone</p>
+                        </template>
+                    </div>
                 </div>
                 <div class="flex justify-center">
                     <TicketStatus :status="ticket.status" />

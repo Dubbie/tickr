@@ -134,7 +134,7 @@ onMounted(() => {
                     <div class="mt-6">
                         <div class="flex items-start gap-x-3">
                             <img
-                                src="//picsum.photos/96"
+                                :src="$page.props.auth.user.profile_photo_url"
                                 alt=""
                                 class="size-8 rounded-md"
                             />
@@ -169,7 +169,7 @@ onMounted(() => {
                                     {{ ticket.customer.name }}
                                 </p>
                                 <p class="text-xs font-semibold text-zinc-400">
-                                    {{ ticket.customer.email }}
+                                    {{ ticket.contact_email }}
                                 </p>
                             </div>
                         </div>

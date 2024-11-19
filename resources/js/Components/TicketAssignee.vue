@@ -23,12 +23,12 @@ defineProps({
             </template>
             <template v-else>
                 <img
-                    src="//picsum.photos/96"
-                    alt=""
+                    :src="assignee.profile_photo_url"
+                    :alt="`${assignee.name}'s profile photo`"
                     class="size-6 rounded-md"
                 />
 
-                <p>{{ assignee.name }}</p>
+                <p class="font-medium">{{ assignee.name }}</p>
             </template>
         </div>
     </div>
