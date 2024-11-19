@@ -107,7 +107,7 @@ onMounted(() => {
                         <h2 class="font-semibold">{{ ticket.subject }}</h2>
                     </div>
 
-                    <div class="mt-6">
+                    <div class="mt-3">
                         <p>{{ ticket.description }}</p>
                     </div>
                 </TheCard>
