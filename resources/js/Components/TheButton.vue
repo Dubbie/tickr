@@ -46,7 +46,7 @@ const sizeClasses = computed(() => {
     <component
         :is="href ? Link : 'button'"
         :href="href"
-        class="flex items-center justify-center rounded-md"
+        class="flex items-center justify-center gap-x-1 rounded-md"
         :class="[colorClasses, sizeClasses]"
     >
         <slot />

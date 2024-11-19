@@ -4,6 +4,7 @@ import TabContainer from '@/Components/TabContainer.vue';
 import TheButton from '@/Components/TheButton.vue';
 import AppGuestLayout from '@/Layouts/AppGuestLayout.vue';
 import { usePage } from '@inertiajs/vue3';
+import { IconPlus } from '@tabler/icons-vue';
 import { computed, onMounted, ref } from 'vue';
 
 const customer = usePage().props.customer;
@@ -66,11 +67,12 @@ onMounted(fetchTickets);
 <template>
     <AppGuestLayout max-width="lg">
         <div class="flex items-center justify-between">
-            <p class="text-xl font-bold">Tickets</p>
+            <p class="text-2xl font-bold">Tickets</p>
 
-            <TheButton :href="route('portal.create', customer.unique_link)"
-                >New ticket</TheButton
-            >
+            <TheButton :href="route('portal.create', customer.unique_link)">
+                <IconPlus class="size-4" stroke-width="2.5" />
+                <span>New ticket</span>
+            </TheButton>
         </div>
 
         <TabContainer
