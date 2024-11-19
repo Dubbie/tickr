@@ -149,7 +149,9 @@ onMounted(() => {
                     </div>
 
                     <div class="ml-11 mt-3">
-                        <TheButton @click="handleReply">Submit reply</TheButton>
+                        <TheButton variant="primary" @click="handleReply"
+                            >Submit reply</TheButton
+                        >
                     </div>
                 </div>
 

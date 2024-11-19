@@ -33,7 +33,7 @@ class TicketService
         }
     }
 
-    public function reply(Ticket $ticket, mixed $replier, string $email, string $message)
+    public function reply(Ticket $ticket, mixed $replier, string $message, ?string $email = null)
     {
         try {
             $ticket->replies()->create([

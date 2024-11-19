@@ -46,7 +46,7 @@ class TicketController extends Controller
 
         $ticket = Ticket::where('ticket_number', $ticketNumber)->first();
 
-        return $this->ticketService->reply($ticket, $request->user(), $request->user()->email, $data['message']);
+        return $this->ticketService->reply($ticket, $request->user(), $data['message']);
     }
 
     public function replies(string $ticketNumber)

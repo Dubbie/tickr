@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('message');
             $table->string('replier_type');
             $table->string('replier_id');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }
