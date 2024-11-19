@@ -21,6 +21,6 @@ class Customer extends Model
 
     public function tickets()
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class)->orderByDesc('created_at');
     }
 }
