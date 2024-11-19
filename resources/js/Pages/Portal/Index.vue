@@ -6,10 +6,11 @@ import TextInputGuestContainer from '@/Components/TextInputGuestContainer.vue';
 import TheButton from '@/Components/TheButton.vue';
 import AppGuestLayout from '@/Layouts/AppGuestLayout.vue';
 import { useForm } from '@inertiajs/vue3';
-import { IconBook, IconMail } from '@tabler/icons-vue';
+import { IconBook, IconMail, IconQuote } from '@tabler/icons-vue';
 
 const form = useForm({
     customerEmail: '',
+    subject: '',
     message: '',
 });
 </script>
@@ -33,6 +34,23 @@ const form = useForm({
                         name="customer-email"
                         v-model="form.customerEmail"
                         placeholder="Enter your e-mail address..."
+                    />
+                </TextInputGuestContainer>
+            </div>
+
+            <!-- Subject -->
+            <div>
+                <InputLabel class="sr-only" for="customer-email"
+                    >Subject</InputLabel
+                >
+
+                <TextInputGuestContainer :icon="IconQuote">
+                    <TextInputGuest
+                        id="subject"
+                        class="w-full text-sm"
+                        name="subject"
+                        v-model="form.subject"
+                        placeholder="Enter the subject..."
                     />
                 </TextInputGuestContainer>
             </div>
