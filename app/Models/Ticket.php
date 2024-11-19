@@ -26,7 +26,7 @@ class Ticket extends Model
 
     protected $with = ['customer', 'assignee', 'replies'];
 
-    protected $appends = ['formatted_created_at', 'time_ago'];
+    protected $appends = ['formatted_updated_at', 'time_ago'];
 
     public const STATUSES = ['open', 'in_progress', 'resolved', 'closed'];
     public const PRIORITIES = ['low', 'medium', 'high'];
@@ -46,10 +46,10 @@ class Ticket extends Model
         return $this->belongsTo(User::class, 'assigned_to', 'id');
     }
 
-    public function formattedCreatedAt(): Attribute
+    public function formattedUpdatedAt(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->created_at->format('Y.m.d H:i')
+            get: fn() => $this->updated_at->format('Y.m.d H:i')
         );
     }
 

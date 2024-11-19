@@ -65,68 +65,70 @@ watch(
 
         <TextInput v-model="form.query" class="mb-6 w-full text-sm" />
 
-        <div class="mb-3 grid grid-cols-6 gap-x-3 text-sm font-bold">
-            <p>Customer</p>
-            <p>Subject</p>
-            <p>Assigned to</p>
-            <p class="text-center">Priority</p>
-            <p class="text-center">Status</p>
-            <p class="text-center">Created at</p>
-        </div>
+        <div class="-mx-3">
+            <div class="mb-3 grid grid-cols-6 gap-x-3 px-3 text-sm font-bold">
+                <p>Customer</p>
+                <p>Subject</p>
+                <p>Assigned to</p>
+                <p class="text-center">Status</p>
+                <p class="text-center">Priority</p>
+                <p class="text-center">Updated at</p>
+            </div>
 
-        <div v-if="loading">
-            <p>Loading tickets...</p>
-        </div>
-        <div v-else class="space-y-3">
-            <Link
-                v-for="ticket in tickets"
-                :key="ticket.ticket_number"
-                class="grid grid-cols-6 items-center gap-x-3"
-                :class="{ 'opacity-50': ticket.status === 'resolved' }"
-                :href="route('ticket.show', ticket.ticket_number)"
-            >
-                <div>
-                    <p class="text-sm font-semibold">
-                        {{ ticket.customer.name }}
-                    </p>
-                    <p class="text-xs font-semibold text-zinc-500">
-                        {{ ticket.customer.email }}
-                    </p>
-                </div>
-                <p class="truncate text-sm font-semibold">
-                    {{ ticket.subject }}
-                </p>
-                <div>
-                    <div class="flex space-x-3 text-sm font-medium">
-                        <template v-if="ticket.assignee">
-                            <img
-                                :src="ticket.assignee.profile_photo_url"
-                                :alt="`${ticket.assignee.name}'s profile photo`"
-                                class="size-6 rounded-md"
-                            />
-                            <p>
-                                {{ ticket.assignee.name }}
-                            </p>
-                        </template>
-                        <template v-else>
-                            <div
-                                class="size-6 rounded-md border border-dashed border-zinc-400"
-                            ></div>
-
-                            <p class="text-zinc-400">Noone</p>
-                        </template>
+            <div v-if="loading">
+                <p>Loading tickets...</p>
+            </div>
+            <div v-else>
+                <Link
+                    v-for="ticket in tickets"
+                    :key="ticket.ticket_number"
+                    class="grid grid-cols-6 items-center gap-x-3 rounded-md px-3 py-2 hover:bg-zinc-900/5"
+                    :class="{ 'opacity-50': ticket.status === 'resolved' }"
+                    :href="route('ticket.show', ticket.ticket_number)"
+                >
+                    <div>
+                        <p class="text-sm font-semibold">
+                            {{ ticket.customer.name }}
+                        </p>
+                        <p class="text-xs font-semibold text-zinc-500">
+                            {{ ticket.customer.email }}
+                        </p>
                     </div>
-                </div>
-                <div class="flex justify-center">
-                    <TicketPriority :priority="ticket.priority" />
-                </div>
-                <div class="flex justify-center">
-                    <TicketStatus :status="ticket.status" />
-                </div>
-                <p class="text-center text-sm font-medium">
-                    {{ ticket.formatted_created_at }}
-                </p>
-            </Link>
+                    <p class="truncate text-sm font-semibold">
+                        {{ ticket.subject }}
+                    </p>
+                    <div>
+                        <div class="flex space-x-3 text-sm font-medium">
+                            <template v-if="ticket.assignee">
+                                <img
+                                    :src="ticket.assignee.profile_photo_url"
+                                    :alt="`${ticket.assignee.name}'s profile photo`"
+                                    class="size-6 rounded-md"
+                                />
+                                <p>
+                                    {{ ticket.assignee.name }}
+                                </p>
+                            </template>
+                            <template v-else>
+                                <div
+                                    class="size-6 rounded-md border border-dashed border-zinc-400"
+                                ></div>
+
+                                <p class="text-zinc-400">Noone</p>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <TicketStatus :status="ticket.status" />
+                    </div>
+                    <div class="flex justify-center">
+                        <TicketPriority :priority="ticket.priority" />
+                    </div>
+                    <p class="text-center text-sm font-medium">
+                        {{ ticket.formatted_updated_at }}
+                    </p>
+                </Link>
+            </div>
         </div>
     </AppLayout>
 </template>

@@ -43,6 +43,9 @@ class TicketService
                 'replier_id' => $replier->id ?? $replier->uuid
             ]);
 
+            $ticket->updated_at = now();
+            $ticket->save();
+
             return response()->json([
                 'message' => 'Ticket reply saved.',
                 'success' => true,
@@ -64,6 +67,7 @@ class TicketService
     {
         try {
             $ticket->assigned_to = $user->id;
+            $ticket->updated_at = now();
             $ticket->save();
 
             return response()->json([

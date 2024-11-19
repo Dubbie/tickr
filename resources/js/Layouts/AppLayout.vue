@@ -2,7 +2,7 @@
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
-import { Link, router, usePage } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 
 const handleLogout = () => {
     router.post(route('logout'));
