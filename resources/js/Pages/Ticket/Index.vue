@@ -82,6 +82,7 @@ watch(
                 v-for="ticket in tickets"
                 :key="ticket.ticket_number"
                 class="grid grid-cols-6 items-center gap-x-3"
+                :class="{ 'opacity-50': ticket.status === 'resolved' }"
                 :href="route('ticket.show', ticket.ticket_number)"
             >
                 <div>
