@@ -24,7 +24,9 @@ const maxWidthClass = computed(() => {
                     class="mb-3 size-16 rounded-xl shadow-lg"
                 />
 
-                <h1 class="text-xl font-bold">ACME Inc.</h1>
+                <h1 class="text-xl font-bold">
+                    {{ $page.props.company.name }}
+                </h1>
                 <p class="text-xs font-semibold text-zinc-500">
                     Customer Service Center
                 </p>
