@@ -1,5 +1,6 @@
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
+import TicketStatus from '@/Components/TicketStatus.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import { onMounted, ref, watch } from 'vue';
@@ -63,24 +64,39 @@ watch(
 
         <TextInput v-model="form.query" class="mb-6 w-full text-sm" />
 
-        <div class="mb-3 grid grid-cols-3 gap-x-3 text-sm font-bold">
+        <div class="mb-3 grid grid-cols-4 gap-x-3 text-sm font-bold">
             <p>Customer</p>
             <p>Subject</p>
-            <p>Status</p>
+            <p class="text-center">Status</p>
+            <p class="text-center">Created at</p>
         </div>
 
         <div v-if="loading">
             <p>Loading tickets...</p>
         </div>
-        <div v-else>
+        <div v-else class="space-y-3">
             <div
                 v-for="ticket in tickets"
                 :key="ticket.ticket_number"
-                class="grid grid-cols-3 gap-x-3"
+                class="grid grid-cols-4 items-center gap-x-3"
             >
-                <p class="font-semibold">{{ ticket.customer.name }}</p>
-                <p>{{ ticket.subject }}</p>
-                <p>{{ ticket.status }}</p>
+                <div>
+                    <p class="text-sm font-semibold">
+                        {{ ticket.customer.name }}
+                    </p>
+                    <p class="text-xs font-semibold text-zinc-500">
+                        {{ ticket.customer.email }}
+                    </p>
+                </div>
+                <p class="truncate text-sm font-semibold">
+                    {{ ticket.subject }}
+                </p>
+                <div class="flex justify-center">
+                    <TicketStatus :status="ticket.status" />
+                </div>
+                <p class="text-center text-sm font-medium">
+                    {{ ticket.formatted_created_at }}
+                </p>
             </div>
         </div>
     </AppLayout>
