@@ -19,7 +19,7 @@ defineProps({
                     {{ reply.replier.name }}
                 </p>
 
-                <p class="text-xs text-zinc-500">{{ reply.created_at }}</p>
+                <p class="text-xs text-zinc-500">{{ reply.time_ago }}</p>
             </div>
 
             <p class="font-medium text-zinc-600">{{ reply.message }}</p>
