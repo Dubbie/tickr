@@ -12,6 +12,8 @@ class Customer extends Model
 
     protected $primaryKey = 'uuid';
 
+    protected $hidden = ['uuid'];
+
     protected $fillable = [
         'name',
         'email',

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->string('name');
             $table->string('email')->comment('Main contact email');
-            $table->string('id')->unique();
+            $table->string('unique_link')->unique();
             $table->timestamps();
         });
     }

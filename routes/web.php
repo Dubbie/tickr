@@ -3,9 +3,17 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PortalController;
+use App\Http\Middleware\ValidateCustomerLink;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
+
+
+// Portal specific routes
+Route::middleware([ValidateCustomerLink::class])->prefix('portal/{link}')->group(function () {
+    Route::get('/', [PortalController::class, 'index'])->name('portal.index');
+});
 
 Route::group([
     'prefix' => 'admin',

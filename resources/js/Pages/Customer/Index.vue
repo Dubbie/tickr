@@ -75,12 +75,12 @@ watch(
         <div v-else>
             <div
                 v-for="customer in customers"
-                :key="customer.id"
+                :key="customer.unique_link"
                 class="grid grid-cols-3 gap-x-3"
             >
                 <p class="font-semibold">{{ customer.name }}</p>
                 <p>{{ customer.email }}</p>
-                <p>{{ customer.id }}</p>
+                <p>{{ customer.unique_link }}</p>
             </div>
         </div>
     </AppLayout>

@@ -22,7 +22,7 @@ class CustomerFactory extends Factory
         return [
             'name' => $name,
             'email' => $this->faker->email($name),
-            'id' => sprintf('%s-%d', Str::slug($name), $this->faker->randomNumber(2))
+            'unique_link' => Str::random(32),
         ];
     }
 }
