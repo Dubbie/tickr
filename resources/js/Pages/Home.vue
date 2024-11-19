@@ -4,10 +4,11 @@ import AppGuestLayout from '@/Layouts/AppGuestLayout.vue';
 
 <template>
     <AppGuestLayout>
-        <p>Home.</p>
-
-        <p>
-            To access your portal please use the link provided in your emails.
-        </p>
+        <div class="text-center">
+            <p class="font-semibold">
+                To access your portal please use the link provided in your
+                emails.
+            </p>
+        </div>
     </AppGuestLayout>
 </template>
