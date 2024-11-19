@@ -2,6 +2,7 @@
 import { IconPointFilled } from '@tabler/icons-vue';
 import TicketStatus from './TicketStatus.vue';
 import { Link } from '@inertiajs/vue3';
+import TicketPriority from './TicketPriority.vue';
 
 const { ticket } = defineProps({
     ticket: {
@@ -23,14 +24,17 @@ const link = route('portal.show', {
                 <p class="text-xs font-semibold text-zinc-400">
                     {{ ticket.time_ago }}
                 </p>
-
-                <p class="text-sm font-medium text-zinc-800">
-                    {{ ticket.subject }}
-                </p>
             </div>
 
-            <TicketStatus :status="ticket.status" size="sm" />
+            <div class="flex items-center gap-x-1">
+                <TicketPriority :priority="ticket.priority" size="sm" />
+                <TicketStatus :status="ticket.status" size="sm" />
+            </div>
         </div>
+
+        <p class="text-sm font-medium text-zinc-800">
+            {{ ticket.subject }}
+        </p>
 
         <div
             v-if="ticket.replies.length > 0"
