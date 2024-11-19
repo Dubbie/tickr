@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 
@@ -21,6 +20,6 @@ class TicketController extends Controller
             $query = $query->where('subject', 'like', '%' . $data['query'] . '%');
         }
 
-        return $query->get();
+        return $query->orderByDesc('created_at')->get();
     }
 }
