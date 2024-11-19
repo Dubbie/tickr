@@ -34,7 +34,7 @@ const emit = defineEmits(['switch-tab']);
         >
             <span>{{ tab.label }}</span>
             <span
-                class="rounded-md bg-teal-400 px-1.5 text-center text-xs font-bold text-white"
+                class="rounded-md px-1.5 text-center text-xs font-bold text-white"
                 :class="getBadgeColorClass(tab.badge.color)"
                 >{{ tab.badge.label }}</span
             >

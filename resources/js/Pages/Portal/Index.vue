@@ -49,7 +49,7 @@ const tabOptions = computed(() => {
             },
         },
         {
-            label: 'Archived',
+            label: 'Resolved',
             name: 'archived',
             badge: {
                 label: archivedTickets.value.length,
