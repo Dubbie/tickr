@@ -17,7 +17,8 @@ class TicketController extends Controller
         $query = Ticket::query();
 
         if (isset($data['query'])) {
-            $query = $query->where('subject', 'like', '%' . $data['query'] . '%');
+            $query = $query->where('subject', 'like', '%' . $data['query'] . '%')
+                ->orWhere('description', 'like', '%' . $data['query'] . '%');
         }
 
         return $query->orderByDesc('created_at')->get();
