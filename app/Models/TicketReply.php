@@ -11,7 +11,8 @@ class TicketReply extends Model
         'user_id',
         'message',
         'replier_type',
-        'replier_id'
+        'replier_id',
+        'email'
     ];
 
     protected $with = ['replier'];

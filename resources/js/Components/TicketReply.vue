@@ -14,10 +14,15 @@ defineProps({
         </div>
 
         <div class="grow">
-            <div class="flex items-start justify-between">
-                <p class="font-semibold text-zinc-900">
-                    {{ reply.replier.name }}
-                </p>
+            <div class="mb-3 flex items-start justify-between">
+                <div>
+                    <p class="font-semibold text-zinc-900">
+                        {{ reply.replier.name }}
+                    </p>
+                    <p class="text-xs font-medium text-zinc-500">
+                        {{ reply.email }}
+                    </p>
+                </div>
 
                 <p class="text-xs text-zinc-500">{{ reply.time_ago }}</p>
             </div>

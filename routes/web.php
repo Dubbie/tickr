@@ -15,6 +15,7 @@ Route::get('/', [PageController::class, 'index'])->name('home');
 Route::middleware([ValidateCustomerLink::class])->prefix('portal/{link}')->group(function () {
     Route::get('/', [PortalController::class, 'index'])->name('portal.index');
     Route::get('/new', [PortalController::class, 'create'])->name('portal.create');
+    Route::get('/ticket/{ticketNumber}', [PortalController::class, 'show'])->name('portal.show');
 });
 
 Route::group([

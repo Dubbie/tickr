@@ -69,7 +69,10 @@ onMounted(fetchTickets);
         <div class="flex items-center justify-between">
             <p class="text-2xl font-bold">Tickets</p>
 
-            <TheButton :href="route('portal.create', customer.unique_link)">
+            <TheButton
+                variant="primary"
+                :href="route('portal.create', customer.unique_link)"
+            >
                 <IconPlus class="size-4" stroke-width="2.5" />
                 <span>New ticket</span>
             </TheButton>

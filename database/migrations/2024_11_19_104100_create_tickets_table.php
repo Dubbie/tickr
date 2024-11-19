@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('customer_uuid')->constrained('customers', 'uuid')->cascadeOnDelete();
             $table->foreignId('assigned_to')->nullable()->constrained('users', 'id')->nullOnDelete();
             $table->string('subject');
+            $table->string('contact_email');
             $table->text('description');
             $table->string('status')->default('open');
             $table->string('priority')->default('medium');

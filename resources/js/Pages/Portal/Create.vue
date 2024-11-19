@@ -35,6 +35,7 @@ const handleSubmit = async () => {
                 subject: form.subject,
                 description: form.message,
                 priority: 'medium',
+                contact_email: form.customerEmail,
             },
         );
 
@@ -105,15 +106,20 @@ const handleSubmit = async () => {
                     </TextInputGuestContainer>
                 </div>
 
-                <TheButton class="w-full" @click="handleSubmit"
-                    >Submit ticket</TheButton
-                >
-                <TheButton
-                    class="w-full"
-                    variant="ghost"
-                    :href="route('portal.index', customer.unique_link)"
-                    >Back to tickets</TheButton
-                >
+                <div class="space-y-1">
+                    <TheButton
+                        variant="primary"
+                        class="w-full"
+                        @click="handleSubmit"
+                        >Submit ticket</TheButton
+                    >
+                    <TheButton
+                        class="w-full"
+                        variant="ghost"
+                        :href="route('portal.index', customer.unique_link)"
+                        >Back to tickets</TheButton
+                    >
+                </div>
             </div>
         </div>
 

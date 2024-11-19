@@ -33,11 +33,12 @@ class TicketService
         }
     }
 
-    public function reply(Ticket $ticket, mixed $replier, string $message)
+    public function reply(Ticket $ticket, mixed $replier, string $email, string $message)
     {
         try {
             $ticket->replies()->create([
                 'message' => $message,
+                'email' => $email,
                 'replier_type' => get_class($replier),
                 'replier_id' => $replier->id ?? $replier->uuid
             ]);

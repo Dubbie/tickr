@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 
 // Customer routes
 Route::middleware([ValidateCustomerLink::class])->prefix('customer/{link}')->group(function () {
+    Route::post('ticket/{ticketNumber}/reply/store', [CustomerTicketController::class, 'reply'])->name('api.customer.ticket.reply.store');
+    Route::get('ticket/{ticketNumber}', [CustomerTicketController::class, 'show'])->name('api.customer.ticket.show');
     Route::get('ticket', [CustomerTicketController::class, 'index'])->name('api.customer.ticket.index');
     Route::post('ticket/store', [CustomerTicketController::class, 'store'])->name('api.customer.ticket.store');
 });
@@ -23,7 +25,6 @@ Route::middleware('auth')->group(function () {
     // Tickets
     Route::prefix('ticket')->group(function () {
         Route::get('/', [TicketController::class, 'index'])->name('api.ticket.index');
-        Route::get('/{ticketNumber}/reply/index', [TicketController::class, 'replies'])->name('api.ticket.reply.index');
         Route::post('/{ticketNumber}/reply/store', [TicketController::class, 'reply'])->name('api.ticket.reply.store');
         Route::post('/{ticketNumber}/assign', [TicketController::class, 'assignToUser'])->name('api.ticket.assign');
         Route::get('/{ticketNumber}', [TicketController::class, 'show'])->name('api.ticket.show');

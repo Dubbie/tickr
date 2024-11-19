@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\NewTicketRequest;
 use App\Models\Customer;
 use App\Services\TicketService;
+use Illuminate\Http\Request;
 
 class CustomerTicketController extends Controller
 {
@@ -34,10 +35,32 @@ class CustomerTicketController extends Controller
         ]);
     }
 
+    public function show(string $link, string $ticketNumber)
+    {
+        $customer = Customer::where('unique_link', $link)->first();
+        $ticket = $customer->tickets()->where('ticket_number', $ticketNumber)->first();
+
+        return response()->json($ticket ?? null);
+    }
+
+
     public function store(NewTicketRequest $request)
     {
         $data = $request->validated();
 
         return $this->ticketService->save($request->get('customer'), $data);
+    }
+
+    public function reply(Request $request, string $link, string $ticketNumber)
+    {
+        $data = $request->validate([
+            'email' => 'required|email',
+            'message' => 'required|string'
+        ]);
+
+        $customer = Customer::where('unique_link', $link)->first();
+        $ticket = $customer->tickets()->where('ticket_number', $ticketNumber)->first();
+
+        return $this->ticketService->reply($ticket, $customer, $data['email'], $data['message']);
     }
 }

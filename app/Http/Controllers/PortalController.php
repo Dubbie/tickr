@@ -16,4 +16,11 @@ class PortalController extends Controller
     {
         return Inertia::render('Portal/Create');
     }
+
+    public function show(string $link, string $ticketNumber)
+    {
+        return Inertia::render('Portal/Show', [
+            'ticketNumber' => $ticketNumber
+        ]);
+    }
 }

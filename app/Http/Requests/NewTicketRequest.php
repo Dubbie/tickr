@@ -25,6 +25,7 @@ class NewTicketRequest extends FormRequest
         return [
             'subject' => 'required|string|max:255',
             'description' => 'required|string',
+            'contact_email' => 'required|email',
             'priority' => 'required|in:' . implode(',', Ticket::PRIORITIES),
         ];
     }

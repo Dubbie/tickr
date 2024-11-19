@@ -42,6 +42,7 @@ class TicketFactory extends Factory
         return [
             'ticket_number' => $ticketNumber,
             'customer_uuid' => $customer->uuid,
+            'contact_email' => $customer->email,
             'subject' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'status' => $this->faker->randomElement(Ticket::STATUSES),

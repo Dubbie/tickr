@@ -24,6 +24,9 @@ const props = defineProps({
 
 const colorMap = {
     default: {
+        zinc: 'ring-1 ring-inset ring-zinc-900/20 bg-white text-black hover:ring-zinc-900/30',
+    },
+    primary: {
         zinc: 'bg-black text-white hover:bg-zinc-800',
     },
     ghost: {

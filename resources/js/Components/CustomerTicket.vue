@@ -1,17 +1,23 @@
 <script setup>
 import { IconPointFilled } from '@tabler/icons-vue';
 import TicketStatus from './TicketStatus.vue';
+import { Link } from '@inertiajs/vue3';
 
-defineProps({
+const { ticket } = defineProps({
     ticket: {
         type: Object,
         required: true,
     },
 });
+
+const link = route('portal.show', {
+    link: ticket.customer.unique_link,
+    ticketNumber: ticket.ticket_number,
+});
 </script>
 
 <template>
-    <div class="rounded-md bg-white px-4 py-3">
+    <Link class="block rounded-md bg-white px-4 py-3" :href="link">
         <div class="flex items-start">
             <div class="grow">
                 <p class="text-xs font-semibold text-zinc-400">
@@ -39,5 +45,5 @@ defineProps({
                 {{ ticket.replies.length }} replies
             </p>
         </div>
-    </div>
+    </Link>
 </template>

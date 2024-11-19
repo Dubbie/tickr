@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignUuid('ticket_uuid')->constrained('tickets', 'uuid');
             $table->text('message');
-            $table->morphs('replier');
+            $table->string('replier_type');
+            $table->string('replier_id');
+            $table->string('email');
             $table->timestamps();
         });
     }
