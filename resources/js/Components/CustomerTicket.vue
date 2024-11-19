@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="rounded-md px-4 py-3 ring-1 ring-zinc-900/10">
+    <div class="rounded-md bg-white px-4 py-3">
         <div class="flex items-start">
             <div class="grow">
                 <p class="text-xs font-semibold text-zinc-400">

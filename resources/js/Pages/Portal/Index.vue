@@ -88,12 +88,23 @@ onMounted(fetchTickets);
             ></div>
         </div>
 
-        <div v-else class="space-y-3">
-            <CustomerTicket
-                v-for="ticket in filteredTickets"
-                :key="ticket.ticket_number"
-                :ticket="ticket"
-            />
+        <div v-else>
+            <div
+                v-if="filteredTickets.length === 0"
+                class="rounded-md bg-white py-6 text-center"
+            >
+                <p class="text-sm font-medium">
+                    No tickets found in this category.
+                </p>
+            </div>
+
+            <div v-else class="space-y-3">
+                <CustomerTicket
+                    v-for="ticket in filteredTickets"
+                    :key="ticket.ticket_number"
+                    :ticket="ticket"
+                />
+            </div>
         </div>
     </AppGuestLayout>
 </template>
