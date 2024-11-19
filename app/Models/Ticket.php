@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,12 +24,21 @@ class Ticket extends Model
 
     protected $with = ['customer'];
 
+    protected $appends = ['formatted_created_at'];
+
     public const STATUSES = ['open', 'in_progress', 'resolved', 'closed'];
     public const PRIORITIES = ['low', 'medium', 'high'];
 
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function formattedCreatedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->created_at->format('Y.m.d H:i')
+        );
     }
 
     protected static function boot()
