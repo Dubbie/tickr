@@ -108,6 +108,12 @@ const handleSubmit = async () => {
                 <TheButton class="w-full" @click="handleSubmit"
                     >Submit ticket</TheButton
                 >
+                <TheButton
+                    class="w-full"
+                    variant="ghost"
+                    :href="route('portal.index', customer.unique_link)"
+                    >Back to tickets</TheButton
+                >
             </div>
         </div>
 

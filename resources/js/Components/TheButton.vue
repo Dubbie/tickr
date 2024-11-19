@@ -26,6 +26,9 @@ const colorMap = {
     default: {
         zinc: 'bg-black text-white hover:bg-zinc-800',
     },
+    ghost: {
+        zinc: 'text-zinc-900 hover:bg-zinc-900/10',
+    },
 };
 
 const colorClasses = computed(() => {
