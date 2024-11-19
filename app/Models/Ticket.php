@@ -19,10 +19,11 @@ class Ticket extends Model
         'description',
         'status',
         'priority',
-        'ticket_number'
+        'ticket_number',
+        'assigned_to'
     ];
 
-    protected $with = ['customer'];
+    protected $with = ['customer', 'assignee'];
 
     protected $appends = ['formatted_created_at'];
 
@@ -37,6 +38,11 @@ class Ticket extends Model
     public function replies()
     {
         return $this->hasMany(TicketReply::class);
+    }
+
+    public function assignee()
+    {
+        return $this->belongsTo(User::class, 'assigned_to', 'id');
     }
 
     public function formattedCreatedAt(): Attribute

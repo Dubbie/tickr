@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Customer;
 use App\Models\Ticket;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -53,6 +54,29 @@ class TicketService
 
             return response()->json([
                 'message' => 'Error while saving ticket reply.',
+                'success' => false,
+            ], 500);
+        }
+    }
+
+    public function assignTicketToUser(Ticket $ticket, User $user)
+    {
+        try {
+            $ticket->assigned_to = $user->id;
+            $ticket->save();
+
+            return response()->json([
+                'message' => 'Ticket assigned to user.',
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error while assigning ticket to user.');
+
+            Log::error($e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return response()->json([
+                'message' => 'Error while assigning ticket to user.',
                 'success' => false,
             ], 500);
         }
