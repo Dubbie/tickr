@@ -22,7 +22,7 @@ defineProps({
                 </p>
             </div>
 
-            <TicketStatus :status="ticket.status" />
+            <TicketStatus :status="ticket.status" size="sm" />
         </div>
     </div>
 </template>

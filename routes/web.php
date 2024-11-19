@@ -31,6 +31,7 @@ Route::group([
 
     Route::prefix('ticket')->group(function () {
         Route::get('/', [TicketController::class, 'index'])->name('ticket.index');
+        Route::get('/{ticketNumber}', [TicketController::class, 'show'])->name('ticket.show');
     });
 });
 

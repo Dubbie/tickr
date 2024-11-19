@@ -2,7 +2,7 @@
 import TextInput from '@/Components/TextInput.vue';
 import TicketStatus from '@/Components/TicketStatus.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { useForm } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { onMounted, ref, watch } from 'vue';
 
 const loading = ref(false);
@@ -75,10 +75,11 @@ watch(
             <p>Loading tickets...</p>
         </div>
         <div v-else class="space-y-3">
-            <div
+            <Link
                 v-for="ticket in tickets"
                 :key="ticket.ticket_number"
                 class="grid grid-cols-4 items-center gap-x-3"
+                :href="route('ticket.show', ticket.ticket_number)"
             >
                 <div>
                     <p class="text-sm font-semibold">
@@ -97,7 +98,7 @@ watch(
                 <p class="text-center text-sm font-medium">
                     {{ ticket.formatted_created_at }}
                 </p>
-            </div>
+            </Link>
         </div>
     </AppLayout>
 </template>
