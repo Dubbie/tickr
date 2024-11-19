@@ -23,9 +23,9 @@ class Ticket extends Model
         'assigned_to'
     ];
 
-    protected $with = ['customer', 'assignee'];
+    protected $with = ['customer', 'assignee', 'replies'];
 
-    protected $appends = ['formatted_created_at'];
+    protected $appends = ['formatted_created_at', 'time_ago'];
 
     public const STATUSES = ['open', 'in_progress', 'resolved', 'closed'];
     public const PRIORITIES = ['low', 'medium', 'high'];
@@ -49,6 +49,13 @@ class Ticket extends Model
     {
         return Attribute::make(
             get: fn() => $this->created_at->format('Y.m.d H:i')
+        );
+    }
+
+    public function timeAgo(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->updated_at->diffForHumans()
         );
     }
 

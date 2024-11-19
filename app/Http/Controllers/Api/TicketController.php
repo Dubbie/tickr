@@ -35,7 +35,7 @@ class TicketController extends Controller
 
     public function show(string $ticketNumber)
     {
-        return response()->json(Ticket::where('ticket_number', $ticketNumber)->with('replies')->first() ?? null);
+        return response()->json(Ticket::where('ticket_number', $ticketNumber)->first() ?? null);
     }
 
     public function reply(Request $request, string $ticketNumber)
