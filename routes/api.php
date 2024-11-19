@@ -1,16 +1,26 @@
 <?php
 
 use App\Http\Controllers\Api\CustomerController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\CustomerTicketController;
+use App\Http\Controllers\Api\TicketController;
+use App\Http\Middleware\ValidateCustomerLink;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Customer routes
+Route::middleware([ValidateCustomerLink::class])->prefix('customer/{link}')->group(function () {
+    Route::get('ticket', [CustomerTicketController::class, 'index'])->name('api.customer.ticket.index');
+    Route::post('ticket/store', [CustomerTicketController::class, 'store'])->name('api.customer.ticket.store');
+});
 
-Route::group([
-    'prefix' => 'customer',
-    'middleware' => 'auth'
-], function () {
-    Route::get('/', [CustomerController::class, 'index'])->name('api.customer.index');
+// Admin routes
+Route::middleware('auth')->group(function () {
+    // Customers
+    Route::prefix('customer')->group(function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('api.customer.index');
+    });
+
+    // Tickets
+    Route::prefix('ticket')->group(function () {
+        Route::get('/', [TicketController::class, 'index'])->name('api.ticket.index');
+    });
 });

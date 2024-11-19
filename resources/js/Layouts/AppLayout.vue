@@ -41,6 +41,11 @@ const handleLogout = () => {
                                 :is-active="route().current('customer.index')"
                                 >Customers</NavLink
                             >
+                            <NavLink
+                                :href="route('ticket.index')"
+                                :is-active="route().current('ticket.index')"
+                                >Tickets</NavLink
+                            >
                         </div>
 
                         <div class="-ml-4 flex-1" aria-hidden="true"></div>

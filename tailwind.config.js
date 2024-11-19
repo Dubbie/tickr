@@ -14,11 +14,22 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
+                serif: ['Zilla Slab', ...defaultTheme.fontFamily.serif],
             },
         },
     },
 
     plugins: [forms],
 
-    safelist: ['text-yellow-300', 'text-blue-400'],
+    safelist: [
+        'text-yellow-300',
+        'text-blue-400',
+        'max-w-xs',
+        'max-w-sm',
+        'max-w-lg',
+        'max-w-xl',
+        'max-w-2xl',
+        'max-w-3xl',
+        'max-w-4xl',
+    ],
 };

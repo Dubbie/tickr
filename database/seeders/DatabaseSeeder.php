@@ -25,6 +25,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make(config('superadmin.password'))
         ]);
 
-        $this->call([CustomerSeeder::class]);
+        $this->call([CustomerSeeder::class, TicketSeeder::class]);
     }
 }

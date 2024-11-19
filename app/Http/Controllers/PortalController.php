@@ -10,4 +10,10 @@ class PortalController extends Controller
     {
         return Inertia::render('Portal/Index');
     }
+
+
+    public function create()
+    {
+        return Inertia::render('Portal/Create');
+    }
 }

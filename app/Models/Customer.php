@@ -12,12 +12,15 @@ class Customer extends Model
 
     protected $primaryKey = 'uuid';
 
-    protected $hidden = ['uuid', 'email'];
-
     protected $fillable = [
         'name',
         'email',
         'id',
         'uuid'
     ];
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

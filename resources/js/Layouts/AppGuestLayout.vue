@@ -1,8 +1,21 @@
-<script setup></script>
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({
+    maxWidth: {
+        type: String,
+        default: 'xs',
+    },
+});
+
+const maxWidthClass = computed(() => {
+    return `max-w-${props.maxWidth}`;
+});
+</script>
 
 <template>
     <div class="min-h-svh bg-zinc-100">
-        <div class="mx-auto max-w-xs py-6 lg:py-12">
+        <div class="mx-auto py-6 lg:py-12" :class="maxWidthClass">
             <div class="flex flex-col items-center justify-center">
                 <img
                     src="//picsum.photos/96"
