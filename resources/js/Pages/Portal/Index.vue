@@ -1,5 +1,6 @@
 <script setup>
 import CustomerTicket from '@/Components/CustomerTicket.vue';
+import TabContainer from '@/Components/TabContainer.vue';
 import TheButton from '@/Components/TheButton.vue';
 import AppGuestLayout from '@/Layouts/AppGuestLayout.vue';
 import { usePage } from '@inertiajs/vue3';
@@ -8,50 +9,58 @@ import { computed, onMounted, ref } from 'vue';
 const customer = usePage().props.customer;
 const loading = ref(true);
 const tickets = ref([]);
-const tab = ref('open');
 
+// Function to fetch tickets
 const fetchTickets = async () => {
     loading.value = true;
-
     try {
-        const response = await axios.get(
+        const { data } = await axios.get(
             route('api.customer.ticket.index', customer.unique_link),
         );
-
-        tickets.value = response.data.tickets;
-    } catch (err) {
-        console.log('Error while fetching tickets.');
-        console.log(err);
+        tickets.value = data.tickets;
+    } catch (error) {
+        console.error('Error fetching tickets:', error);
     } finally {
         loading.value = false;
     }
 };
 
-const openTickets = computed(() => {
-    if (tickets.value.length === 0) return [];
+// Computed properties for ticket filtering
+const openTickets = computed(() =>
+    tickets.value.filter((ticket) => ticket.status !== 'closed'),
+);
+const archivedTickets = computed(() =>
+    tickets.value.filter((ticket) => ticket.status === 'closed'),
+);
 
-    // Filter based on statuses
-    return tickets.value.filter((ticket) => ticket.status !== 'closed');
+const filteredTickets = computed(() =>
+    activeTab.value === 'open' ? openTickets.value : archivedTickets.value,
+);
+
+const tabOptions = computed(() => {
+    return [
+        {
+            label: 'Open tickets',
+            name: 'open',
+            badge: {
+                label: openTickets.value.length,
+                color: 'indigo',
+            },
+        },
+        {
+            label: 'Archived',
+            name: 'archived',
+            badge: {
+                label: archivedTickets.value.length,
+                color: 'teal',
+            },
+        },
+    ];
 });
+const activeTab = ref(tabOptions.value[0].name);
 
-const archivedTickets = computed(() => {
-    if (tickets.value.length === 0) return [];
-
-    // Filter based on statuses
-    return tickets.value.filter((ticket) => ticket.status === 'closed');
-});
-
-const filteredTickets = computed(() => {
-    if (tab.value === 'open') {
-        return openTickets.value;
-    }
-
-    return archivedTickets.value;
-});
-
-onMounted(() => {
-    fetchTickets();
-});
+// Fetch tickets when component mounts
+onMounted(fetchTickets);
 </script>
 
 <template>
@@ -64,23 +73,12 @@ onMounted(() => {
             >
         </div>
 
-        <div class="flex gap-x-3 py-2 text-sm font-semibold">
-            <p @click="tab = 'open'">
-                <span class="mr-2">Open tickets</span>
-                <span
-                    class="rounded-md bg-indigo-400 px-1.5 text-xs font-bold text-white"
-                    >{{ openTickets.length }}</span
-                >
-            </p>
-
-            <p @click="tab = 'archived'">
-                <span class="mr-2">Archived</span>
-                <span
-                    class="rounded-md bg-teal-400 px-1.5 text-xs font-bold text-white"
-                    >{{ archivedTickets.length }}</span
-                >
-            </p>
-        </div>
+        <TabContainer
+            class="my-3"
+            :tabs="tabOptions"
+            :active-tab="activeTab"
+            @switch-tab="activeTab = $event"
+        />
 
         <div v-if="loading" class="space-y-3">
             <div
