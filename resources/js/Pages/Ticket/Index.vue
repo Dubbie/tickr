@@ -1,5 +1,6 @@
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
+import TicketPriority from '@/Components/TicketPriority.vue';
 import TicketStatus from '@/Components/TicketStatus.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
@@ -64,10 +65,11 @@ watch(
 
         <TextInput v-model="form.query" class="mb-6 w-full text-sm" />
 
-        <div class="mb-3 grid grid-cols-5 gap-x-3 text-sm font-bold">
+        <div class="mb-3 grid grid-cols-6 gap-x-3 text-sm font-bold">
             <p>Customer</p>
             <p>Subject</p>
             <p>Assigned to</p>
+            <p class="text-center">Priority</p>
             <p class="text-center">Status</p>
             <p class="text-center">Created at</p>
         </div>
@@ -79,7 +81,7 @@ watch(
             <Link
                 v-for="ticket in tickets"
                 :key="ticket.ticket_number"
-                class="grid grid-cols-5 items-center gap-x-3"
+                class="grid grid-cols-6 items-center gap-x-3"
                 :href="route('ticket.show', ticket.ticket_number)"
             >
                 <div>
@@ -113,6 +115,9 @@ watch(
                             <p class="text-zinc-400">Noone</p>
                         </template>
                     </div>
+                </div>
+                <div class="flex justify-center">
+                    <TicketPriority :priority="ticket.priority" />
                 </div>
                 <div class="flex justify-center">
                     <TicketStatus :status="ticket.status" />

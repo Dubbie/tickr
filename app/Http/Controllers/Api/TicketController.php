@@ -30,7 +30,19 @@ class TicketController extends Controller
                 ->orWhere('description', 'like', '%' . $data['query'] . '%');
         }
 
-        return $query->orderByDesc('created_at')->get();
+        return $query->orderByRaw("
+            CASE
+                WHEN status = 'resolved' THEN 2 -- Resolved tickets go last
+                ELSE 1 -- All other statuses
+            END
+        ")->orderByRaw("
+            CASE
+                WHEN priority = 'high' THEN 1
+                WHEN priority = 'medium' THEN 2
+                WHEN priority = 'low' THEN 3
+                ELSE 4 -- Default case for unexpected priorities
+            END
+        ")->orderByDesc('created_at')->get();
     }
 
     public function show(string $ticketNumber)
