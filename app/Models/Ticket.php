@@ -106,7 +106,7 @@ class Ticket extends Model
         return $query
             ->orderByRaw("
                 CASE
-                    WHEN status = 'resolved' THEN 2 -- Resolved tickets go last
+                    WHEN status IN ('closed', 'resolved') THEN 2 -- Resolved tickets go last
                     ELSE 1 -- All other statuses
                 END
             ")
