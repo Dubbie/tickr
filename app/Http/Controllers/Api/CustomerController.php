@@ -11,8 +11,14 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $data = $request->validate([
-            'query' => 'nullable'
+            'query' => 'nullable',
+            'perPage' => 'nullable'
         ]);
+
+        $perPage = 10;
+        if (isset($data['perPage'])) {
+            $perPage = $data['perPage'];
+        }
 
         $customersQuery = Customer::query();
 
@@ -20,6 +26,6 @@ class CustomerController extends Controller
             $customersQuery = $customersQuery->where('name', 'like', '%' . $data['query'] . '%');
         }
 
-        return $customersQuery->orderBy('name')->get();
+        return $customersQuery->orderBy('name')->paginate($perPage);
     }
 }

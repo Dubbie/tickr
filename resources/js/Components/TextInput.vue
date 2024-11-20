@@ -6,6 +6,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    hasIcon: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const model = defineModel({
@@ -20,6 +24,10 @@ const roundingClass = computed(() => {
 });
 
 const paddingClass = computed(() => {
+    if (props.hasIcon) {
+        return 'pl-7 py-1 lg:pl-8 lg:py-1.5';
+    }
+
     return props.pill ? 'px-6 py-2.5' : 'px-2 py-1.5 lg:px-3 lg:py-2';
 });
 
