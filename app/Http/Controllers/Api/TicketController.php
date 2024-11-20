@@ -12,6 +12,7 @@ class TicketController extends Controller
 {
     protected TicketService $ticketService;
 
+
     public function __construct(TicketService $ticketService)
     {
         $this->ticketService = $ticketService;
@@ -20,29 +21,19 @@ class TicketController extends Controller
     public function index(Request $request)
     {
         $data = $request->validate([
-            'query' => 'nullable'
+            'query' => 'nullable|string',
+            'page' => 'required|integer',
+            'perPage' => 'required|integer',
+            'tab' => 'nullable|string',
         ]);
 
-        $query = Ticket::query();
+        $tickets = Ticket::query()
+            ->when($data['query'], fn($query, $search) => $query->search($search))
+            ->when($data['tab'], fn($query, $tab) => $query->forTab($tab))
+            ->defaultSort()
+            ->paginate($data['perPage']);
 
-        if (isset($data['query'])) {
-            $query = $query->where('subject', 'like', '%' . $data['query'] . '%')
-                ->orWhere('description', 'like', '%' . $data['query'] . '%');
-        }
-
-        return $query->orderByRaw("
-            CASE
-                WHEN status = 'resolved' THEN 2 -- Resolved tickets go last
-                ELSE 1 -- All other statuses
-            END
-        ")->orderByRaw("
-            CASE
-                WHEN priority = 'high' THEN 1
-                WHEN priority = 'medium' THEN 2
-                WHEN priority = 'low' THEN 3
-                ELSE 4 -- Default case for unexpected priorities
-            END
-        ")->orderByDesc('created_at')->get();
+        return response()->json($tickets);
     }
 
     public function show(string $ticketNumber)

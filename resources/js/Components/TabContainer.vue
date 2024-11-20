@@ -10,6 +10,10 @@ defineProps({
         type: Array,
         required: true,
     },
+    fullWidth: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const getBadgeColorClass = (color) => {
@@ -29,11 +33,12 @@ const emit = defineEmits(['switch-tab']);
             v-for="tab in tabs"
             :key="tab.name"
             :is-active="activeTab === tab.name"
-            class="w-full"
+            :class="{ 'w-full': fullWidth }"
             @click="emit('switch-tab', tab.name)"
         >
             <span>{{ tab.label }}</span>
             <span
+                v-if="tab.badge"
                 class="rounded-md px-1.5 text-center text-xs font-bold text-white"
                 :class="getBadgeColorClass(tab.badge.color)"
                 >{{ tab.badge.label }}</span

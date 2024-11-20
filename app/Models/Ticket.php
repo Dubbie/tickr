@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,9 +27,11 @@ class Ticket extends Model
 
     protected $with = ['customer', 'assignee', 'replies'];
 
-    protected $appends = ['formatted_updated_at', 'time_ago'];
+    protected $appends = ['formatted_updated_at', 'time_ago', 'profile_photo_url'];
 
     public const STATUSES = ['open', 'in_progress', 'resolved', 'closed'];
+    public const CATEGORY_OPEN = ['open', 'in_progress'];
+    public const CATEGORY_ARCHIVED = ['closed', 'resolved'];
     public const PRIORITIES = ['low', 'medium', 'high'];
 
     public function customer()
@@ -49,7 +52,7 @@ class Ticket extends Model
     public function formattedUpdatedAt(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->updated_at->format('Y.m.d H:i')
+            get: fn() => $this->updated_at->format('M d, H:i')
         );
     }
 
@@ -58,6 +61,64 @@ class Ticket extends Model
         return Attribute::make(
             get: fn() => $this->updated_at->diffForHumans()
         );
+    }
+
+    public function profilePhotoUrl(): Attribute
+    {
+        if (!$this->contact_email) {
+            return $this->replier->profile_photo_url;
+        }
+
+        $defaultType = 'identicon';
+        $params = [
+            'd' => htmlentities($defaultType)
+        ];
+        $address = strtolower(trim($this->contact_email));
+        $hash = hash('sha256', $address);
+        $query = http_build_query($params);
+        $path = sprintf('%s?%s', $hash, $query);
+
+        return Attribute::make(
+            get: fn() => '//www.gravatar.com/avatar/' . $path
+        );
+    }
+
+    public function scopeForTab(Builder $query, string $tab)
+    {
+        if ($tab === 'open') {
+            return $query->whereIn('status', self::CATEGORY_OPEN);
+        } else {
+            return $query->whereIn('status', self::CATEGORY_ARCHIVED);
+        }
+    }
+
+    public function scopeSearch(Builder $query, ?string $search): Builder
+    {
+        if (!empty($search)) {
+            return $query->where('subject', 'like', "%{$search}%")->orWhere('description', 'like', "%{$search}%");
+        }
+
+        return $query;
+    }
+
+    public function scopeDefaultSort(Builder $query)
+    {
+        return $query
+            ->orderByRaw("
+                CASE
+                    WHEN status = 'resolved' THEN 2 -- Resolved tickets go last
+                    ELSE 1 -- All other statuses
+                END
+            ")
+            ->orderByRaw("
+                CASE
+                    WHEN priority = 'high' THEN 1
+                    WHEN priority = 'medium' THEN 2
+                    WHEN priority = 'low' THEN 3
+                    ELSE 4 -- Default case for unexpected priorities
+                END
+            ")
+            ->orderByDesc('created_at');
     }
 
     protected static function boot()
