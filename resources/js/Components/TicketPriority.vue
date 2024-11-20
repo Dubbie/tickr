@@ -41,7 +41,9 @@ const sizeClasses = computed(() => {
 });
 
 const interactiveClasses = computed(() => {
-    return interactive ? 'cursor-pointer hover:bg-zinc-900/5' : '';
+    return interactive
+        ? 'cursor-pointer hover:bg-zinc-900/5 dark:hover:bg-white/5'
+        : '';
 });
 </script>
 

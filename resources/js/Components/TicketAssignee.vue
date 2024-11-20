@@ -11,7 +11,10 @@ defineProps({
 <template>
     <div
         class="rounded-md p-1"
-        :class="{ 'cursor-pointer hover:bg-zinc-900/5': interactive }"
+        :class="{
+            'cursor-pointer hover:bg-zinc-900/5 dark:hover:bg-white/5':
+                interactive,
+        }"
     >
         <div class="flex items-center space-x-2 text-xs">
             <template v-if="!assignee">
