@@ -7,6 +7,7 @@ import TheButton from '@/Components/TheButton.vue';
 import ThePagination from '@/Components/ThePagination.vue';
 import TheSkeleton from '@/Components/TheSkeleton.vue';
 import TicketLine from '@/Components/TicketLine.vue';
+import TicketListHeader from '@/Components/TicketListHeader.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useTicketStore } from '@/stores/ticketStore';
 import { IconPlus, IconSearch } from '@tabler/icons-vue';
@@ -55,16 +56,7 @@ ticketStore.init();
         />
 
         <div class="-mx-3 mt-6">
-            <div
-                class="mb-3 grid grid-cols-8 gap-x-6 px-3 text-xs font-semibold text-zinc-600 dark:text-zinc-500"
-            >
-                <p class="text-center">Ticket ID</p>
-                <p class="col-span-2">Subject</p>
-                <p class="col-span-2">Customer</p>
-                <p class="text-center">Priority</p>
-                <p class="text-center">Status</p>
-                <p class="text-center">Last update</p>
-            </div>
+            <TicketListHeader />
         </div>
 
         <div class="mb-1 h-px bg-zinc-900/10 dark:bg-white/10"></div>

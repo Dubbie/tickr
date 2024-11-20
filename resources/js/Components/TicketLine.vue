@@ -16,7 +16,7 @@ defineProps({
         class="grid grid-cols-8 items-center gap-x-6 rounded-md px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-900/5 dark:text-zinc-100 dark:hover:bg-white/5"
         :href="route('ticket.show', ticket.ticket_number)"
     >
-        <div class="text-center">
+        <div>
             <p>{{ ticket.ticket_number }}</p>
         </div>
         <p class="col-span-2 truncate font-semibold">
@@ -38,7 +38,7 @@ defineProps({
         <div class="flex justify-center">
             <TicketStatus :status="ticket.status" />
         </div>
-        <p class="text-center font-medium">
+        <p class="text-right font-medium">
             {{ ticket.formatted_updated_at }}
         </p>
     </Link>

@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
     // Customers
     Route::prefix('customer')->group(function () {
         Route::get('/', [CustomerController::class, 'index'])->name('api.customer.index');
+        Route::get('/{customer}', [CustomerController::class, 'show'])->name('api.customer.show');
     });
 
     // Tickets

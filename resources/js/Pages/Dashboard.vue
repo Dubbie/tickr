@@ -47,7 +47,7 @@ onMounted(() => {
 
 <template>
     <SidebarLayout>
-        <PageTitle>Dashboard</PageTitle>
+        <PageTitle class="mt-0.5">Dashboard</PageTitle>
 
         <div class="grid grid-cols-4 gap-x-8">
             <TheStat

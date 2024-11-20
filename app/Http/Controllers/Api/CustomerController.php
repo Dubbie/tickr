@@ -34,4 +34,9 @@ class CustomerController extends Controller
 
         return $customersQuery->get();
     }
+
+    public function show(Customer $customer)
+    {
+        return $customer->load('tickets');
+    }
 }

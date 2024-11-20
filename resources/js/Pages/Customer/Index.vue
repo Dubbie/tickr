@@ -9,7 +9,7 @@ import TableRow from '@/Components/TableRow.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
-import { router, useForm } from '@inertiajs/vue3';
+import { router, useForm, Link } from '@inertiajs/vue3';
 import { IconLink, IconPlus, IconSearch } from '@tabler/icons-vue';
 import { onMounted, ref, watch } from 'vue';
 import ThePagination from '@/Components/ThePagination.vue';
@@ -133,7 +133,13 @@ watch(
                             :key="customer.unique_link"
                         >
                             <TableCell>
-                                <p class="font-semibold">{{ customer.name }}</p>
+                                <Link
+                                    class="font-semibold"
+                                    :href="
+                                        route('customer.show', customer.uuid)
+                                    "
+                                    >{{ customer.name }}</Link
+                                >
                             </TableCell>
                             <TableCell>
                                 <p>{{ customer.email }}</p>
