@@ -13,7 +13,7 @@ defineProps({
 
 <template>
     <Link
-        class="grid grid-cols-7 items-center gap-x-3 rounded-md px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-900/5 dark:text-zinc-100 dark:hover:bg-white/5"
+        class="grid grid-cols-8 items-center gap-x-6 rounded-md px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-900/5 dark:text-zinc-100 dark:hover:bg-white/5"
         :href="route('ticket.show', ticket.ticket_number)"
     >
         <div class="text-center">
@@ -22,13 +22,7 @@ defineProps({
         <p class="col-span-2 truncate font-semibold">
             {{ ticket.subject }}
         </p>
-        <div class="flex justify-center">
-            <TicketPriority :priority="ticket.priority" />
-        </div>
-        <div class="flex justify-center">
-            <TicketStatus :status="ticket.status" />
-        </div>
-        <div class="flex items-center gap-x-2">
+        <div class="col-span-2 flex items-center gap-x-2">
             <img
                 :src="ticket.profile_photo_url"
                 alt=""
@@ -37,6 +31,12 @@ defineProps({
             <p class="truncate font-medium">
                 {{ ticket.customer.email }}
             </p>
+        </div>
+        <div class="flex justify-center">
+            <TicketPriority :priority="ticket.priority" />
+        </div>
+        <div class="flex justify-center">
+            <TicketStatus :status="ticket.status" />
         </div>
         <p class="text-center font-medium">
             {{ ticket.formatted_updated_at }}
