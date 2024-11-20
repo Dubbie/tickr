@@ -12,6 +12,7 @@ const ticketStore = useTicketStore();
 
 ticketStore.fetchTickets();
 ticketStore.fetchTicketCounts();
+ticketStore.init();
 </script>
 
 <template>
@@ -75,10 +76,7 @@ ticketStore.fetchTicketCounts();
             class="mt-6"
             :current-page="ticketStore.form.page"
             :last-page="ticketStore.lastPage"
-            @update:current-page="
-                ticketStore.form.page = $event;
-                ticketStore.fetchTickets();
-            "
+            @update:current-page="ticketStore.form.page = $event"
         />
     </SidebarLayout>
 </template>

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { watch } from 'vue';
 
 export const useTicketStore = defineStore('ticket', {
     state: () => ({
@@ -31,6 +32,7 @@ export const useTicketStore = defineStore('ticket', {
         lastPage: null,
         abortController: null,
         debounceTimeout: null,
+        debounceDelay: 300,
         ticketCounts: {
             open: 0,
             archived: 0,
@@ -84,6 +86,26 @@ export const useTicketStore = defineStore('ticket', {
             this.tab = tab;
             this.form.page = 1; // Reset to the first page
             this.fetchTickets(); // Fetch tickets for the selected tab
+        },
+
+        init() {
+            watch(
+                () => this.form.page,
+                () => {
+                    this.fetchTickets();
+                },
+            );
+
+            watch(
+                () => this.form.query,
+                () => {
+                    clearTimeout(this.debounceTimeout);
+                    this.debounceTimeout = setTimeout(() => {
+                        this.form.page = 1;
+                        this.fetchTickets();
+                    }, this.debounceDelay);
+                },
+            );
         },
     },
 
