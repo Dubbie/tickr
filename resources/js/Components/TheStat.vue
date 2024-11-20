@@ -1,4 +1,6 @@
 <script setup>
+import TheCard from './TheCard.vue';
+
 defineProps({
     title: {
         type: String,
@@ -13,11 +15,11 @@ defineProps({
 </script>
 
 <template>
-    <div class="px-8">
+    <TheCard padding-class="p-8">
         <p class="mb-3 text-xs font-semibold text-zinc-500">{{ title }}</p>
 
         <p class="font-serif text-3xl font-semibold">{{ value }}</p>
 
         <p v-if="subtitle">{{ subtitle }}</p>
-    </div>
+    </TheCard>
 </template>
