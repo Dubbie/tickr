@@ -13,13 +13,13 @@ defineProps({
 
 <template>
     <Link
-        class="grid grid-cols-6 items-center gap-x-3 rounded-md px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-900/5 dark:text-zinc-100 dark:hover:bg-white/5"
+        class="grid grid-cols-7 items-center gap-x-3 rounded-md px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-900/5 dark:text-zinc-100 dark:hover:bg-white/5"
         :href="route('ticket.show', ticket.ticket_number)"
     >
         <div class="text-center">
             <p>{{ ticket.ticket_number }}</p>
         </div>
-        <p class="truncate font-semibold">
+        <p class="col-span-2 truncate font-semibold">
             {{ ticket.subject }}
         </p>
         <div class="flex justify-center">
