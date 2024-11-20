@@ -91,4 +91,27 @@ class TicketService
             ], 500);
         }
     }
+
+    public function close(Ticket $ticket)
+    {
+        try {
+            $ticket->status = Ticket::STATUSES['3'];
+            $ticket->save();
+
+            return response()->json([
+                'message' => 'Ticket closed.',
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error while closing ticket.');
+
+            Log::error($e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return response()->json([
+                'message' => 'Error while closing ticket.',
+                'success' => false,
+            ], 500);
+        }
+    }
 }

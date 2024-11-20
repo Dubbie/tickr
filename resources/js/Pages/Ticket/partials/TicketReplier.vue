@@ -8,6 +8,7 @@ import { inject, ref } from 'vue';
 const emitter = inject('emitter');
 const ticket = inject('ticket');
 const savingReply = ref(false);
+const closingTicket = ref(false);
 const form = useForm({
     message: '',
 });
@@ -32,6 +33,22 @@ const handleReply = async () => {
         savingReply.value = false;
     }
 };
+
+const closeTicket = async () => {
+    closingTicket.value = true;
+
+    try {
+        await axios.post(route('api.ticket.close', ticket.value.ticket_number));
+
+        emitter.emit(EVENTS.REFRESH_TICKET);
+        form.reset();
+    } catch (err) {
+        console.log('Error while closing ticket.');
+        console.log(err);
+    } finally {
+        closingTicket.value = false;
+    }
+};
 </script>
 
 <template>
@@ -52,13 +69,14 @@ const handleReply = async () => {
                 />
             </div>
         </div>
-        <div class="ml-11 mt-3">
+        <div class="ml-11 mt-3 flex gap-x-3">
             <TheButton
                 variant="primary"
                 @click="handleReply"
                 :disabled="savingReply"
                 >Submit reply</TheButton
             >
+            <TheButton @click="closeTicket">Close ticket</TheButton>
         </div>
     </div>
 </template>

@@ -83,4 +83,11 @@ class TicketController extends Controller
 
         return $this->ticketService->assignTicketToUser($ticket, $user);
     }
+
+    public function close($ticketNumber)
+    {
+        $ticket = Ticket::where('ticket_number', $ticketNumber)->first();
+
+        return $this->ticketService->close($ticket);
+    }
 }
