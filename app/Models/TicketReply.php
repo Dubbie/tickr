@@ -38,21 +38,26 @@ class TicketReply extends Model
 
     public function profilePhotoUrl(): Attribute
     {
+        $url = null;
+
         if (!$this->email) {
-            return $this->replier->profile_photo_url;
+            $url =  $this->replier->profile_photo_url;
+        } else {
+            $defaultType = 'identicon';
+            $params = [
+                'd' => htmlentities($defaultType)
+            ];
+            $address = strtolower(trim($this->email));
+            $hash = hash('sha256', $address);
+            $query = http_build_query($params);
+            $path = sprintf('%s?%s', $hash, $query);
+
+            $url = '//www.gravatar.com/avatar/' . $path;
         }
 
-        $defaultType = 'identicon';
-        $params = [
-            'd' => htmlentities($defaultType)
-        ];
-        $address = strtolower(trim($this->email));
-        $hash = hash('sha256', $address);
-        $query = http_build_query($params);
-        $path = sprintf('%s?%s', $hash, $query);
 
         return Attribute::make(
-            get: fn() => '//www.gravatar.com/avatar/' . $path
+            get: fn() => $url
         );
     }
 }
