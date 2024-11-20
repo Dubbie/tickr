@@ -5,11 +5,12 @@ import TicketReply from '@/Components/TicketReply.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { IconArrowLeft } from '@tabler/icons-vue';
 import axios from 'axios';
-import { onMounted, provide, ref } from 'vue';
+import { inject, onMounted, onUnmounted, provide, ref } from 'vue';
 import TicketDetails from './partials/TicketDetails.vue';
 import TicketActions from './partials/TicketActions.vue';
 import TicketCustomer from './partials/TicketCustomer.vue';
 import TicketReplier from './partials/TicketReplier.vue';
+import { EVENTS } from '@/constants';
 
 const { ticketNumber } = defineProps({
     ticketNumber: {
@@ -18,6 +19,7 @@ const { ticketNumber } = defineProps({
     },
 });
 
+const emitter = inject('emitter');
 const ticket = ref(null);
 const loadingTicket = ref(false);
 
@@ -44,8 +46,21 @@ const fetchTicket = async () => {
     }
 };
 
+const setUpEvents = () => {
+    emitter.on(EVENTS.REFRESH_TICKET, fetchTicket);
+};
+
+const tearDownEvents = () => {
+    emitter.off(EVENTS.REFRESH_TICKET);
+};
+
 onMounted(() => {
     fetchTicket();
+    setUpEvents();
+});
+
+onUnmounted(() => {
+    tearDownEvents();
 });
 </script>
 
@@ -94,12 +109,12 @@ onMounted(() => {
                     </div>
 
                     <!-- Reply here -->
-                    <TicketReplier class="mt-6" @update-ticket="fetchTicket" />
+                    <TicketReplier class="mt-6" />
                 </div>
 
                 <div class="space-y-3">
                     <TicketCustomer />
-                    <TicketActions @update-ticket="fetchTicket" />
+                    <TicketActions />
                     <TicketDetails />
                 </div>
             </div>

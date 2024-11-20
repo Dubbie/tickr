@@ -4,13 +4,13 @@ import TheCard from '@/Components/TheCard.vue';
 import TicketAssignee from '@/Components/TicketAssignee.vue';
 import TicketPriority from '@/Components/TicketPriority.vue';
 import TicketStatus from '@/Components/TicketStatus.vue';
+import { EVENTS } from '@/constants';
 import { inject, ref } from 'vue';
 
 const ticket = inject('ticket');
+const emitter = inject('emitter');
 
 const showAssignModal = ref(false);
-
-defineEmits(['update-ticket']);
 </script>
 
 <template>
@@ -46,7 +46,7 @@ defineEmits(['update-ticket']);
             :assignee-id="ticket.assigned_to"
             :ticket-number="ticket.ticket_number"
             @close="showAssignModal = false"
-            @update="$emit('update-ticket')"
+            @update="emitter.emit(EVENTS.REFRESH_TICKET)"
         />
     </TheCard>
 </template>

@@ -1,9 +1,11 @@
 <script setup>
 import TextareaInput from '@/Components/TextareaInput.vue';
 import TheButton from '@/Components/TheButton.vue';
+import { EVENTS } from '@/constants';
 import { useForm } from '@inertiajs/vue3';
 import { inject, ref } from 'vue';
 
+const emitter = inject('emitter');
 const ticket = inject('ticket');
 const savingReply = ref(false);
 const form = useForm({
@@ -21,7 +23,7 @@ const handleReply = async () => {
             },
         );
 
-        emit('update-ticket');
+        emitter.emit(EVENTS.REFRESH_TICKET);
         form.reset();
     } catch (err) {
         console.log('Error while saving ticket reply.');
@@ -30,8 +32,6 @@ const handleReply = async () => {
         savingReply.value = false;
     }
 };
-
-const emit = defineEmits(['update-ticket']);
 </script>
 
 <template>
