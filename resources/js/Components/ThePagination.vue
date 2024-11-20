@@ -80,7 +80,7 @@ const parts = computed(() => {
     <div class="flex items-center justify-between gap-x-3 text-sm">
         <button
             :disabled="currentPage === 1"
-            class="flex h-8 items-center justify-center gap-x-2 rounded-md px-3 font-semibold text-white hover:bg-white/5 disabled:text-zinc-600"
+            class="flex h-8 items-center justify-center gap-x-2 rounded-md px-3 font-semibold hover:bg-black/5 disabled:pointer-events-none disabled:text-zinc-600 dark:text-zinc-100 dark:hover:bg-white/5"
             @click="changePage(currentPage - 1)"
         >
             <IconArrowNarrowLeft class="-ml-1 size-4 opacity-50" />
@@ -91,10 +91,12 @@ const parts = computed(() => {
             <template v-for="(part, index) in parts" :key="index">
                 <button
                     v-if="part.type === 'page'"
-                    class="size-8 rounded-md font-semibold text-white"
+                    class="size-8 rounded-md font-semibold dark:text-zinc-100"
                     :class="{
-                        'bg-white/5': part.number === currentPage,
-                        'hover:bg-white/5': part.number !== currentPage,
+                        'bg-black/5 dark:bg-white/5':
+                            part.number === currentPage,
+                        'hover:bg-black/5 dark:hover:bg-white/5':
+                            part.number !== currentPage,
                     }"
                     @click="changePage(part.number)"
                 >
@@ -106,7 +108,7 @@ const parts = computed(() => {
 
         <button
             :disabled="currentPage === lastPage"
-            class="flex h-8 items-center justify-center gap-x-2 rounded-md px-3 font-semibold text-white hover:bg-white/5 disabled:text-zinc-600"
+            class="flex h-8 items-center justify-center gap-x-2 rounded-md px-3 font-semibold hover:bg-black/5 disabled:pointer-events-none disabled:text-zinc-600 dark:text-zinc-100 dark:hover:bg-white/5"
             @click="changePage(currentPage + 1)"
         >
             <span>Next</span>
