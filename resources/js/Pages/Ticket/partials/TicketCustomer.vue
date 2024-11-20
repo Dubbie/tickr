@@ -9,7 +9,7 @@ const ticket = inject('ticket');
     <TheCard>
         <div class="flex items-center gap-x-3">
             <img
-                src="//picsum.photos/96"
+                :src="ticket.profile_photo_url"
                 :alt="ticket.customer.name"
                 class="size-10 rounded-md"
             />
