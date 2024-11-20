@@ -66,7 +66,7 @@ const handleReply = async () => {
             <p class="mt-3 text-sm">{{ ticket.description }}</p>
         </TheCard>
 
-        <div v-if="ticket.replies.length > 0" class="mx-4 mt-6 space-y-3">
+        <div v-if="ticket.replies.length > 0" class="mt-6 space-y-3">
             <TicketReply
                 v-for="reply in ticket.replies"
                 :key="reply.id"
