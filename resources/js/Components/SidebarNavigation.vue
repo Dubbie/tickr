@@ -4,7 +4,7 @@ import SidebarNavLink from './SidebarNavLink.vue';
 </script>
 
 <template>
-    <nav class="min-h-auto flex flex-col overflow-visible">
+    <nav class="min-h-auto flex flex-col space-y-1 overflow-visible">
         <SidebarNavLink
             :href="route('dashboard')"
             :icon="IconHome"
