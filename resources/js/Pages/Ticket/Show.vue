@@ -2,7 +2,6 @@
 import TheButton from '@/Components/TheButton.vue';
 import TheCard from '@/Components/TheCard.vue';
 import TicketReply from '@/Components/TicketReply.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
 import { IconArrowLeft } from '@tabler/icons-vue';
 import axios from 'axios';
 import { inject, onMounted, onUnmounted, provide, ref } from 'vue';
@@ -11,6 +10,7 @@ import TicketActions from './partials/TicketActions.vue';
 import TicketCustomer from './partials/TicketCustomer.vue';
 import TicketReplier from './partials/TicketReplier.vue';
 import { EVENTS } from '@/constants';
+import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 
 const { ticketNumber } = defineProps({
     ticketNumber: {
@@ -65,7 +65,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <AppLayout>
+    <SidebarLayout>
         <div class="mb-6">
             <h1 class="text-xl font-bold text-zinc-800">
                 {{ ticket?.ticket_number ?? '...' }}
@@ -119,5 +119,5 @@ onUnmounted(() => {
                 </div>
             </div>
         </div>
-    </AppLayout>
+    </SidebarLayout>
 </template>

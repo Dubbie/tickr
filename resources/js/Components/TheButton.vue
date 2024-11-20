@@ -30,7 +30,7 @@ const colorMap = {
         zinc: 'bg-black text-white hover:bg-zinc-800 disabled:pointer-events-none disabled:bg-zinc-400',
     },
     ghost: {
-        zinc: 'text-zinc-900 hover:bg-zinc-900/10',
+        zinc: 'text-zinc-900 hover:bg-zinc-900/10 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white',
     },
 };
 
@@ -40,6 +40,7 @@ const colorClasses = computed(() => {
 
 const sizeClasses = computed(() => {
     return {
+        sm: 'text-sm/6 font-semibold px-2 py-1',
         md: 'text-sm/6 font-semibold px-2 py-1 lg:px-3 lg:py-1.5',
     }[props.size];
 });

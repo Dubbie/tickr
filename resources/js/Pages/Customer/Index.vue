@@ -1,6 +1,6 @@
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import { onMounted, ref, watch } from 'vue';
 
@@ -58,7 +58,7 @@ watch(
 </script>
 
 <template>
-    <AppLayout>
+    <SidebarLayout>
         <h1 class="mb-6 text-xl font-bold text-zinc-800">Customers</h1>
 
         <TextInput v-model="form.query" class="mb-6 w-full text-sm" />
@@ -83,5 +83,5 @@ watch(
                 <p>{{ customer.unique_link }}</p>
             </div>
         </div>
-    </AppLayout>
+    </SidebarLayout>
 </template>

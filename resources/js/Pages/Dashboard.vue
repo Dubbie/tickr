@@ -1,9 +1,9 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 </script>
 
 <template>
-    <AppLayout>
+    <SidebarLayout>
         <p>Logged in!</p>
-    </AppLayout>
+    </SidebarLayout>
 </template>
