@@ -36,6 +36,14 @@ class TicketController extends Controller
         return response()->json($tickets);
     }
 
+    public function counts()
+    {
+        return [
+            'open' => Ticket::forTab('open')->count(),
+            'archived' => Ticket::forTab('archived')->count(),
+        ];
+    }
+
     public function show(string $ticketNumber)
     {
         return response()->json(Ticket::where('ticket_number', $ticketNumber)->first() ?? null);

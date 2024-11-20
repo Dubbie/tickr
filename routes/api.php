@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     // Tickets
     Route::prefix('ticket')->group(function () {
         Route::get('/', [TicketController::class, 'index'])->name('api.ticket.index');
+        Route::get('/count', [TicketController::class, 'counts'])->name('api.ticket.counts');
         Route::post('/{ticketNumber}/reply/store', [TicketController::class, 'reply'])->name('api.ticket.reply.store');
         Route::post('/{ticketNumber}/assign', [TicketController::class, 'assignToUser'])->name('api.ticket.assign');
         Route::get('/{ticketNumber}', [TicketController::class, 'show'])->name('api.ticket.show');

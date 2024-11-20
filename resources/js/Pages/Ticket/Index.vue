@@ -10,6 +10,7 @@ import { useTicketStore } from '@/stores/ticketStore';
 const ticketStore = useTicketStore();
 
 ticketStore.fetchTickets();
+ticketStore.fetchTicketCounts();
 </script>
 
 <template>
@@ -20,7 +21,7 @@ ticketStore.fetchTickets();
 
         <TabContainer
             class="my-3"
-            :tabs="ticketStore.tabOptions"
+            :tabs="ticketStore.updatedTabOptions"
             :active-tab="ticketStore.tab"
             @switch-tab="ticketStore.setTab($event)"
         />

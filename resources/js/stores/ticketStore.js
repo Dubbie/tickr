@@ -8,10 +8,18 @@ export const useTicketStore = defineStore('ticket', {
             {
                 label: 'Open tickets',
                 name: 'open',
+                badge: {
+                    label: 0,
+                    color: 'indigo',
+                },
             },
             {
                 label: 'Archived',
                 name: 'archived',
+                badge: {
+                    label: 0,
+                    color: 'teal',
+                },
             },
         ],
         tab: 'open', // 'open' or 'archived'
@@ -23,6 +31,10 @@ export const useTicketStore = defineStore('ticket', {
         lastPage: null,
         abortController: null,
         debounceTimeout: null,
+        ticketCounts: {
+            open: 0,
+            archived: 0,
+        },
     }),
 
     actions: {
@@ -57,6 +69,17 @@ export const useTicketStore = defineStore('ticket', {
             }
         },
 
+        async fetchTicketCounts() {
+            try {
+                const response = await axios.get(route('api.ticket.counts'));
+
+                this.ticketCounts.open = response.data.open || 0;
+                this.ticketCounts.archived = response.data.archived || 0;
+            } catch (err) {
+                console.error('Error fetching ticket counts!', err);
+            }
+        },
+
         setTab(tab) {
             this.tab = tab;
             this.form.page = 1; // Reset to the first page
@@ -66,5 +89,14 @@ export const useTicketStore = defineStore('ticket', {
 
     getters: {
         totalTickets: (state) => state.tickets.length,
+        updatedTabOptions: (state) => {
+            return state.tabOptions.map((tab) => ({
+                ...tab,
+                badge: {
+                    ...tab.badge,
+                    label: state.ticketCounts[tab.name] || 0,
+                },
+            }));
+        },
     },
 });
