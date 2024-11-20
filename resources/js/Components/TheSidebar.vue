@@ -10,7 +10,7 @@ import DropdownLink from './DropdownLink.vue';
 const { theme, toggleTheme } = useTheme();
 
 const handleLogout = () => {
-    router.post('logout');
+    router.post(route('logout'));
 };
 </script>
 
