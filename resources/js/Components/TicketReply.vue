@@ -26,11 +26,11 @@ const imageUrl = computed(() => {
         <div class="grow">
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="font-semibold text-zinc-900">
+                    <p class="font-semibold text-zinc-900 dark:text-zinc-100">
                         {{ reply.replier.name }}
                     </p>
                     <p
-                        class="mb-2 text-xs font-medium text-zinc-500"
+                        class="mb-2 text-xs font-medium text-zinc-500 dark:text-zinc-400"
                         v-if="reply.email"
                     >
                         {{ reply.email }}
@@ -40,7 +40,9 @@ const imageUrl = computed(() => {
                 <p class="text-xs text-zinc-500">{{ reply.time_ago }}</p>
             </div>
 
-            <p class="font-medium text-zinc-600">{{ reply.message }}</p>
+            <p class="font-medium text-zinc-600 dark:text-zinc-400">
+                {{ reply.message }}
+            </p>
         </div>
     </div>
 </template>
