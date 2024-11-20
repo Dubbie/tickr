@@ -1,26 +1,20 @@
 <script setup>
-import { computed } from 'vue';
-
 const { reply } = defineProps({
     reply: {
         type: Object,
         required: true,
     },
 });
-
-const imageUrl = computed(() => {
-    if (reply.email) {
-        return '//picsum.photos/96';
-    }
-
-    return reply.replier.profile_photo_url;
-});
 </script>
 
 <template>
     <div class="flex items-start gap-x-3 text-sm">
         <div>
-            <img :src="imageUrl" alt="" class="size-8 rounded-md" />
+            <img
+                :src="reply.profile_photo_url"
+                alt=""
+                class="size-8 rounded-md"
+            />
         </div>
 
         <div class="grow">

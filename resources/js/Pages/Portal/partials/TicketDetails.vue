@@ -75,7 +75,7 @@ const handleReply = async () => {
         </div>
 
         <div class="mt-6 flex items-start gap-x-3">
-            <img src="//picsum.photos/128" class="size-8 rounded-md" />
+            <img :src="ticket.profile_photo_url" class="size-8 rounded-md" />
 
             <div class="grow space-y-1">
                 <TextInput

@@ -17,7 +17,7 @@ class TicketReply extends Model
 
     protected $with = ['replier'];
 
-    protected $appends = ['time_ago'];
+    protected $appends = ['time_ago', 'profile_photo_url'];
 
     public function ticket()
     {
@@ -33,6 +33,26 @@ class TicketReply extends Model
     {
         return Attribute::make(
             get: fn() => $this->created_at->diffForHumans()
+        );
+    }
+
+    public function profilePhotoUrl(): Attribute
+    {
+        if (!$this->email) {
+            return $this->replier->profile_photo_url;
+        }
+
+        $defaultType = 'identicon';
+        $params = [
+            'd' => htmlentities($defaultType)
+        ];
+        $address = strtolower(trim($this->email));
+        $hash = hash('sha256', $address);
+        $query = http_build_query($params);
+        $path = sprintf('%s?%s', $hash, $query);
+
+        return Attribute::make(
+            get: fn() => '//www.gravatar.com/avatar/' . $path
         );
     }
 }
