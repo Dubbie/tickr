@@ -14,7 +14,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
-                serif: ['Zilla Slab', ...defaultTheme.fontFamily.serif],
+                serif: ['Roboto Slab', ...defaultTheme.fontFamily.serif],
             },
         },
     },
