@@ -39,6 +39,7 @@ class TicketController extends Controller
     public function counts()
     {
         return [
+            'total' => Ticket::count(),
             'open' => Ticket::forTab('open')->count(),
             'archived' => Ticket::forTab('archived')->count(),
         ];
