@@ -2,7 +2,7 @@
 import PageTitle from '@/Components/PageTitle.vue';
 import TabContainer from '@/Components/TabContainer.vue';
 import TextInput from '@/Components/TextInput.vue';
-import TheButton from '@/Components/TheButton.vue';
+import ThePagination from '@/Components/ThePagination.vue';
 import TheSkeleton from '@/Components/TheSkeleton.vue';
 import TicketLine from '@/Components/TicketLine.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
@@ -70,25 +70,15 @@ ticketStore.fetchTicketCounts();
         </div>
 
         <!-- Pagination -->
-        <div class="mt-4 flex justify-between">
-            <TheButton
-                :disabled="ticketStore.form.page === 1"
-                @click="
-                    ticketStore.form.page--;
-                    ticketStore.fetchTickets();
-                "
-            >
-                Previous
-            </TheButton>
-            <TheButton
-                :disabled="ticketStore.lastPage === ticketStore.form.page"
-                @click="
-                    ticketStore.form.page++;
-                    ticketStore.fetchTickets();
-                "
-            >
-                Next
-            </TheButton>
-        </div>
+        <ThePagination
+            v-if="ticketStore.tickets.length > 0"
+            class="mt-6"
+            :current-page="ticketStore.form.page"
+            :last-page="ticketStore.lastPage"
+            @update:current-page="
+                ticketStore.form.page = $event;
+                ticketStore.fetchTickets();
+            "
+        />
     </SidebarLayout>
 </template>
