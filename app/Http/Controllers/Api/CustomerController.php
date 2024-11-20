@@ -37,6 +37,10 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
-        return $customer->load('tickets');
+        return $customer->load([
+            'tickets' => function ($query) {
+                $query->latest()->limit(5);
+            }
+        ]);
     }
 }

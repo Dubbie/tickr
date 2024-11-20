@@ -100,7 +100,7 @@ onMounted(() => {
             </div>
 
             <div class="mt-6">
-                <h3 class="mb-3 text-lg font-semibold">Tickets</h3>
+                <h3 class="mb-3 text-lg font-semibold">Recent tickets</h3>
 
                 <div v-if="customer.tickets.length === 0">
                     <p class="font-semibold text-zinc-500 dark:text-zinc-400">
@@ -109,6 +109,10 @@ onMounted(() => {
                 </div>
                 <div v-else class="-mx-3">
                     <TicketListHeader />
+
+                    <div
+                        class="mb-1 h-px bg-zinc-900/10 dark:bg-white/10"
+                    ></div>
 
                     <div class="space-y-1">
                         <TicketLine
