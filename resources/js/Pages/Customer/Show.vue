@@ -1,6 +1,7 @@
 <script setup>
 import PageTitle from '@/Components/PageTitle.vue';
 import TheButton from '@/Components/TheButton.vue';
+import TheCard from '@/Components/TheCard.vue';
 import TicketLine from '@/Components/TicketLine.vue';
 import TicketListHeader from '@/Components/TicketListHeader.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
@@ -59,8 +60,8 @@ onMounted(() => {
             <p>Loading customer details...</p>
         </div>
         <div v-else>
-            <div class="grid grid-cols-2 gap-x-12">
-                <div class="flex items-center gap-x-6">
+            <div class="grid grid-cols-2 items-center gap-x-12">
+                <TheCard class="flex items-center gap-x-6">
                     <img
                         :src="customer.profile_photo_url"
                         alt=""
@@ -75,7 +76,7 @@ onMounted(() => {
                             {{ customer.email }}
                         </p>
                     </div>
-                </div>
+                </TheCard>
 
                 <div class="text-sm">
                     <div class="flex gap-x-3">
