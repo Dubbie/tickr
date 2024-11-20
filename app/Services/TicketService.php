@@ -43,6 +43,11 @@ class TicketService
                 'replier_id' => $replier->id ?? $replier->uuid
             ]);
 
+            // If replier is a user move ticket to In Progress status
+            if (!$email) {
+                $ticket->status = Ticket::STATUSES['1'];
+            }
+
             $ticket->updated_at = now();
             $ticket->save();
 
