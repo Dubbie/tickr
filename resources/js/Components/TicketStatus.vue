@@ -27,10 +27,12 @@ const statusLabel = computed(() => {
 
 const colorClasses = computed(() => {
     let baseClasses = {
-        open: 'bg-green-500/15 text-green-600',
-        in_progress: 'bg-indigo-500/15 text-indigo-600',
-        closed: 'bg-teal-500/15 text-teal-600',
-        resolved: 'bg-yellow-500/15 text-yellow-600',
+        open: 'bg-green-500/15 text-green-600 dark:bg-green-400/15 dark:text-green-500',
+        in_progress:
+            'bg-indigo-500/15 text-indigo-600 dark:bg-indigo-400/15 dark:text-indigo-500',
+        closed: 'bg-teal-500/15 text-teal-600 dark:bg-teal-400/15 dark:text-teal-500',
+        resolved:
+            'bg-yellow-500/15 text-yellow-600 dark:bg-yellow-400/15 dark:text-yellow-500',
     };
     let extra = '';
 

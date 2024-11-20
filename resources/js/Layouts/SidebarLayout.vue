@@ -7,7 +7,9 @@ import TheSidebar from '@/Components/TheSidebar.vue';
         <div class="flex min-h-svh">
             <TheSidebar />
 
-            <div class="max-h-svh flex-1 overflow-y-scroll p-6 lg:p-8">
+            <div
+                class="max-h-svh flex-1 overflow-y-scroll p-6 lg:p-8 dark:text-white"
+            >
                 <slot />
             </div>
         </div>

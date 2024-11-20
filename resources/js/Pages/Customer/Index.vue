@@ -1,4 +1,5 @@
 <script setup>
+import PageTitle from '@/Components/PageTitle.vue';
 import TextInput from '@/Components/TextInput.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useForm } from '@inertiajs/vue3';
@@ -59,7 +60,7 @@ watch(
 
 <template>
     <SidebarLayout>
-        <h1 class="mb-6 text-xl font-bold text-zinc-800">Customers</h1>
+        <PageTitle>Customers</PageTitle>
 
         <TextInput v-model="form.query" class="mb-6 w-full text-sm" />
 

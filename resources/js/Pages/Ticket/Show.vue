@@ -11,6 +11,7 @@ import TicketCustomer from './partials/TicketCustomer.vue';
 import TicketReplier from './partials/TicketReplier.vue';
 import { EVENTS } from '@/constants';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
+import PageTitle from '@/Components/PageTitle.vue';
 
 const { ticketNumber } = defineProps({
     ticketNumber: {
@@ -67,9 +68,9 @@ onUnmounted(() => {
 <template>
     <SidebarLayout>
         <div class="mb-6">
-            <h1 class="text-xl font-bold text-zinc-800">
+            <PageTitle margin-bottom="mb-0">
                 {{ ticket?.ticket_number ?? '...' }}
-            </h1>
+            </PageTitle>
             <TheButton variant="ghost" class="-ml-3" @click="handleBack">
                 <IconArrowLeft class="size-4" stroke-width="2" />
                 <span>Back</span>

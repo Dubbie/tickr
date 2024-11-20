@@ -1,4 +1,5 @@
 <script setup>
+import PageTitle from '@/Components/PageTitle.vue';
 import TabContainer from '@/Components/TabContainer.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
@@ -15,7 +16,7 @@ ticketStore.fetchTicketCounts();
 
 <template>
     <SidebarLayout>
-        <h1 class="mb-6 text-xl font-bold text-zinc-800">Tickets</h1>
+        <PageTitle>Tickets</PageTitle>
 
         <TextInput v-model="ticketStore.form.query" class="w-full text-sm" />
 
@@ -28,7 +29,7 @@ ticketStore.fetchTicketCounts();
 
         <div class="-mx-3 mt-3">
             <div
-                class="mb-3 grid grid-cols-6 gap-x-3 px-3 text-xs font-semibold text-zinc-600"
+                class="mb-3 grid grid-cols-6 gap-x-3 px-3 text-xs font-semibold text-zinc-600 dark:text-zinc-500"
             >
                 <p class="text-center">Ticket ID</p>
                 <p>Subject</p>
@@ -39,7 +40,7 @@ ticketStore.fetchTicketCounts();
             </div>
         </div>
 
-        <div class="mb-1 h-px bg-zinc-900/10"></div>
+        <div class="mb-1 h-px bg-zinc-900/10 dark:bg-white/10"></div>
 
         <div class="-mx-3">
             <transition

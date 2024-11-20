@@ -18,7 +18,7 @@ defineProps({
 
 const getBadgeColorClass = (color) => {
     return {
-        teal: 'bg-teal-400',
+        teal: 'bg-teal-500',
         indigo: 'bg-indigo-500',
         green: 'bg-green-500',
     }[color];
@@ -28,7 +28,7 @@ const emit = defineEmits(['switch-tab']);
 </script>
 
 <template>
-    <div class="flex gap-x-1 rounded-md bg-zinc-900/5 p-1">
+    <div class="flex gap-x-1 rounded-md bg-zinc-900/5 p-1 dark:bg-white/5">
         <TheTab
             v-for="tab in tabs"
             :key="tab.name"
