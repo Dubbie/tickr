@@ -3,10 +3,12 @@ import './bootstrap';
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import mitt from 'mitt';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const emitter = mitt();
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -19,6 +21,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .provide('emitter', emitter)
             .mount(el);
     },
     progress: {

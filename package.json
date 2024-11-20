@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "@headlessui/vue": "^1.7.23",
-        "@tabler/icons-vue": "^3.22.0"
+        "@tabler/icons-vue": "^3.22.0",
+        "mitt": "^3.0.1"
     }
 }
