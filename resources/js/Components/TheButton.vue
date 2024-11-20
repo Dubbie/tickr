@@ -24,7 +24,7 @@ const props = defineProps({
 
 const colorMap = {
     default: {
-        zinc: 'ring-1 ring-inset ring-zinc-900/20 bg-white text-black hover:ring-zinc-900/30',
+        zinc: 'ring-1 ring-inset ring-zinc-900/20 bg-white text-black hover:ring-zinc-900/30 disabled:text-zinc-400 disabled:ring-zinc-400/20 disabled:pointer-events-none',
     },
     primary: {
         zinc: 'bg-black text-white hover:bg-zinc-800 disabled:pointer-events-none disabled:bg-zinc-400',
@@ -50,7 +50,7 @@ const sizeClasses = computed(() => {
     <component
         :is="href ? Link : 'button'"
         :href="href"
-        class="flex items-center justify-center gap-x-1 rounded-md"
+        class="flex cursor-pointer items-center justify-center gap-x-1 rounded-md"
         :class="[colorClasses, sizeClasses]"
     >
         <slot />

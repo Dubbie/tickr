@@ -1,6 +1,7 @@
 <script setup>
 import TabContainer from '@/Components/TabContainer.vue';
 import TextInput from '@/Components/TextInput.vue';
+import TheButton from '@/Components/TheButton.vue';
 import TicketLine from '@/Components/TicketLine.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useTicketStore } from '@/stores/ticketStore';
@@ -14,10 +15,7 @@ ticketStore.fetchTickets();
     <SidebarLayout>
         <h1 class="mb-6 text-xl font-bold text-zinc-800">Tickets</h1>
 
-        <TextInput
-            v-model="ticketStore.form.query"
-            class="mb-6 w-full text-sm"
-        />
+        <TextInput v-model="ticketStore.form.query" class="w-full text-sm" />
 
         <TabContainer
             class="my-3"
@@ -26,7 +24,7 @@ ticketStore.fetchTickets();
             @switch-tab="ticketStore.setTab($event)"
         />
 
-        <div class="-mx-3">
+        <div class="-mx-3 mt-3">
             <div
                 class="mb-3 grid grid-cols-6 gap-x-3 px-3 text-xs font-semibold text-zinc-600"
             >
@@ -37,7 +35,11 @@ ticketStore.fetchTickets();
                 <p>Customer</p>
                 <p class="text-center">Last update</p>
             </div>
+        </div>
 
+        <div class="h-px bg-zinc-900/10"></div>
+
+        <div class="-mx-3">
             <div v-if="ticketStore.loading">
                 <p>Loading tickets...</p>
             </div>
@@ -49,19 +51,19 @@ ticketStore.fetchTickets();
                 />
             </div>
         </div>
+
         <!-- Pagination -->
         <div class="mt-4 flex justify-between">
-            <button
+            <TheButton
                 :disabled="ticketStore.form.page === 1 || ticketStore.loading"
                 @click="
                     ticketStore.form.page--;
                     ticketStore.fetchTickets();
                 "
-                class="rounded border px-2 py-1 disabled:opacity-50"
             >
                 Previous
-            </button>
-            <button
+            </TheButton>
+            <TheButton
                 :disabled="
                     ticketStore.lastPage === ticketStore.form.page ||
                     ticketStore.loading
@@ -70,10 +72,9 @@ ticketStore.fetchTickets();
                     ticketStore.form.page++;
                     ticketStore.fetchTickets();
                 "
-                class="rounded border px-2 py-1 disabled:opacity-50"
             >
                 Next
-            </button>
+            </TheButton>
         </div>
     </SidebarLayout>
 </template>
