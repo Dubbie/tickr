@@ -10,16 +10,22 @@ use Illuminate\Support\Facades\Log;
 
 class TicketService
 {
-    public function save(Customer $customer, array $ticketData)
+    public function save(Customer $customer, array $ticketData, bool $includeTicket = false)
     {
         // Create ticket add it to customer
         try {
-            $customer->tickets()->create($ticketData);
+            $ticket = $customer->tickets()->create($ticketData);
 
-            return response()->json([
+            $responseData = [
                 'message' => 'Ticket saved.',
                 'success' => true,
-            ], 201);
+            ];
+
+            if ($includeTicket) {
+                $responseData['ticket'] = $ticket;
+            }
+
+            return response()->json($responseData, 201);
         } catch (Exception $e) {
             Log::error('Error while saving ticket.');
 

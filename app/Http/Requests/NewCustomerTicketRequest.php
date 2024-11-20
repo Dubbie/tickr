@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Ticket;
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewTicketRequest extends FormRequest
+class NewCustomerTicketRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,6 @@ class NewTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_uuid' => 'required|exists:customers,uuid',
             'subject' => 'required|string|max:255',
             'description' => 'required|string',
             'contact_email' => 'required|email',

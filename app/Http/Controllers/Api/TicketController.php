@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewTicketRequest;
+use App\Models\Customer;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Services\TicketService;
@@ -89,5 +91,14 @@ class TicketController extends Controller
         $ticket = Ticket::where('ticket_number', $ticketNumber)->first();
 
         return $this->ticketService->close($ticket);
+    }
+
+    public function store(NewTicketRequest $newTicketRequest)
+    {
+        $data = $newTicketRequest->validated();
+
+        $customer = Customer::find($data['customer_uuid']);
+
+        return $this->ticketService->save($customer, $data, true);
     }
 }

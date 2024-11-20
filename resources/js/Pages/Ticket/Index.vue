@@ -1,14 +1,20 @@
 <script setup>
+import NewTicketModal from '@/Components/NewTicketModal.vue';
 import PageTitle from '@/Components/PageTitle.vue';
 import TabContainer from '@/Components/TabContainer.vue';
 import TextInput from '@/Components/TextInput.vue';
+import TheButton from '@/Components/TheButton.vue';
 import ThePagination from '@/Components/ThePagination.vue';
 import TheSkeleton from '@/Components/TheSkeleton.vue';
 import TicketLine from '@/Components/TicketLine.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useTicketStore } from '@/stores/ticketStore';
+import { IconPlus } from '@tabler/icons-vue';
+import { ref } from 'vue';
 
 const ticketStore = useTicketStore();
+
+const showNewTicketModal = ref(false);
 
 ticketStore.fetchTickets();
 ticketStore.fetchTicketCounts();
@@ -17,7 +23,16 @@ ticketStore.init();
 
 <template>
     <SidebarLayout>
-        <PageTitle>Tickets</PageTitle>
+        <div class="mb-4 flex items-start justify-between">
+            <PageTitle margin-bottom="mb-0">Tickets</PageTitle>
+
+            <div class="flex gap-x-3">
+                <TheButton variant="primary" @click="showNewTicketModal = true">
+                    <IconPlus class="size-4" />
+                    <span>New ticket</span>
+                </TheButton>
+            </div>
+        </div>
 
         <TextInput v-model="ticketStore.form.query" class="w-full text-sm" />
 
@@ -77,6 +92,11 @@ ticketStore.init();
             :current-page="ticketStore.form.page"
             :last-page="ticketStore.lastPage"
             @update:current-page="ticketStore.form.page = $event"
+        />
+
+        <NewTicketModal
+            :show="showNewTicketModal"
+            @close="showNewTicketModal = false"
         />
     </SidebarLayout>
 </template>

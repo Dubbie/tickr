@@ -9,7 +9,7 @@ defineProps({
 
 <template>
     <h1
-        class="text-xl font-bold text-zinc-800 dark:text-white"
+        class="text-2xl font-bold text-zinc-800 dark:text-white"
         :class="marginBottom"
     >
         <slot />

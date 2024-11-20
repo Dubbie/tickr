@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\NewTicketRequest;
+use App\Http\Requests\NewCustomerTicketRequest;
 use App\Models\Customer;
 use App\Services\TicketService;
 use Illuminate\Http\Request;
@@ -44,7 +44,7 @@ class CustomerTicketController extends Controller
     }
 
 
-    public function store(NewTicketRequest $request)
+    public function store(NewCustomerTicketRequest $request)
     {
         $data = $request->validated();
 
