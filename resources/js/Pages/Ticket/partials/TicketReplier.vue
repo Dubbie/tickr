@@ -53,7 +53,10 @@ const emit = defineEmits(['update-ticket']);
             </div>
         </div>
         <div class="ml-11 mt-3">
-            <TheButton variant="primary" @click="handleReply"
+            <TheButton
+                variant="primary"
+                @click="handleReply"
+                :disabled="savingReply"
                 >Submit reply</TheButton
             >
         </div>

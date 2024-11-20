@@ -27,7 +27,7 @@ const colorMap = {
         zinc: 'ring-1 ring-inset ring-zinc-900/20 bg-white text-black hover:ring-zinc-900/30',
     },
     primary: {
-        zinc: 'bg-black text-white hover:bg-zinc-800',
+        zinc: 'bg-black text-white hover:bg-zinc-800 disabled:pointer-events-none disabled:bg-zinc-400',
     },
     ghost: {
         zinc: 'text-zinc-900 hover:bg-zinc-900/10',

@@ -94,7 +94,7 @@ onMounted(() => {
                     </div>
 
                     <!-- Reply here -->
-                    <TicketReplier class="mt-6" />
+                    <TicketReplier class="mt-6" @update-ticket="fetchTicket" />
                 </div>
 
                 <div class="space-y-3">
