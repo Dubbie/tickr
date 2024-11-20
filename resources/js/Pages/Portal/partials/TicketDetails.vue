@@ -74,30 +74,43 @@ const handleReply = async () => {
             />
         </div>
 
-        <div class="mt-6 flex items-start gap-x-3">
-            <img :src="ticket.profile_photo_url" class="size-8 rounded-md" />
+        <div class="mt-6">
+            <template v-if="!ticket.is_archived">
+                <div class="flex items-start gap-x-3">
+                    <img
+                        :src="ticket.profile_photo_url"
+                        class="size-8 rounded-md"
+                    />
 
-            <div class="grow space-y-1">
-                <TextInput
-                    type="email"
-                    v-model="form.email"
-                    class="w-full text-sm"
-                />
+                    <div class="grow space-y-1">
+                        <TextInput
+                            type="email"
+                            v-model="form.email"
+                            class="w-full text-sm"
+                        />
 
-                <TextareaInput
-                    v-model="form.message"
-                    class="w-full text-sm"
-                    rows="2"
-                    placeholder="Type your message here..."
-                />
-            </div>
-        </div>
+                        <TextareaInput
+                            v-model="form.message"
+                            class="w-full text-sm"
+                            rows="2"
+                            placeholder="Type your message here..."
+                        />
+                    </div>
+                </div>
 
-        <div class="mt-3 flex gap-x-1 pl-11">
-            <TheButton variant="primary" @click="handleReply"
-                >Submit reply</TheButton
-            >
-            <TheButton>Mark as resolved</TheButton>
+                <div class="mt-3 flex gap-x-1 pl-11">
+                    <TheButton variant="primary" @click="handleReply"
+                        >Submit reply</TheButton
+                    >
+                    <TheButton>Mark as resolved</TheButton>
+                </div>
+            </template>
+            <template v-else>
+                <p class="text-center text-sm font-semibold text-zinc-500">
+                    This ticket has been archived, you can no longer reply to
+                    it.
+                </p>
+            </template>
         </div>
     </div>
 </template>

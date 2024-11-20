@@ -27,7 +27,7 @@ class Ticket extends Model
 
     protected $with = ['customer', 'assignee', 'replies'];
 
-    protected $appends = ['formatted_updated_at', 'time_ago', 'profile_photo_url'];
+    protected $appends = ['formatted_updated_at', 'time_ago', 'profile_photo_url', 'is_archived'];
 
     public const STATUSES = ['open', 'in_progress', 'resolved', 'closed'];
     public const CATEGORY_OPEN = ['open', 'in_progress'];
@@ -85,6 +85,13 @@ class Ticket extends Model
 
         return Attribute::make(
             get: fn() => $url
+        );
+    }
+
+    public function isArchived(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => in_array($this->status, self::CATEGORY_ARCHIVED)
         );
     }
 

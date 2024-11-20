@@ -110,7 +110,13 @@ onUnmounted(() => {
                     </div>
 
                     <!-- Reply here -->
-                    <TicketReplier class="mt-6" />
+                    <div class="mt-6">
+                        <TicketReplier v-if="!ticket.is_archived" />
+                        <p v-else class="text-sm font-semibold text-zinc-500">
+                            This ticket has been archived, you can no longer
+                            reply to it.
+                        </p>
+                    </div>
                 </div>
 
                 <div class="space-y-3">
