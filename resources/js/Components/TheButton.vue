@@ -19,6 +19,10 @@ const props = defineProps({
         type: String,
         default: 'default',
     },
+    square: {
+        type: Boolean,
+        default: false,
+    },
     href: String,
 });
 
@@ -39,6 +43,13 @@ const colorClasses = computed(() => {
 });
 
 const sizeClasses = computed(() => {
+    if (props.square) {
+        return {
+            sm: 'size-7',
+            md: 'size-8',
+        }[props.size];
+    }
+
     return {
         sm: 'text-sm/6 font-semibold px-2 py-1',
         md: 'text-sm/6 font-semibold px-2 py-1 lg:px-3 lg:py-1.5',

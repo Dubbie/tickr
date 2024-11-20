@@ -15,7 +15,7 @@ class CustomerController extends Controller
             'perPage' => 'nullable'
         ]);
 
-        $perPage = 10;
+        $perPage = null;
         if (isset($data['perPage'])) {
             $perPage = $data['perPage'];
         }
@@ -26,6 +26,12 @@ class CustomerController extends Controller
             $customersQuery = $customersQuery->where('name', 'like', '%' . $data['query'] . '%');
         }
 
-        return $customersQuery->orderBy('name')->paginate($perPage);
+        $customersQuery = $customersQuery->withCount('tickets')->orderBy('name');
+
+        if ($perPage) {
+            return $customersQuery->paginate($perPage);
+        }
+
+        return $customersQuery->get();
     }
 }

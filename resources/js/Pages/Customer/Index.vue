@@ -9,8 +9,8 @@ import TableRow from '@/Components/TableRow.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
-import { useForm } from '@inertiajs/vue3';
-import { IconPlus, IconSearch } from '@tabler/icons-vue';
+import { router, useForm } from '@inertiajs/vue3';
+import { IconLink, IconPlus, IconSearch } from '@tabler/icons-vue';
 import { onMounted, ref, watch } from 'vue';
 import ThePagination from '@/Components/ThePagination.vue';
 import CustomerListSkeleton from './partials/CustomerListSkeleton.vue';
@@ -60,6 +60,10 @@ const fetchCustomers = async () => {
 const handlePageChange = (newPage) => {
     form.page = newPage;
     fetchCustomers();
+};
+
+const handleCustomerLink = (customer) => {
+    router.visit(route('portal.index', customer.unique_link));
 };
 
 onMounted(() => {
@@ -120,7 +124,8 @@ watch(
                     <TableHead>
                         <TableHeader>Name</TableHeader>
                         <TableHeader>Email</TableHeader>
-                        <TableHeader>Unique Link</TableHeader>
+                        <TableHeader class="text-right">Tickets</TableHeader>
+                        <TableHeader class="text-right">Actions</TableHeader>
                     </TableHead>
                     <TableBody>
                         <TableRow
@@ -134,19 +139,33 @@ watch(
                                 <p>{{ customer.email }}</p>
                             </TableCell>
                             <TableCell>
-                                <p>{{ customer.unique_link }}</p>
+                                <p class="text-right">
+                                    {{ customer.tickets_count }}
+                                </p>
+                            </TableCell>
+                            <TableCell>
+                                <div class="-my-2 flex justify-end gap-x-1">
+                                    <TheButton
+                                        variant="ghost"
+                                        square
+                                        @click="handleCustomerLink(customer)"
+                                    >
+                                        <IconLink class="size-5" />
+                                    </TheButton>
+                                </div>
                             </TableCell>
                         </TableRow>
                     </TableBody>
                 </TheTable>
-
-                <ThePagination
-                    class="mt-6"
-                    :current-page="form.page"
-                    :last-page="lastPage"
-                    @update:current-page="handlePageChange"
-                />
             </div>
         </transition>
+        <div v-if="customers.length > 0">
+            <ThePagination
+                class="mt-6"
+                :current-page="form.page"
+                :last-page="lastPage"
+                @update:current-page="handlePageChange"
+            />
+        </div>
     </SidebarLayout>
 </template>
