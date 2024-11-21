@@ -88,6 +88,7 @@ watch(
                     <TextInput
                         v-model="form.query"
                         class="w-full text-sm/6 md:w-64"
+                        placeholder="Search in customers..."
                         has-icon
                     />
                     <IconSearch
