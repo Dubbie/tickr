@@ -91,7 +91,7 @@ const dropdownPositionClasses = computed(() => {
                 v-slot="{ active, selected }"
             >
                 <div
-                    class="cursor-pointer rounded-md px-2 py-1 text-sm font-semibold dark:text-zinc-100"
+                    class="cursor-pointer rounded-md px-2 py-1 text-sm font-semibold"
                     :class="{
                         'bg-indigo-600 text-white': active,
                         'bg-zinc-900/5 dark:bg-white/5': selected,
