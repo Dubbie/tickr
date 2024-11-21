@@ -15,7 +15,7 @@ defineProps({
 </script>
 
 <template>
-    <TheCard padding-class="p-8">
+    <TheCard padding-class="py-4 px-6">
         <p class="mb-3 text-xs font-semibold text-zinc-500">{{ title }}</p>
 
         <p class="font-serif text-3xl font-semibold">{{ value }}</p>

@@ -50,7 +50,7 @@ onMounted(() => {
     <SidebarLayout>
         <PageTitle class="mt-0.5">Dashboard</PageTitle>
 
-        <div class="grid grid-cols-4 gap-x-8">
+        <div class="grid grid-cols-4 gap-x-4">
             <TheStat
                 v-for="stat in statComponents"
                 :key="stat.label"
