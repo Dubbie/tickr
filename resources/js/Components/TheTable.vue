@@ -15,6 +15,13 @@ provide('tableConfig', props);
     <table
         class="min-w-full text-left text-sm/6 text-zinc-900 dark:text-zinc-100"
     >
-        <slot />
+        <thead>
+            <tr>
+                <slot name="headings" />
+            </tr>
+        </thead>
+        <tbody>
+            <slot name="rows" />
+        </tbody>
     </table>
 </template>

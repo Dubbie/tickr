@@ -1,11 +1,7 @@
 <script setup>
 import PageTitle from '@/Components/PageTitle.vue';
 import TheTable from '@/Components/TheTable.vue';
-import TableBody from '@/Components/TableBody.vue';
 import TableCell from '@/Components/TableCell.vue';
-import TableHead from '@/Components/TableHead.vue';
-import TableHeader from '@/Components/TableHeader.vue';
-import TableRow from '@/Components/TableRow.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
@@ -14,6 +10,7 @@ import { IconLink, IconPlus, IconSearch } from '@tabler/icons-vue';
 import { onMounted, ref, watch } from 'vue';
 import ThePagination from '@/Components/ThePagination.vue';
 import CustomerListSkeleton from './partials/CustomerListSkeleton.vue';
+import TableHeading from '@/Components/TableHeading.vue';
 
 const lastPage = ref(null);
 const loading = ref(true);
@@ -121,14 +118,15 @@ watch(
             </div>
             <div v-else>
                 <TheTable size="sm">
-                    <TableHead>
-                        <TableHeader>Name</TableHeader>
-                        <TableHeader>Email</TableHeader>
-                        <TableHeader class="text-right">Tickets</TableHeader>
-                        <TableHeader class="text-right">Actions</TableHeader>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow
+                    <template #headings>
+                        <TableHeading>Name</TableHeading>
+                        <TableHeading>Email</TableHeading>
+                        <TableHeading class="text-right">Tickets</TableHeading>
+                        <TableHeading class="text-right">Actions</TableHeading>
+                    </template>
+
+                    <template #rows>
+                        <tr
                             v-for="customer in customers"
                             :key="customer.unique_link"
                         >
@@ -160,8 +158,8 @@ watch(
                                     </TheButton>
                                 </div>
                             </TableCell>
-                        </TableRow>
-                    </TableBody>
+                        </tr>
+                    </template>
                 </TheTable>
             </div>
         </transition>

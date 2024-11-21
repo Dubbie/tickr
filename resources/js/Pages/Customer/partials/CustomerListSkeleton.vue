@@ -1,9 +1,6 @@
 <script setup>
-import TableBody from '@/Components/TableBody.vue';
 import TableCell from '@/Components/TableCell.vue';
-import TableHead from '@/Components/TableHead.vue';
-import TableHeader from '@/Components/TableHeader.vue';
-import TableRow from '@/Components/TableRow.vue';
+import TableHeading from '@/Components/TableHeading.vue';
 import TheSkeleton from '@/Components/TheSkeleton.vue';
 import TheTable from '@/Components/TheTable.vue';
 
@@ -13,33 +10,35 @@ defineProps({
         required: true,
     },
 });
+
+const heightClass = 'h-6';
 </script>
 
 <template>
-    <TheTable>
-        <TableHead>
-            <TableHeader>
-                <TheSkeleton class="h-6 w-10" />
-            </TableHeader>
-            <TableHeader>
-                <TheSkeleton class="h-6 w-16" />
-            </TableHeader>
-            <TableHeader>
-                <TheSkeleton class="h-6 w-24" />
-            </TableHeader>
-        </TableHead>
-        <TableBody>
-            <TableRow v-for="i in rows" :key="i">
+    <TheTable size="sm">
+        <template #headings>
+            <TableHeading>
+                <TheSkeleton class="w-10" :class="heightClass" />
+            </TableHeading>
+            <TableHeading>
+                <TheSkeleton class="w-16" :class="heightClass" />
+            </TableHeading>
+            <TableHeading>
+                <TheSkeleton class="w-24" :class="heightClass" />
+            </TableHeading>
+        </template>
+        <template #rows>
+            <tr v-for="i in rows" :key="i">
                 <TableCell>
-                    <TheSkeleton class="h-6 w-28" />
+                    <TheSkeleton class="w-28" :class="heightClass" />
                 </TableCell>
                 <TableCell>
-                    <TheSkeleton class="h-6 w-32" />
+                    <TheSkeleton class="w-32" :class="heightClass" />
                 </TableCell>
                 <TableCell>
-                    <TheSkeleton class="h-6 w-56" />
+                    <TheSkeleton class="w-56" :class="heightClass" />
                 </TableCell>
-            </TableRow>
-        </TableBody>
+            </tr>
+        </template>
     </TheTable>
 </template>
