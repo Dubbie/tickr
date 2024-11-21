@@ -120,7 +120,7 @@ watch(
                 <CustomerListSkeleton :rows="form.perPage" />
             </div>
             <div v-else>
-                <TheTable>
+                <TheTable size="sm">
                     <TableHead>
                         <TableHeader>Name</TableHeader>
                         <TableHeader>Email</TableHeader>

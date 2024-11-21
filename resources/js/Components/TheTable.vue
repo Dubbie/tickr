@@ -1,4 +1,15 @@
-<script setup></script>
+<script setup>
+import { provide } from 'vue';
+
+const props = defineProps({
+    size: {
+        type: String,
+        default: 'md',
+    },
+});
+
+provide('tableConfig', props);
+</script>
 
 <template>
     <table
