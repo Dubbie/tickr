@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Customer;
 use App\Models\Ticket;
+use App\Models\TicketReply;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -40,6 +41,10 @@ class TicketFactory extends Factory
         // Format the ticket number
         $ticketNumber = sprintf('%s-%03d', $prefix, $nextNumber);
 
+        // Randomize creation and update dates
+        $createdAt = $this->faker->dateTimeBetween('-30 days', 'now');
+        $updatedAt = $this->faker->dateTimeBetween($createdAt, 'now');
+
         $status = $this->faker->randomElement(Ticket::STATUSES);
 
         $assignedTo = null;
@@ -56,8 +61,21 @@ class TicketFactory extends Factory
             'description' => $this->faker->paragraph,
             'status' => $status,
             'priority' => $this->faker->randomElement(Ticket::PRIORITIES),
-            'created_at' => now(),
-            'updated_at' => now()
+            'created_at' => $createdAt,
+            'updated_at' => $updatedAt
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Ticket $ticket) {
+            if ($ticket->status === Ticket::STATUSES['1']) {
+                $replyCount = rand(1, 5);
+
+                for ($i = 0; $i < $replyCount; $i++) {
+                    TicketReply::factory()->forTicket($ticket)->create();
+                }
+            }
+        });
     }
 }

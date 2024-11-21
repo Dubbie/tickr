@@ -22,7 +22,8 @@ class Ticket extends Model
         'priority',
         'ticket_number',
         'contact_email',
-        'assigned_to'
+        'assigned_to',
+        'time_to_first_reply'
     ];
 
     protected $with = ['customer', 'assignee', 'replies'];

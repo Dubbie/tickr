@@ -3,16 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TicketReply extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'message',
         'replier_type',
         'replier_id',
-        'email'
+        'email',
     ];
 
     protected $with = ['replier'];
@@ -21,7 +24,7 @@ class TicketReply extends Model
 
     public function ticket()
     {
-        return $this->belongsTo(Ticket::class);
+        return $this->belongsTo(Ticket::class, 'ticket_uuid', 'uuid');
     }
 
     public function replier()
