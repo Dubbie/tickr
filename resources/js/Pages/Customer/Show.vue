@@ -2,8 +2,6 @@
 import PageTitle from '@/Components/PageTitle.vue';
 import TheButton from '@/Components/TheButton.vue';
 import TheCard from '@/Components/TheCard.vue';
-import TicketLine from '@/Components/TicketLine.vue';
-import TicketListHeader from '@/Components/TicketListHeader.vue';
 import TicketsList from '@/Components/TicketsList.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { Link } from '@inertiajs/vue3';
