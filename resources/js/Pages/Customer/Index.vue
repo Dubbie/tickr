@@ -132,7 +132,7 @@ watch(
                         >
                             <TableCell>
                                 <Link
-                                    class="font-semibold"
+                                    class="block font-semibold"
                                     :href="
                                         route('customer.show', customer.uuid)
                                     "
@@ -140,12 +140,23 @@ watch(
                                 >
                             </TableCell>
                             <TableCell>
-                                <p>{{ customer.email }}</p>
+                                <Link
+                                    class="block"
+                                    :href="
+                                        route('customer.show', customer.uuid)
+                                    "
+                                    >{{ customer.email }}</Link
+                                >
                             </TableCell>
                             <TableCell>
-                                <p class="text-right">
+                                <Link
+                                    class="block text-right"
+                                    :href="
+                                        route('customer.show', customer.uuid)
+                                    "
+                                >
                                     {{ customer.tickets_count }}
-                                </p>
+                                </Link>
                             </TableCell>
                             <TableCell>
                                 <div class="-my-2 flex justify-end gap-x-1">
