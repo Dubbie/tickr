@@ -9,11 +9,11 @@ const { reply } = defineProps({
 
 <template>
     <div class="flex items-start gap-x-3 text-sm">
-        <div>
+        <div class="shrink-0">
             <img
                 :src="reply.profile_photo_url"
                 alt=""
-                class="size-8 rounded-md"
+                class="size-6 rounded-md"
             />
         </div>
 
@@ -24,7 +24,7 @@ const { reply } = defineProps({
                         {{ reply.replier.name }}
                     </p>
                     <p
-                        class="mb-2 text-xs font-medium text-zinc-500 dark:text-zinc-400"
+                        class="text-xs font-medium text-zinc-500 dark:text-zinc-400"
                         v-if="reply.email"
                     >
                         {{ reply.email }}
@@ -34,7 +34,7 @@ const { reply } = defineProps({
                 <p class="text-xs text-zinc-500">{{ reply.time_ago }}</p>
             </div>
 
-            <p class="font-medium text-zinc-600 dark:text-zinc-400">
+            <p class="mt-2 font-medium text-zinc-600 dark:text-zinc-400">
                 {{ reply.message }}
             </p>
         </div>

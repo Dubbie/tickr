@@ -100,7 +100,7 @@ onUnmounted(() => {
                     <!-- Replies should go here -->
                     <div
                         v-if="ticket.replies.length > 0"
-                        class="mt-6 space-y-3"
+                        class="mt-6 space-y-6"
                     >
                         <TicketReply
                             v-for="reply in ticket.replies"
