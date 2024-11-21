@@ -4,10 +4,7 @@ import PageTitle from '@/Components/PageTitle.vue';
 import TabContainer from '@/Components/TabContainer.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
-import ThePagination from '@/Components/ThePagination.vue';
-import TheSkeleton from '@/Components/TheSkeleton.vue';
-import TicketLine from '@/Components/TicketLine.vue';
-import TicketListHeader from '@/Components/TicketListHeader.vue';
+import TicketsList from '@/Components/TicketsList.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useTicketStore } from '@/stores/ticketStore';
 import { IconPlus, IconSearch } from '@tabler/icons-vue';
@@ -49,52 +46,20 @@ ticketStore.init();
         </div>
 
         <TabContainer
-            class="my-3"
             :tabs="ticketStore.updatedTabOptions"
             :active-tab="ticketStore.tab"
             @switch-tab="ticketStore.setTab($event)"
         />
 
-        <div class="-mx-3 mt-6">
-            <TicketListHeader />
-        </div>
-
-        <div class="mb-1 h-px bg-zinc-900/10 dark:bg-white/10"></div>
-
-        <div class="-mx-3">
-            <transition
-                enter-active-class="transition ease-out duration-200"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="transition ease-in duration-150"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-                mode="out-in"
-            >
-                <div v-if="ticketStore.loading" class="space-y-1">
-                    <TheSkeleton
-                        v-for="i in ticketStore.form.perPage"
-                        :key="i"
-                        class="h-11 w-full"
-                    />
-                </div>
-                <div v-else class="space-y-1">
-                    <TicketLine
-                        v-for="ticket in ticketStore.tickets"
-                        :key="ticket.ticket_number"
-                        :ticket="ticket"
-                    />
-                </div>
-            </transition>
-        </div>
-
-        <!-- Pagination -->
-        <ThePagination
-            v-if="ticketStore.tickets.length > 0"
+        <TicketsList
             class="mt-6"
+            :tickets="ticketStore.tickets"
+            :loading="ticketStore.loading"
             :current-page="ticketStore.form.page"
+            :per-page="ticketStore.form.perPage"
             :last-page="ticketStore.lastPage"
-            @update:current-page="ticketStore.form.page = $event"
+            checkboxes
+            @change-page="ticketStore.form.page = $event"
         />
 
         <NewTicketModal

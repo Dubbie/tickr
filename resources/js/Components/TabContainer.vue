@@ -28,7 +28,9 @@ const emit = defineEmits(['switch-tab']);
 </script>
 
 <template>
-    <div class="flex gap-x-1 rounded-md bg-zinc-900/5 p-1 dark:bg-white/5">
+    <div
+        class="inline-flex gap-x-1 rounded-md bg-zinc-900/5 p-1 ring-1 ring-zinc-900/10 dark:bg-transparent dark:ring-white/10"
+    >
         <TheTab
             v-for="tab in tabs"
             :key="tab.name"
