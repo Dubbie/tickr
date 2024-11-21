@@ -5,10 +5,11 @@ import Modal from './Modal.vue';
 import TextInput from './TextInput.vue';
 import TextareaInput from './TextareaInput.vue';
 import TheButton from './TheButton.vue';
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import axios from 'axios';
 import SelectInput from './SelectInput.vue';
 import { IconInfoCircleFilled } from '@tabler/icons-vue';
+import PageTitle from './PageTitle.vue';
 
 defineProps({
     show: {
@@ -17,7 +18,6 @@ defineProps({
     },
 });
 
-const emitter = inject('emitter');
 const customers = ref([]);
 const loadingCustomers = ref(false);
 const submittingTicket = ref(false);
@@ -111,10 +111,8 @@ onMounted(() => {
 <template>
     <Modal :show="show" max-width="sm" @close="$emit('close')">
         <div class="p-6">
-            <h2 class="mb-1 font-semibold text-zinc-800 dark:text-zinc-100">
-                New ticket
-            </h2>
-            <p class="text-sm text-zinc-500">
+            <PageTitle size="sm" margin-bottom="mb-1"> New ticket </PageTitle>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">
                 Create a new ticket for a customer.
             </p>
 

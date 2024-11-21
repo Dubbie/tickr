@@ -11,4 +11,9 @@ class PageController extends Controller
     {
         return Inertia::render('Home');
     }
+
+    public function notFound()
+    {
+        return Inertia::render('404');
+    }
 }

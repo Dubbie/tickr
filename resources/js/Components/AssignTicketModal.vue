@@ -5,6 +5,7 @@ import TheButton from './TheButton.vue';
 import axios from 'axios';
 import SelectInput from './SelectInput.vue';
 import { useForm } from '@inertiajs/vue3';
+import PageTitle from './PageTitle.vue';
 
 const { show, ticketNumber, assigneeId } = defineProps({
     show: {
@@ -81,9 +82,12 @@ onMounted(() => {
 </script>
 
 <template>
-    <Modal :show="show" max-width="md" @close="$emit('close')">
+    <Modal :show="show" max-width="sm" @close="$emit('close')">
         <div class="p-4">
-            <h2 class="mb-6 text-xl font-bold">Assign ticket</h2>
+            <PageTitle size="sm" margin-bottom="mb-1">Assign ticket</PageTitle>
+            <p class="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
+                Choose who is responsible for handling this ticket.
+            </p>
 
             <div v-if="loadingUsers">
                 <p>Loading users...</p>

@@ -64,21 +64,24 @@ const dropdownPositionClasses = computed(() => {
         v-slot="{ open }"
     >
         <ListboxButton
-            class="w-full rounded-md px-3 py-1.5 text-sm ring-inset"
+            class="w-full rounded-md px-3 py-1.5 text-sm ring-inset dark:bg-white/5 dark:text-zinc-100"
             :class="{
                 'ring-2 ring-indigo-500': open,
-                'ring-1 ring-zinc-900/10 hover:ring-zinc-900/20': !open,
+                'ring-1 ring-zinc-900/10 hover:ring-zinc-900/20 dark:ring-white/10 dark:hover:ring-white/20':
+                    !open,
             }"
         >
             <div class="flex justify-between">
                 <p>{{ label }}</p>
 
-                <IconSelector class="-mr-2 size-5 text-zinc-500" />
+                <IconSelector
+                    class="-mr-2 size-5 text-zinc-500 dark:text-zinc-400"
+                />
             </div>
         </ListboxButton>
 
         <ListboxOptions
-            class="absolute top-full z-10 mt-1 max-h-64 overflow-y-scroll rounded-lg bg-white p-1 shadow-lg shadow-black/5 ring-1 ring-inset ring-zinc-900/10"
+            class="absolute top-full z-10 mt-1 max-h-64 overflow-y-scroll rounded-lg bg-white p-1 shadow-lg shadow-black/5 ring-1 ring-inset ring-zinc-900/10 dark:bg-zinc-800 dark:ring-white/10"
             :class="dropdownPositionClasses"
         >
             <ListboxOption
@@ -88,10 +91,10 @@ const dropdownPositionClasses = computed(() => {
                 v-slot="{ active, selected }"
             >
                 <div
-                    class="cursor-pointer rounded-md px-2 py-1 text-sm"
+                    class="cursor-pointer rounded-md px-2 py-1 text-sm font-semibold dark:text-zinc-100"
                     :class="{
                         'bg-indigo-600 text-white': active,
-                        'bg-zinc-900/5 font-medium': selected,
+                        'bg-zinc-900/5 dark:bg-white/5': selected,
                     }"
                 >
                     <p>{{ option.label }}</p>

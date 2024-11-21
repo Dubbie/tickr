@@ -50,7 +50,22 @@ class TicketController extends Controller
 
     public function show(string $ticketNumber)
     {
-        return response()->json(Ticket::where('ticket_number', $ticketNumber)->first() ?? null);
+        $ticket = Ticket::where('ticket_number', $ticketNumber)->first();
+        $status = 404;
+        $response = [
+            'success' => false,
+            'message' => 'Not found'
+        ];
+
+        if ($ticket) {
+            $response['success'] = true;
+            $response['ticket'] = $ticket;
+            $response['message'] = 'Ticket found';
+
+            $status = 200;
+        }
+
+        return response()->json($response, $status);
     }
 
     public function reply(Request $request, string $ticketNumber)

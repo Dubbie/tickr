@@ -12,6 +12,7 @@ import TicketReplier from './partials/TicketReplier.vue';
 import { EVENTS } from '@/constants';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import PageTitle from '@/Components/PageTitle.vue';
+import { router } from '@inertiajs/vue3';
 
 const { ticketNumber } = defineProps({
     ticketNumber: {
@@ -38,10 +39,15 @@ const fetchTicket = async () => {
             route('api.ticket.show', ticketNumber),
         );
 
-        ticket.value = response.data;
+        ticket.value = response.data.ticket;
     } catch (err) {
-        console.log('Error while loading ticket.');
-        console.log(err);
+        if (err.response?.status === 404) {
+            console.log('Ticket not found.');
+            router.visit(route('404'));
+        } else {
+            console.log('Error while loading ticket.');
+            console.log(err);
+        }
     } finally {
         loadingTicket.value = false;
     }

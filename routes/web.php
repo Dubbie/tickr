@@ -35,6 +35,8 @@ Route::group([
         Route::get('/', [TicketController::class, 'index'])->name('ticket.index');
         Route::get('/{ticketNumber}', [TicketController::class, 'show'])->name('ticket.show');
     });
+
+    Route::get('404', [PageController::class, 'notFound'])->name('404');
 });
 
 include __DIR__ . '/auth.php';
