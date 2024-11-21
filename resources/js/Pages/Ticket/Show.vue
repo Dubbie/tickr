@@ -91,7 +91,7 @@ onUnmounted(() => {
                         </div>
 
                         <div class="mt-3">
-                            <p class="text-sm text-zinc-800">
+                            <p class="text-sm text-zinc-800 dark:text-zinc-200">
                                 {{ ticket.description }}
                             </p>
                         </div>
