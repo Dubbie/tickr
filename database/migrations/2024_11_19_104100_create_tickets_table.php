@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('status')->default('open');
             $table->string('priority')->default('medium');
+            $table->unsignedInteger('time_to_first_reply')->nullable();
             $table->timestamps();
         });
     }

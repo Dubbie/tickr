@@ -21,7 +21,7 @@ const statComponents = ref([
     },
     {
         label: 'Average First Time Reply',
-        value: '12:01 min',
+        value: '00:00 min',
     },
 ]);
 
@@ -34,6 +34,7 @@ const fetchCounts = async () => {
         statComponents.value[0].value = response.data.total;
         statComponents.value[1].value = response.data.open;
         statComponents.value[2].value = response.data.archived;
+        statComponents.value[3].value = response.data.ttfr;
     } catch (err) {
         console.log('Error while loading counts');
         console.log(err);

@@ -44,6 +44,7 @@ class TicketController extends Controller
             'total' => Ticket::count(),
             'open' => Ticket::forTab('open')->count(),
             'archived' => Ticket::forTab('archived')->count(),
+            'ttfr' => $this->ticketService->getAverageTimeToFirstReply()
         ];
     }
 

@@ -42,16 +42,17 @@ class TicketService
     public function reply(Ticket $ticket, mixed $replier, string $message, ?string $email = null)
     {
         try {
-            $ticket->replies()->create([
+            $reply = $ticket->replies()->create([
                 'message' => $message,
                 'email' => $email,
                 'replier_type' => get_class($replier),
                 'replier_id' => $replier->id ?? $replier->uuid
             ]);
 
-            // If replier is a user move ticket to In Progress status
+            // If replies is a user not a customer, do specific automations
             if (!$email) {
                 $ticket->status = Ticket::STATUSES['1'];
+                $ticket->time_to_first_reply = $ticket->created_at->diffInMinutes($reply->created_at);
             }
 
             $ticket->updated_at = now();
@@ -119,5 +120,19 @@ class TicketService
                 'success' => false,
             ], 500);
         }
+    }
+
+    public function getAverageTimeToFirstReply()
+    {
+        $averageMinutes = Ticket::whereNotNull('time_to_first_reply')->avg('time_to_first_reply');
+
+        if (is_null($averageMinutes)) {
+            return '00:00 min'; // No data yet
+        }
+
+        $minutes = floor($averageMinutes);
+        $seconds = round(($averageMinutes - $minutes) * 60);
+
+        return sprintf('%02d:%02d min', $minutes, $seconds);
     }
 }

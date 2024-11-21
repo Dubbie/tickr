@@ -16,6 +16,12 @@ const lastReplier = computed(() => {
     const latestReply = sortedReplies[0];
     return latestReply.replier.name;
 });
+
+const ttfrValue = computed(() => {
+    if (ticket.value.time_to_first_reply === null) return 'No reply';
+
+    return `${ticket.value.time_to_first_reply} mins`;
+});
 </script>
 
 <template>
@@ -57,6 +63,14 @@ const lastReplier = computed(() => {
                 <p class="font-medium text-zinc-500">Last replier</p>
 
                 <p class="col-span-2">{{ lastReplier }}</p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-x-3 text-xs">
+                <p class="font-medium text-zinc-500">TTFR</p>
+
+                <p class="col-span-2">
+                    {{ ttfrValue }}
+                </p>
             </div>
         </div>
     </TheCard>
