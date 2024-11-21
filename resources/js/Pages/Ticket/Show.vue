@@ -68,9 +68,7 @@ onUnmounted(() => {
 <template>
     <SidebarLayout>
         <div class="mb-6 mt-0.5">
-            <PageTitle margin-bottom="mb-0">
-                {{ ticket?.ticket_number ?? 'TCKT-0001' }}
-            </PageTitle>
+            <PageTitle margin-bottom="mb-0">{{ ticketNumber }}</PageTitle>
             <TheButton variant="ghost" class="-ml-3" @click="handleBack">
                 <IconArrowLeft class="size-4" stroke-width="2" />
                 <span>Back</span>
