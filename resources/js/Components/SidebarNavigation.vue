@@ -1,5 +1,10 @@
 <script setup>
-import { IconHome, IconTicket, IconUsers } from '@tabler/icons-vue';
+import {
+    IconHome,
+    IconTicket,
+    IconUsers,
+    IconUsersGroup,
+} from '@tabler/icons-vue';
 import SidebarNavLink from './SidebarNavLink.vue';
 </script>
 
@@ -22,6 +27,12 @@ import SidebarNavLink from './SidebarNavLink.vue';
             :icon="IconTicket"
             :is-active="route().current('ticket.*')"
             >Tickets</SidebarNavLink
+        >
+        <SidebarNavLink
+            :href="route('user.index')"
+            :icon="IconUsersGroup"
+            :is-active="route().current('user.*')"
+            >Users</SidebarNavLink
         >
     </nav>
 </template>

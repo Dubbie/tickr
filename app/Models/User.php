@@ -65,4 +65,9 @@ class User extends Authenticatable
             get: fn() => '//www.gravatar.com/avatar/' . $path
         );
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'assigned_to', 'id');
+    }
 }

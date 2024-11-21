@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
@@ -35,6 +36,12 @@ Route::group([
         Route::get('/', [TicketController::class, 'index'])->name('ticket.index');
         Route::get('/{ticketNumber}', [TicketController::class, 'show'])->name('ticket.show');
     });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('user.index');
+        Route::get('/{user}', [UserController::class, 'show'])->name('user.show');
+    });
+
 
     Route::get('404', [PageController::class, 'notFound'])->name('404');
 });
