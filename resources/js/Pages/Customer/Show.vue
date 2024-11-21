@@ -4,6 +4,7 @@ import TheButton from '@/Components/TheButton.vue';
 import TheCard from '@/Components/TheCard.vue';
 import TicketLine from '@/Components/TicketLine.vue';
 import TicketListHeader from '@/Components/TicketListHeader.vue';
+import TicketsList from '@/Components/TicketsList.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { IconArrowLeft } from '@tabler/icons-vue';
@@ -109,19 +110,7 @@ onMounted(() => {
                     </p>
                 </div>
                 <div v-else class="-mx-3">
-                    <TicketListHeader />
-
-                    <div
-                        class="mb-1 h-px bg-zinc-900/10 dark:bg-white/10"
-                    ></div>
-
-                    <div class="space-y-1">
-                        <TicketLine
-                            v-for="ticket in customer.tickets"
-                            :key="ticket.ticket_number"
-                            :ticket="ticket"
-                        />
-                    </div>
+                    <TicketsList :tickets="customer.tickets" />
                 </div>
             </div>
         </div>
