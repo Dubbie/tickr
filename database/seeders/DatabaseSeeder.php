@@ -14,17 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create super admin
-        if (!config('superadmin.name')) {
-            throw new Exception("No superadmin configured.");
-        }
 
-        User::create([
-            'name' => config('superadmin.name'),
-            'email' => config('superadmin.email'),
-            'password' => Hash::make(config('superadmin.password'))
-        ]);
-
-        $this->call([CustomerSeeder::class, TicketSeeder::class]);
+        $this->call([UserSeeder::class, CustomerSeeder::class, TicketSeeder::class]);
     }
 }

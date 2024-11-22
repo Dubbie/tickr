@@ -37,5 +37,7 @@ Route::middleware('auth')->group(function () {
     // Users
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('api.user.index');
+        Route::post('/store', [UserController::class, 'store'])->name('api.user.store');
+        Route::delete('/{user}/destroy', [UserController::class, 'destroy'])->name('api.user.destroy');
     });
 });

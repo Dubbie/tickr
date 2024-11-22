@@ -6,20 +6,28 @@ import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useForm, Link } from '@inertiajs/vue3';
-import { IconLink, IconPlus, IconSearch } from '@tabler/icons-vue';
-import { onMounted, ref, watch } from 'vue';
+import { IconPencil, IconPlus, IconSearch, IconTrash } from '@tabler/icons-vue';
+import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import ThePagination from '@/Components/ThePagination.vue';
 import TableHeading from '@/Components/TableHeading.vue';
+import NewUserModal from '@/Components/NewUserModal.vue';
+import { EVENTS } from '@/constants';
+import ConfirmModal from '@/Components/ConfirmModal.vue';
+import axios from 'axios';
 
+const emitter = inject('emitter');
 const lastPage = ref(null);
 const loading = ref(true);
 const users = ref([]);
 const debounceTimeout = ref(null);
+const showNewUserModal = ref(false);
+const showDeleteUserModal = ref(false);
+const selectedUser = ref(null);
 
 const form = useForm({
     query: '',
     page: 1,
-    perPage: 5,
+    perPage: 10,
 });
 
 let abortController = null;
@@ -58,9 +66,29 @@ const handlePageChange = (newPage) => {
     fetchUsers();
 };
 
-onMounted(() => {
-    fetchUsers();
-});
+const handleCloseDelete = () => {
+    showDeleteUserModal.value = false;
+    selectedUser.value = null;
+};
+
+const handleConfirmDelete = async () => {
+    console.log('Delete');
+
+    try {
+        await axios.delete(route('api.user.destroy', selectedUser.value.id));
+
+        handleCloseDelete();
+        fetchUsers();
+    } catch (err) {
+        console.log('Error while deleting user.');
+        console.log(err);
+    }
+};
+
+const selectUserForDelete = (user) => {
+    selectedUser.value = user;
+    showDeleteUserModal.value = true;
+};
 
 watch(
     () => form.query,
@@ -72,6 +100,15 @@ watch(
         }, 300);
     },
 );
+
+onMounted(() => {
+    fetchUsers();
+    emitter.on(EVENTS.REFRESH_USERS, fetchUsers);
+});
+
+onUnmounted(() => {
+    emitter.off(EVENTS.REFRESH_USERS);
+});
 </script>
 
 <template>
@@ -93,7 +130,7 @@ watch(
             </div>
 
             <div class="flex items-center justify-end gap-x-1">
-                <TheButton variant="primary">
+                <TheButton variant="primary" @click="showNewUserModal = true">
                     <IconPlus class="size-4" />
                     <span>New user</span>
                 </TheButton>
@@ -118,7 +155,7 @@ watch(
                         <TableHeading>Name</TableHeading>
                         <TableHeading>Email</TableHeading>
                         <TableHeading class="text-right">Tickets</TableHeading>
-                        <TableHeading class="text-right">Actions</TableHeading>
+                        <TableHeading class="text-right"></TableHeading>
                     </template>
 
                     <template #rows>
@@ -147,8 +184,12 @@ watch(
                             </TableCell>
                             <TableCell>
                                 <div class="-my-2 flex justify-end gap-x-1">
-                                    <TheButton variant="ghost" square>
-                                        <IconLink class="size-5" />
+                                    <TheButton
+                                        variant="ghost"
+                                        square
+                                        @click="selectUserForDelete(user)"
+                                    >
+                                        <IconTrash class="size-5" />
                                     </TheButton>
                                 </div>
                             </TableCell>
@@ -165,5 +206,24 @@ watch(
                 @update:current-page="handlePageChange"
             />
         </div>
+
+        <NewUserModal
+            :show="showNewUserModal"
+            @close="showNewUserModal = false"
+        />
+
+        <ConfirmModal
+            :show="showDeleteUserModal"
+            confirm-label="Delete user"
+            @close="handleCloseDelete"
+            @confirm="handleConfirmDelete"
+        >
+            <template #title>Delete user</template>
+
+            <template #body>
+                <p>Are you sure you want to delete this user?</p>
+                <p>This action is irreversible.</p>
+            </template>
+        </ConfirmModal>
     </SidebarLayout>
 </template>

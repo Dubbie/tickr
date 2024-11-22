@@ -12,6 +12,7 @@ class TicketSeeder extends Seeder
      */
     public function run(): void
     {
-        Ticket::factory(100)->create();
+        $count = fake()->numberBetween(1900, 2000);
+        Ticket::factory($count)->create();
     }
 }

@@ -20,7 +20,7 @@ const debounceTimeout = ref(null);
 const form = useForm({
     query: '',
     page: 1,
-    perPage: 5,
+    perPage: 10,
 });
 
 let abortController = null;
