@@ -3,7 +3,7 @@ import PageTitle from '@/Components/PageTitle.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
-import { router, useForm } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import { IconLink, IconPlus, IconSearch } from '@tabler/icons-vue';
 import GenericTable from '@/Components/GenericTable.vue';
 import { inject, onBeforeUnmount, onMounted, ref } from 'vue';
@@ -94,6 +94,11 @@ onBeforeUnmount(() => {
             }"
             @reset="form.reset()"
         >
+            <template #name="{ entry }">
+                <Link :href="route('customer.show', entry.uuid)" class="block">
+                    <p class="truncate font-semibold">{{ entry.name }}</p>
+                </Link>
+            </template>
             <template #tickets="{ entry }">
                 <p>{{ entry.tickets_count }}</p>
             </template>
