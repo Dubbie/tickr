@@ -173,6 +173,7 @@ onMounted(() => {
                 apiUrl: route('api.ticket.index'),
                 filters: { ...form.data() },
             }"
+            @reset="form.reset()"
         >
             <template #subject="{ entry }">
                 <Link

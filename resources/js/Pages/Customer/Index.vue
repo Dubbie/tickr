@@ -87,6 +87,7 @@ onBeforeUnmount(() => {
                 perPage: 10,
                 filters: { ...form.data() },
             }"
+            @reset="form.reset()"
         >
             <template #tickets="{ entry }">
                 <p>{{ entry.tickets_count }}</p>

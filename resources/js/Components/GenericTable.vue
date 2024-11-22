@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ref, watch, onMounted, reactive } from 'vue';
 import TheSkeleton from './TheSkeleton.vue';
 import ThePagination from './ThePagination.vue';
+import TheButton from './TheButton.vue';
 
 const props = defineProps({
     columns: {
@@ -31,8 +32,16 @@ const debounceTimeout = ref(null);
 // Reactive filters object
 const filters = reactive({});
 
+const oldFilters = reactive({});
+
+// Define fields that should trigger debounce
+const debounceFields = ['query']; // Fields to trigger debouncing
+
 // Function to sync filters with props
 const syncFilters = () => {
+    // Save old filters for debouncing
+    Object.assign(oldFilters, filters);
+
     Object.assign(filters, props.options.filters || {}); // Sync props.options.filters into filters
     filters.perPage = props.options.perPage || 10; // Default perPage if not provided
 };
@@ -68,13 +77,25 @@ const fetchPaginatedData = async () => {
 // Watch filters for changes and trigger a data refresh
 watch(
     filters,
-    () => {
-        clearTimeout(debounceTimeout.value);
+    (newFilters) => {
+        const changedField = Object.keys(newFilters).find(
+            (key) => newFilters[key] !== oldFilters[key],
+        );
 
-        debounceTimeout.value = setTimeout(() => {
-            page.value = 1; // Reset to the first page when filters change
+        // Check if the changed field is in the debounceFields array
+        const shouldDebounce = debounceFields.includes(changedField);
+
+        if (shouldDebounce) {
+            clearTimeout(debounceTimeout.value);
+
+            debounceTimeout.value = setTimeout(() => {
+                page.value = 1; // Reset to the first page when filters change
+                fetchPaginatedData();
+            }, 300);
+        } else {
+            // For other filters, fetch data immediately without debounce
             fetchPaginatedData();
-        }, 300);
+        }
     },
     { deep: true },
 );
@@ -105,6 +126,7 @@ const refresh = () => {
 };
 
 defineExpose({ refresh });
+defineEmits(['reset']);
 </script>
 
 <template>
@@ -152,34 +174,61 @@ defineExpose({ refresh });
                     </div>
                 </div>
                 <div v-else>
-                    <div
-                        v-for="entry in entries"
-                        :key="entry"
-                        class="grid border-b last-of-type:border-none dark:border-b-white/5 dark:hover:bg-zinc-700/20"
-                        :class="gridClasses"
-                    >
+                    <template v-if="entries.length">
                         <div
-                            v-for="col in columns"
-                            :key="col.key"
-                            class="truncate px-3 py-2 text-sm font-medium"
-                            :class="col.class || ''"
+                            v-for="entry in entries"
+                            :key="entry"
+                            class="grid border-b last-of-type:border-none dark:border-b-white/5 dark:hover:bg-zinc-700/20"
+                            :class="gridClasses"
                         >
-                            <!-- Scoped Slot for Custom Content -->
-                            <slot
-                                :name="col.key"
-                                :value="entry[col.key]"
-                                :entry="entry"
+                            <div
+                                v-for="col in columns"
+                                :key="col.key"
+                                class="truncate px-3 py-2 text-sm font-medium"
+                                :class="col.class || ''"
                             >
-                                {{ entry[col.key] }}
-                            </slot>
+                                <!-- Scoped Slot for Custom Content -->
+                                <slot
+                                    :name="col.key"
+                                    :value="entry[col.key]"
+                                    :entry="entry"
+                                >
+                                    {{ entry[col.key] }}
+                                </slot>
+                            </div>
                         </div>
+                    </template>
+
+                    <div v-else class="flex flex-col items-center py-12">
+                        <p class="mb-3 text-xs font-semibold text-indigo-500">
+                            No entries
+                        </p>
+                        <h2
+                            class="text-4xl font-semibold text-zinc-900 dark:text-zinc-100"
+                        >
+                            We can't find anything
+                        </h2>
+
+                        <div
+                            class="my-6 text-center text-sm text-zinc-500 dark:text-zinc-400"
+                        >
+                            <p>
+                                We tried searching for what you are looking for,
+                                but couldn't find anything.
+                            </p>
+                            <p>Want to try again?</p>
+                        </div>
+
+                        <TheButton variant="primary" @click="$emit('reset')"
+                            >Reset filter</TheButton
+                        >
                     </div>
                 </div>
             </transition>
         </div>
 
         <!-- pagination -->
-        <div v-if="lastPage" class="mt-6">
+        <div v-if="lastPage && lastPage !== 1" class="mt-6">
             <ThePagination v-model:current-page="page" :last-page="lastPage" />
         </div>
     </div>

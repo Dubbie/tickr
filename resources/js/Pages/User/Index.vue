@@ -110,6 +110,7 @@ onBeforeUnmount(() => {
                 perPage: 10,
                 filters: { ...form.data() },
             }"
+            @reset="form.reset()"
         >
             <template #name="{ entry }">
                 <Link :href="route('user.show', entry)">
