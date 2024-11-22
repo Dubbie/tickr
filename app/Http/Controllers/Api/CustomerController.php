@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewCustomerRequest;
 use App\Models\Customer;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
@@ -42,5 +45,29 @@ class CustomerController extends Controller
                 $query->latest()->limit(5);
             }
         ]);
+    }
+
+    public function store(NewCustomerRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $data['unique_link'] = Customer::generateUniqueLink();
+
+            Customer::create($data);
+
+            return response()->json([
+                'message' => 'Customer created.',
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error while saving customer');
+            Log::error($e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return response()->json([
+                'message' => 'Error while saving customer',
+                'success' => false,
+            ], 500);
+        }
     }
 }

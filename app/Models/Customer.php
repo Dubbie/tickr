@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Customer extends Model
 {
@@ -17,7 +18,8 @@ class Customer extends Model
         'name',
         'email',
         'id',
-        'uuid'
+        'uuid',
+        'unique_link'
     ];
 
     protected $appends = ['profile_photo_url'];
@@ -42,5 +44,10 @@ class Customer extends Model
         return Attribute::make(
             get: fn() => $url
         );
+    }
+
+    public static function generateUniqueLink()
+    {
+        return Str::random(32);
     }
 }

@@ -8,11 +8,13 @@ import { IconLink, IconPlus, IconSearch } from '@tabler/icons-vue';
 import GenericTable from '@/Components/GenericTable.vue';
 import { inject, onBeforeUnmount, onMounted, ref } from 'vue';
 import { EVENTS } from '@/constants';
+import NewCustomerModal from '@/Components/NewCustomerModal.vue';
 
 const form = useForm({
     query: '',
 });
 
+const showNewCustomerModal = ref(false);
 const customersTable = ref();
 const emitter = inject('emitter');
 const columns = [
@@ -71,7 +73,10 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="flex items-center justify-end gap-x-1">
-                <TheButton variant="primary">
+                <TheButton
+                    variant="primary"
+                    @click="showNewCustomerModal = true"
+                >
                     <IconPlus class="size-4" />
                     <span>New customer</span>
                 </TheButton>
@@ -106,5 +111,10 @@ onBeforeUnmount(() => {
                 </div>
             </template>
         </GenericTable>
+
+        <NewCustomerModal
+            :show="showNewCustomerModal"
+            @close="showNewCustomerModal = false"
+        />
     </SidebarLayout>
 </template>
