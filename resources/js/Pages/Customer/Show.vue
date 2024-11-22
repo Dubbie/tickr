@@ -59,7 +59,7 @@ onMounted(() => {
             <p>Loading customer details...</p>
         </div>
         <div v-else>
-            <div class="grid grid-cols-2 items-center gap-x-12">
+            <div class="grid grid-cols-3 items-center gap-x-12">
                 <TheCard class="flex items-center gap-x-6">
                     <img
                         :src="customer.profile_photo_url"
@@ -77,7 +77,7 @@ onMounted(() => {
                     </div>
                 </TheCard>
 
-                <div class="text-sm">
+                <div class="col-span-2 text-sm">
                     <div class="flex gap-x-3">
                         <p class="font-medium text-zinc-500 dark:text-zinc-400">
                             Unique link:
