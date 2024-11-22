@@ -63,6 +63,11 @@ const columns = [
         class: 'col-span-2',
     },
     {
+        key: 'customer',
+        label: 'Customer',
+        class: 'col-span-2',
+    },
+    {
         key: 'priority',
         label: 'Priority',
         class: 'text-center',
@@ -152,21 +157,10 @@ onMounted(() => {
             @switch-tab="form.tab = $event"
         />
 
-        <!--<TicketsList
-            class="mt-6"
-            :tickets="ticketStore.tickets"
-            :loading="ticketStore.loading"
-            :current-page="ticketStore.form.page"
-            :per-page="ticketStore.form.perPage"
-            :last-page="ticketStore.lastPage"
-            checkboxes
-            @change-page="ticketStore.form.page = $event"
-        />-->
-
         <GenericTable
             ref="ticketsTable"
             class="mt-6"
-            grid-classes="grid-cols-7 items-center"
+            grid-classes="grid-cols-9 items-center"
             :columns="columns"
             :options="{
                 perPage: 10,
@@ -178,10 +172,20 @@ onMounted(() => {
             <template #subject="{ entry }">
                 <Link
                     :href="route('ticket.show', entry.ticket_number)"
-                    class="block"
+                    class="block overflow-hidden"
                 >
-                    <p class="font-semibold">{{ entry.subject }}</p>
+                    <p class="truncate font-semibold">{{ entry.subject }}</p>
                 </Link>
+            </template>
+            <template #customer="{ entry }">
+                <div class="flex items-center gap-x-3">
+                    <img
+                        :src="entry.profile_photo_url"
+                        alt=""
+                        class="size-6 rounded-md"
+                    />
+                    <p class="truncate text-xs">{{ entry.contact_email }}</p>
+                </div>
             </template>
             <template #priority="{ entry }">
                 <TicketPriority :priority="entry.priority" />
