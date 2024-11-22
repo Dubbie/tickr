@@ -31,7 +31,7 @@ defineProps({
                     class="size-6 rounded-md"
                 />
 
-                <p class="font-medium">{{ assignee.name }}</p>
+                <p class="truncate font-medium">{{ assignee.name }}</p>
             </template>
         </div>
     </div>
