@@ -51,7 +51,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-    <AppGuestLayout>
+    <AppGuestLayout title="New ticket">
         <div v-if="mode === MODE_CREATING">
             <div class="space-y-3">
                 <!-- Customer Email -->

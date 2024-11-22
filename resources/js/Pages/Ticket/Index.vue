@@ -121,7 +121,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <SidebarLayout>
+    <SidebarLayout title="Tickets">
         <div class="mb-6 flex items-center justify-between gap-x-12">
             <div class="flex flex-1 items-center gap-x-6">
                 <PageTitle margin-bottom="mb-0">Tickets</PageTitle>

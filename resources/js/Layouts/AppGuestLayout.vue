@@ -1,20 +1,33 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
-const props = defineProps({
+const { maxWidth, title } = defineProps({
     maxWidth: {
         type: String,
         default: 'xs',
     },
+    title: String,
 });
 
 const maxWidthClass = computed(() => {
-    return `max-w-${props.maxWidth}`;
+    return `max-w-${maxWidth}`;
+});
+
+const transformedTitle = computed(() => {
+    const companyName = usePage().props.company.name + ' CSC';
+
+    if (title) {
+        return `${title} - ${companyName}`;
+    }
+
+    return companyName;
 });
 </script>
 
 <template>
+    <Head :title="transformedTitle" />
+
     <div class="min-h-svh bg-zinc-100">
         <div class="mx-auto py-6 lg:py-12" :class="maxWidthClass">
             <div class="flex flex-col items-center justify-center">

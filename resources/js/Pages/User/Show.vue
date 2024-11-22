@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <SidebarLayout>
+    <SidebarLayout title="User details">
         <PageTitle class="mt-0.5">User details</PageTitle>
     </SidebarLayout>
 </template>

@@ -65,7 +65,7 @@ onMounted(fetchTickets);
 </script>
 
 <template>
-    <AppGuestLayout max-width="lg">
+    <AppGuestLayout max-width="lg" title="Tickets">
         <div class="flex items-center justify-between">
             <p class="text-2xl font-bold">Tickets</p>
 

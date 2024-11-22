@@ -47,7 +47,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <AppGuestLayout max-width="lg">
+    <AppGuestLayout max-width="lg" :title="ticketNumber">
         <TheButton variant="ghost" class="mb-3" @click="handleBack">
             <IconArrowLeft class="size-4" />
             <span>Back to tickets</span>

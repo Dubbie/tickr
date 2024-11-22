@@ -47,7 +47,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <SidebarLayout>
+    <SidebarLayout title="Dashboard">
         <PageTitle class="mt-0.5">Dashboard</PageTitle>
 
         <div class="grid grid-cols-4 gap-x-4">

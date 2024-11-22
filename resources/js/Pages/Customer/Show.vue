@@ -46,7 +46,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <SidebarLayout>
+    <SidebarLayout title="Customer details">
         <div class="mb-6 mt-0.5">
             <PageTitle margin-bottom="mb-0">Customer details</PageTitle>
             <TheButton variant="ghost" class="-ml-3" @click="handleBack">

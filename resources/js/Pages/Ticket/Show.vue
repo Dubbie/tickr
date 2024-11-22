@@ -72,7 +72,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <SidebarLayout>
+    <SidebarLayout :title="ticketNumber">
         <div class="mb-6 mt-0.5">
             <PageTitle margin-bottom="mb-0">{{ ticketNumber }}</PageTitle>
             <TheButton variant="ghost" class="-ml-3" @click="handleBack">

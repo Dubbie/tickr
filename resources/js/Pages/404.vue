@@ -9,7 +9,7 @@ const handleBack = () => {
 </script>
 
 <template>
-    <SidebarLayout>
+    <SidebarLayout title="404">
         <div class="flex flex-col items-center pt-12">
             <p class="mb-3 text-xs font-semibold text-indigo-500">404 error</p>
             <h1 class="mb-6 text-4xl font-semibold">We lost this page</h1>
