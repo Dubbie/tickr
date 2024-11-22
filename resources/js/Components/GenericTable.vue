@@ -180,7 +180,7 @@ defineEmits(['reset']);
                         <div
                             v-for="entry in entries"
                             :key="entry"
-                            class="grid border-b last-of-type:border-none dark:border-b-white/5 dark:hover:bg-zinc-700/20"
+                            class="grid border-b last-of-type:border-none hover:bg-zinc-500/5 dark:border-b-white/5 dark:hover:bg-zinc-700/20"
                             :class="gridClasses"
                         >
                             <div
