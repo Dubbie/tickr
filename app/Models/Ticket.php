@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Ticket extends Model
@@ -26,7 +27,7 @@ class Ticket extends Model
         'time_to_first_reply'
     ];
 
-    protected $with = ['customer', 'assignee', 'replies'];
+    protected $with = ['customer', 'assignee', 'replies', 'statusChanges'];
 
     protected $appends = ['formatted_updated_at', 'time_ago', 'profile_photo_url', 'is_archived'];
 
@@ -48,6 +49,11 @@ class Ticket extends Model
     public function assignee()
     {
         return $this->belongsTo(User::class, 'assigned_to', 'id');
+    }
+
+    public function statusChanges()
+    {
+        return $this->hasMany(StatusChange::class);
     }
 
     public function formattedUpdatedAt(): Attribute
@@ -155,6 +161,21 @@ class Ticket extends Model
 
             // Format the ticket number
             $ticket->ticket_number = sprintf('%s-%04d', $prefix, $nextNumber);
+        });
+
+        static::updating(function ($ticket) {
+            $originalStatus = $ticket->getOriginal('status');
+            $newStatus = $ticket->status;
+
+            if ($originalStatus !== $newStatus) {
+                Log::info("Ticket {$ticket->id} status changed from {$originalStatus} to {$newStatus}");
+
+                $ticket->statusChanges()->create([
+                    'old_status' => $originalStatus,
+                    'new_status' => $newStatus,
+                    'changed_at' => now()
+                ]);
+            }
         });
     }
 }
