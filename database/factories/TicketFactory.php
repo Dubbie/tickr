@@ -69,7 +69,7 @@ class TicketFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Ticket $ticket) {
-            if ($ticket->status === Ticket::STATUSES['1']) {
+            if ($ticket->status !== Ticket::STATUSES['0']) {
                 $replyCount = rand(1, 5);
 
                 for ($i = 0; $i < $replyCount; $i++) {
