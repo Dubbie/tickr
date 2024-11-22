@@ -5,6 +5,7 @@ import { onMounted, ref } from 'vue';
 import TicketDetails from './partials/TicketDetails.vue';
 import TheButton from '@/Components/TheButton.vue';
 import { IconArrowLeft } from '@tabler/icons-vue';
+import TicketLoading from './partials/TicketLoading.vue';
 
 const { ticketNumber } = defineProps({
     ticketNumber: {
@@ -14,7 +15,7 @@ const { ticketNumber } = defineProps({
 });
 
 const customer = usePage().props.customer;
-const loadingTicket = ref(false);
+const loadingTicket = ref(true);
 const ticket = ref(null);
 
 const fetchTicket = async () => {
@@ -53,17 +54,25 @@ onMounted(() => {
             <span>Back to tickets</span>
         </TheButton>
 
-        <div v-if="loadingTicket">
-            <p>Loading ticket details...</p>
-        </div>
+        <transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition ease-in duration-150"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+            mode="out-in"
+        >
+            <TicketLoading v-if="loadingTicket" />
 
-        <div v-else>
-            <div v-if="!ticket">Something went wrong...</div>
-            <TicketDetails
-                v-else
-                :ticket="ticket"
-                @update-ticket="fetchTicket"
-            />
-        </div>
+            <div v-else>
+                <div v-if="!ticket">Something went wrong...</div>
+                <TicketDetails
+                    v-else
+                    :ticket="ticket"
+                    @update-ticket="fetchTicket"
+                />
+            </div>
+        </transition>
     </AppGuestLayout>
 </template>
