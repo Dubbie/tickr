@@ -26,7 +26,7 @@ const { title, value, subtitle } = defineProps({
             leave-to-class="opacity-0"
             mode="out-in"
         >
-            <div v-if="value">
+            <div v-if="value !== null">
                 <p class="font-serif text-3xl font-semibold">{{ value }}</p>
             </div>
             <div v-else>

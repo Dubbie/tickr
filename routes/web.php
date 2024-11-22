@@ -6,11 +6,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\WizardController;
 use App\Http\Middleware\ValidateCustomerLink;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
+// Wizard routes
+Route::get('/setup', [WizardController::class, 'index'])->name('wizard');
+Route::post('/setup/finish', [WizardController::class, 'finish'])->name('wizard.finish');
 
 // Portal specific routes
 Route::middleware([ValidateCustomerLink::class])->prefix('portal/{link}')->group(function () {
