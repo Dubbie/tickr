@@ -17,10 +17,16 @@ class CheckSetupWizard
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->routeIs('wizard*')) {
-            if (CompanyDetails::count() === 0 && User::count() === 0) {
-                return redirect(route('wizard'));
-            }
+        $isSetupComplete = CompanyDetails::exists() && User::exists();
+
+        // Redirect to setup wizard if setup is incomplete and not accessing wizard routes
+        if (!$isSetupComplete && !$request->routeIs('wizard*')) {
+            return redirect()->route('wizard');
+        }
+
+        // Prevent access to the wizard if setup is already complete
+        if ($isSetupComplete && $request->routeIs('wizard*')) {
+            return redirect()->route('dashboard');
         }
 
         return $next($request);
