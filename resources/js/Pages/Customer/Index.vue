@@ -11,7 +11,6 @@ import { EVENTS } from '@/constants';
 
 const form = useForm({
     query: '',
-    perPage: 10,
 });
 
 const customersTable = ref();
@@ -85,8 +84,8 @@ onBeforeUnmount(() => {
             :columns="columns"
             :options="{
                 apiUrl: route('api.customer.index'),
-                perPage: form.perPage,
-                query: form.query,
+                perPage: 10,
+                filters: { ...form.data() },
             }"
         >
             <template #tickets="{ entry }">

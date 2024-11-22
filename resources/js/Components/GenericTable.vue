@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { computed, onMounted, ref, watch } from 'vue';
+import { ref, watch, onMounted, reactive } from 'vue';
 import TheSkeleton from './TheSkeleton.vue';
 import ThePagination from './ThePagination.vue';
 
@@ -21,13 +21,24 @@ const props = defineProps({
 
 let abortController = null;
 
+// Reactive state for entries and pagination
 const entries = ref([]);
 const page = ref(props.options.page || 1);
-const perPage = computed(() => props.options.perPage || 10);
-const query = computed(() => props.options.query || '');
 const lastPage = ref(null);
-const isLoading = ref(props.options.apiUrl ?? false);
+const isLoading = ref(false);
 const debounceTimeout = ref(null);
+
+// Reactive filters object
+const filters = reactive({});
+
+// Function to sync filters with props
+const syncFilters = () => {
+    Object.assign(filters, props.options.filters || {}); // Sync props.options.filters into filters
+    filters.perPage = props.options.perPage || 10; // Default perPage if not provided
+};
+
+// Initial sync
+syncFilters();
 
 const fetchPaginatedData = async () => {
     if (abortController) abortController.abort();
@@ -38,9 +49,8 @@ const fetchPaginatedData = async () => {
     try {
         const response = await axios.get(props.options.apiUrl, {
             params: {
-                query: query.value,
                 page: page.value,
-                perPage: perPage.value,
+                ...filters, // Spread dynamic filters into request parameters
             },
             signal: abortController.signal,
         });
@@ -55,27 +65,44 @@ const fetchPaginatedData = async () => {
     }
 };
 
-const refresh = () => {
-    page.value = 1;
-    fetchPaginatedData();
-};
+// Watch filters for changes and trigger a data refresh
+watch(
+    filters,
+    () => {
+        clearTimeout(debounceTimeout.value);
 
+        debounceTimeout.value = setTimeout(() => {
+            page.value = 1; // Reset to the first page when filters change
+            fetchPaginatedData();
+        }, 300);
+    },
+    { deep: true },
+);
+
+// Watch the page value to trigger a fetch
 watch(page, () => {
     fetchPaginatedData();
 });
 
-watch(query, () => {
-    clearTimeout(debounceTimeout.value);
+// Watch props.options.filters for changes and sync them with `filters`
+watch(
+    () => props.options.filters,
+    () => {
+        syncFilters(); // Re-sync filters when props.options.filters changes
+    },
+    { deep: true },
+);
 
-    debounceTimeout.value = setTimeout(() => {
-        page.value = 1;
-        fetchPaginatedData();
-    }, 300);
-});
-
+// Initialize data on mount
 onMounted(() => {
     if (props.options.apiUrl) fetchPaginatedData();
 });
+
+// Expose refresh method and filters
+const refresh = () => {
+    page.value = 1; // Reset to the first page
+    fetchPaginatedData(); // Fetch data
+};
 
 defineExpose({ refresh });
 </script>
@@ -109,7 +136,7 @@ defineExpose({ refresh });
             >
                 <div v-if="isLoading">
                     <div
-                        v-for="i in props.options.perPage"
+                        v-for="i in filters.perPage"
                         :key="i"
                         class="grid"
                         :class="gridClasses"

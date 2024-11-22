@@ -37,7 +37,6 @@ const tableColumns = [
 
 const form = useForm({
     query: '',
-    perPage: 10,
 });
 
 const handleCloseDelete = () => {
@@ -107,8 +106,8 @@ onBeforeUnmount(() => {
             :columns="tableColumns"
             :options="{
                 apiUrl: route('api.user.index'),
-                perPage: form.perPage,
-                query: form.query,
+                perPage: 10,
+                filters: { ...form.data() },
             }"
         >
             <template #name="{ entry }">
