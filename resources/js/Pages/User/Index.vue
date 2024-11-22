@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useForm, Link } from '@inertiajs/vue3';
-import { IconPencil, IconPlus, IconSearch, IconTrash } from '@tabler/icons-vue';
+import { IconPlus, IconSearch, IconTrash } from '@tabler/icons-vue';
 import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import ThePagination from '@/Components/ThePagination.vue';
 import TableHeading from '@/Components/TableHeading.vue';
