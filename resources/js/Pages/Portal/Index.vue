@@ -66,8 +66,15 @@ onMounted(fetchTickets);
 
 <template>
     <AppGuestLayout max-width="lg" title="Tickets">
+        <h1 class="text-2xl font-bold">Tickets</h1>
+
         <div class="flex items-center justify-between">
-            <p class="text-2xl font-bold">Tickets</p>
+            <TabContainer
+                class="my-3"
+                :tabs="tabOptions"
+                :active-tab="activeTab"
+                @switch-tab="activeTab = $event"
+            />
 
             <TheButton
                 variant="primary"
@@ -77,13 +84,6 @@ onMounted(fetchTickets);
                 <span>New ticket</span>
             </TheButton>
         </div>
-
-        <TabContainer
-            class="my-3"
-            :tabs="tabOptions"
-            :active-tab="activeTab"
-            @switch-tab="activeTab = $event"
-        />
 
         <div v-if="loading" class="space-y-3">
             <div
