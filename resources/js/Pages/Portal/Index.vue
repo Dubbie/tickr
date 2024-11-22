@@ -85,31 +85,41 @@ onMounted(fetchTickets);
             </TheButton>
         </div>
 
-        <div v-if="loading" class="space-y-3">
-            <div
-                v-for="i in 5"
-                :key="i"
-                class="h-16 animate-pulse rounded-md bg-zinc-200"
-            ></div>
-        </div>
-
-        <div v-else>
-            <div
-                v-if="filteredTickets.length === 0"
-                class="rounded-md bg-white py-6 text-center"
-            >
-                <p class="text-sm font-medium">
-                    No tickets found in this category.
-                </p>
+        <transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition ease-in duration-150"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+            mode="out-in"
+        >
+            <div v-if="loading" class="space-y-3">
+                <div
+                    v-for="i in 5"
+                    :key="i"
+                    class="h-16 animate-pulse rounded-md bg-zinc-200"
+                ></div>
             </div>
 
-            <div v-else class="space-y-3">
-                <CustomerTicket
-                    v-for="ticket in filteredTickets"
-                    :key="ticket.ticket_number"
-                    :ticket="ticket"
-                />
+            <div v-else>
+                <div
+                    v-if="filteredTickets.length === 0"
+                    class="rounded-md bg-white py-6 text-center"
+                >
+                    <p class="text-sm font-medium">
+                        No tickets found in this category.
+                    </p>
+                </div>
+
+                <div v-else class="space-y-3">
+                    <CustomerTicket
+                        v-for="ticket in filteredTickets"
+                        :key="ticket.ticket_number"
+                        :ticket="ticket"
+                    />
+                </div>
             </div>
-        </div>
+        </transition>
     </AppGuestLayout>
 </template>
