@@ -1,9 +1,29 @@
 <script setup>
+import BarChart from '@/Components/BarChart.vue';
+import DateRangeInput from '@/Components/DateRangeInput.vue';
 import PageTitle from '@/Components/PageTitle.vue';
+import TheCard from '@/Components/TheCard.vue';
 import TheStat from '@/Components/TheStat.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
+import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+
+const form = useForm({
+    range: 'this_week',
+});
+
+const averageCreated = ref(0);
+const chartData = ref({
+    labels: ['January', 'February', 'March'],
+    datasets: [
+        {
+            label: 'Tickets created',
+            data: [40, 20, 12],
+            backgroundColor: '#f87979',
+        },
+    ],
+});
 
 const loading = ref(true);
 const statComponents = ref([
@@ -38,11 +58,69 @@ const fetchCounts = async () => {
     } catch (err) {
         console.log('Error while loading counts');
         console.log(err);
+    } finally {
+        loading.value = false;
     }
+};
+
+const fetchAverages = async () => {
+    loading.value = true;
+
+    try {
+        const response = await axios.get(route('api.ticket.averages'));
+
+        // Reassign chartData with new values to ensure reactivity
+        chartData.value = {
+            labels: Object.keys(response.data.daily_counts),
+            datasets: [
+                {
+                    label: 'Tickets created',
+                    data: Object.values(response.data.daily_counts),
+                },
+            ],
+        };
+
+        // Update average
+        averageCreated.value = response.data.average;
+    } catch (err) {
+        console.log('Error while loading averages.');
+        console.log(err);
+    } finally {
+        loading.value = false;
+    }
+};
+
+const chartOptions = {
+    responsive: true,
+    elements: {
+        bar: {
+            borderRadius: 10,
+            borderSkipped: false,
+        },
+    },
+    scales: {
+        x: {
+            ticks: false,
+        },
+        y: {
+            grid: {
+                borderDash: [1, 1],
+                lineWidth: 2,
+                tickLength: 0,
+            },
+            border: {
+                dash: [2, 4],
+            },
+        },
+    },
+    plugins: {
+        legend: false,
+    },
 };
 
 onMounted(() => {
     fetchCounts();
+    fetchAverages();
 });
 </script>
 
@@ -57,6 +135,46 @@ onMounted(() => {
                 :title="stat.label"
                 :value="stat.value"
             />
+        </div>
+
+        <div class="mt-12 grid grid-cols-3 gap-x-12">
+            <div class="col-span-2">
+                <div class="flex items-center justify-between">
+                    <p class="text-xl font-semibold">Average tickets created</p>
+
+                    <DateRangeInput v-model="form.range" />
+                </div>
+
+                <div class="grid grid-cols-4 items-center gap-x-4">
+                    <div>
+                        <div class="mb-6">
+                            <p class="text-sm text-zinc-500 dark:text-zinc-400">
+                                Avg. Ticket Created
+                            </p>
+                            <p>{{ averageCreated }}</p>
+                        </div>
+
+                        <div>
+                            <p class="text-sm text-zinc-500 dark:text-zinc-400">
+                                Avg. Ticket Closed
+                            </p>
+                            <p>0</p>
+                        </div>
+                    </div>
+
+                    <div class="col-span-3">
+                        <BarChart
+                            :chart-data="chartData"
+                            :chart-options="chartOptions"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <TheCard>
+                    <p>Circle chart goes here</p>
+                </TheCard>
+            </div>
         </div>
     </SidebarLayout>
 </template>
