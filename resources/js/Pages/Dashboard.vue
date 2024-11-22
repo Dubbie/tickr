@@ -9,19 +9,19 @@ const loading = ref(true);
 const statComponents = ref([
     {
         label: 'Created tickets',
-        value: 0,
+        value: null,
     },
     {
         label: 'Open tickets',
-        value: 0,
+        value: null,
     },
     {
         label: 'Solved tickets',
-        value: 0,
+        value: null,
     },
     {
         label: 'Average First Time Reply',
-        value: '00:00 min',
+        value: null,
     },
 ]);
 
