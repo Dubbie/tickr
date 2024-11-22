@@ -1,82 +1,56 @@
 <script setup>
 import PageTitle from '@/Components/PageTitle.vue';
-import TheTable from '@/Components/TheTable.vue';
-import TableCell from '@/Components/TableCell.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
-import { router, useForm, Link } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { IconLink, IconPlus, IconSearch } from '@tabler/icons-vue';
-import { onMounted, ref, watch } from 'vue';
-import ThePagination from '@/Components/ThePagination.vue';
-import CustomerListSkeleton from './partials/CustomerListSkeleton.vue';
-import TableHeading from '@/Components/TableHeading.vue';
-
-const lastPage = ref(null);
-const loading = ref(true);
-const customers = ref([]);
-const debounceTimeout = ref(null);
+import GenericTable from '@/Components/GenericTable.vue';
+import { inject, onBeforeUnmount, onMounted, ref } from 'vue';
+import { EVENTS } from '@/constants';
 
 const form = useForm({
     query: '',
-    page: 1,
     perPage: 10,
 });
 
-let abortController = null;
-
-const fetchCustomers = async () => {
-    if (abortController) {
-        abortController.abort();
-    }
-
-    abortController = new AbortController();
-    loading.value = true;
-
-    try {
-        const response = await axios.get(route('api.customer.index'), {
-            params: { ...form.data() },
-            signal: abortController.signal,
-        });
-
-        customers.value = response.data.data;
-        form.page = response.data.current_page;
-        lastPage.value = response.data.last_page;
-    } catch (err) {
-        if (axios.isCancel(err)) {
-            console.log('Request canceled');
-        } else {
-            console.log('Error while loading customers!');
-            console.log(err);
-        }
-    } finally {
-        loading.value = false;
-    }
-};
-
-const handlePageChange = (newPage) => {
-    form.page = newPage;
-    fetchCustomers();
-};
+const customersTable = ref();
+const emitter = inject('emitter');
+const columns = [
+    {
+        key: 'name',
+        label: 'Name',
+    },
+    {
+        key: 'email',
+        label: 'Email',
+    },
+    {
+        key: 'tickets',
+        label: 'Tickets',
+        class: 'text-right',
+    },
+    {
+        key: 'actions',
+        label: '',
+    },
+];
 
 const handleCustomerLink = (customer) => {
     router.visit(route('portal.index', customer.unique_link));
 };
 
+const refreshCustomers = () => {
+    customersTable.value.refresh();
+};
+
 onMounted(() => {
-    fetchCustomers();
+    emitter.on(EVENTS.REFRESH_CUSTOMERS, refreshCustomers);
 });
 
-watch(
-    () => form.query,
-    () => {
-        clearTimeout(debounceTimeout.value);
-
-        debounceTimeout.value = setTimeout(() => {
-            fetchCustomers();
-        }, 300);
-    },
-);
+onBeforeUnmount(() => {
+    emitter.off(EVENTS.REFRESH_CUSTOMERS);
+});
 </script>
 
 <template>
@@ -105,83 +79,32 @@ watch(
             </div>
         </div>
 
-        <transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-active-class="transition ease-in duration-150"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-            mode="out-in"
+        <GenericTable
+            ref="customersTable"
+            grid-classes="grid-cols-4 items-center"
+            :columns="columns"
+            :options="{
+                apiUrl: route('api.customer.index'),
+                perPage: form.perPage,
+                query: form.query,
+            }"
         >
-            <div v-if="loading">
-                <CustomerListSkeleton :rows="form.perPage" />
-            </div>
-            <div v-else>
-                <TheTable size="sm">
-                    <template #headings>
-                        <TableHeading>Name</TableHeading>
-                        <TableHeading>Email</TableHeading>
-                        <TableHeading class="text-right">Tickets</TableHeading>
-                        <TableHeading class="text-right">Actions</TableHeading>
-                    </template>
+            <template #tickets="{ entry }">
+                <p>{{ entry.tickets_count }}</p>
+            </template>
 
-                    <template #rows>
-                        <tr
-                            v-for="customer in customers"
-                            :key="customer.unique_link"
-                        >
-                            <TableCell>
-                                <Link
-                                    class="block font-semibold"
-                                    :href="
-                                        route('customer.show', customer.uuid)
-                                    "
-                                    >{{ customer.name }}</Link
-                                >
-                            </TableCell>
-                            <TableCell>
-                                <Link
-                                    class="block"
-                                    :href="
-                                        route('customer.show', customer.uuid)
-                                    "
-                                    >{{ customer.email }}</Link
-                                >
-                            </TableCell>
-                            <TableCell>
-                                <Link
-                                    class="block text-right"
-                                    :href="
-                                        route('customer.show', customer.uuid)
-                                    "
-                                >
-                                    {{ customer.tickets_count }}
-                                </Link>
-                            </TableCell>
-                            <TableCell>
-                                <div class="-my-2 flex justify-end gap-x-1">
-                                    <TheButton
-                                        variant="ghost"
-                                        square
-                                        @click="handleCustomerLink(customer)"
-                                    >
-                                        <IconLink class="size-5" />
-                                    </TheButton>
-                                </div>
-                            </TableCell>
-                        </tr>
-                    </template>
-                </TheTable>
-            </div>
-        </transition>
-        <div v-if="customers.length > 0">
-            <ThePagination
-                class="mt-6"
-                :current-page="form.page"
-                :last-page="lastPage"
-                @update:current-page="handlePageChange"
-            />
-        </div>
+            <template #actions="{ entry }">
+                <div class="-my-2 flex justify-end gap-x-3">
+                    <TheButton
+                        variant="ghost"
+                        size="sm"
+                        square
+                        @click="handleCustomerLink(entry)"
+                    >
+                        <IconLink class="size-4" />
+                    </TheButton>
+                </div>
+            </template>
+        </GenericTable>
     </SidebarLayout>
 </template>

@@ -1,70 +1,44 @@
 <script setup>
 import PageTitle from '@/Components/PageTitle.vue';
-import TheTable from '@/Components/TheTable.vue';
-import TableCell from '@/Components/TableCell.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheButton from '@/Components/TheButton.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
-import { useForm, Link } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { IconPlus, IconSearch, IconTrash } from '@tabler/icons-vue';
-import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
-import ThePagination from '@/Components/ThePagination.vue';
-import TableHeading from '@/Components/TableHeading.vue';
+import { inject, onBeforeUnmount, onMounted, ref } from 'vue';
 import NewUserModal from '@/Components/NewUserModal.vue';
-import { EVENTS } from '@/constants';
 import ConfirmModal from '@/Components/ConfirmModal.vue';
 import axios from 'axios';
+import GenericTable from '@/Components/GenericTable.vue';
+import { EVENTS } from '@/constants';
 
 const emitter = inject('emitter');
-const lastPage = ref(null);
-const loading = ref(true);
-const users = ref([]);
-const debounceTimeout = ref(null);
 const showNewUserModal = ref(false);
 const showDeleteUserModal = ref(false);
 const selectedUser = ref(null);
+const usersTable = ref();
+
+const tableColumns = [
+    {
+        key: 'name',
+        label: 'Name',
+        class: 'text-left',
+    },
+    {
+        key: 'email',
+        label: 'Email',
+        class: 'text-left',
+    },
+    {
+        key: 'actions',
+        label: '',
+    },
+];
 
 const form = useForm({
     query: '',
-    page: 1,
     perPage: 10,
 });
-
-let abortController = null;
-
-const fetchUsers = async () => {
-    if (abortController) {
-        abortController.abort();
-    }
-
-    abortController = new AbortController();
-    loading.value = true;
-
-    try {
-        const response = await axios.get(route('api.user.index'), {
-            params: { ...form.data() },
-            signal: abortController.signal,
-        });
-
-        users.value = response.data.data;
-        form.page = response.data.current_page;
-        lastPage.value = response.data.last_page;
-    } catch (err) {
-        if (axios.isCancel(err)) {
-            console.log('Request canceled');
-        } else {
-            console.log('Error while loading customers!');
-            console.log(err);
-        }
-    } finally {
-        loading.value = false;
-    }
-};
-
-const handlePageChange = (newPage) => {
-    form.page = newPage;
-    fetchUsers();
-};
 
 const handleCloseDelete = () => {
     showDeleteUserModal.value = false;
@@ -72,13 +46,11 @@ const handleCloseDelete = () => {
 };
 
 const handleConfirmDelete = async () => {
-    console.log('Delete');
-
     try {
         await axios.delete(route('api.user.destroy', selectedUser.value.id));
 
         handleCloseDelete();
-        fetchUsers();
+        emitter.emit(EVENTS.REFRESH_USERS);
     } catch (err) {
         console.log('Error while deleting user.');
         console.log(err);
@@ -90,23 +62,15 @@ const selectUserForDelete = (user) => {
     showDeleteUserModal.value = true;
 };
 
-watch(
-    () => form.query,
-    () => {
-        clearTimeout(debounceTimeout.value);
-
-        debounceTimeout.value = setTimeout(() => {
-            fetchUsers();
-        }, 300);
-    },
-);
+const refreshUsers = () => {
+    usersTable.value.refresh();
+};
 
 onMounted(() => {
-    fetchUsers();
-    emitter.on(EVENTS.REFRESH_USERS, fetchUsers);
+    emitter.on(EVENTS.REFRESH_USERS, refreshUsers);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
     emitter.off(EVENTS.REFRESH_USERS);
 });
 </script>
@@ -137,75 +101,34 @@ onUnmounted(() => {
             </div>
         </div>
 
-        <transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-active-class="transition ease-in duration-150"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-            mode="out-in"
+        <GenericTable
+            ref="usersTable"
+            grid-classes="grid-cols-3 items-center"
+            :columns="tableColumns"
+            :options="{
+                apiUrl: route('api.user.index'),
+                perPage: form.perPage,
+                query: form.query,
+            }"
         >
-            <div v-if="loading">
-                <p>Loading users...</p>
-            </div>
-            <div v-else>
-                <TheTable size="sm">
-                    <template #headings>
-                        <TableHeading>Name</TableHeading>
-                        <TableHeading>Email</TableHeading>
-                        <TableHeading class="text-right">Tickets</TableHeading>
-                        <TableHeading class="text-right"></TableHeading>
-                    </template>
+            <template #name="{ entry }">
+                <Link :href="route('user.show', entry)">
+                    <p class="font-semibold">{{ entry.name }}</p>
+                </Link>
+            </template>
 
-                    <template #rows>
-                        <tr v-for="user in users" :key="user.id">
-                            <TableCell>
-                                <Link
-                                    class="block font-semibold"
-                                    :href="route('user.show', user.id)"
-                                    >{{ user.name }}</Link
-                                >
-                            </TableCell>
-                            <TableCell>
-                                <Link
-                                    class="block"
-                                    :href="route('user.show', user.id)"
-                                    >{{ user.email }}</Link
-                                >
-                            </TableCell>
-                            <TableCell>
-                                <Link
-                                    class="block text-right"
-                                    :href="route('user.show', user.id)"
-                                >
-                                    {{ user.tickets_count }}
-                                </Link>
-                            </TableCell>
-                            <TableCell>
-                                <div class="-my-2 flex justify-end gap-x-1">
-                                    <TheButton
-                                        variant="ghost"
-                                        square
-                                        @click="selectUserForDelete(user)"
-                                    >
-                                        <IconTrash class="size-5" />
-                                    </TheButton>
-                                </div>
-                            </TableCell>
-                        </tr>
-                    </template>
-                </TheTable>
-            </div>
-        </transition>
-        <div v-if="users.length > 0">
-            <ThePagination
-                class="mt-6"
-                :current-page="form.page"
-                :last-page="lastPage"
-                @update:current-page="handlePageChange"
-            />
-        </div>
+            <template #actions="{ entry }">
+                <div class="-my-1 flex justify-end gap-x-3">
+                    <TheButton
+                        variant="ghost"
+                        square
+                        @click="selectUserForDelete(entry)"
+                    >
+                        <IconTrash class="size-5" />
+                    </TheButton>
+                </div>
+            </template>
+        </GenericTable>
 
         <NewUserModal
             :show="showNewUserModal"
