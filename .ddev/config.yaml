@@ -1,4 +1,4 @@
-name: lhd
+name: tickr
 type: laravel
 docroot: public
 php_version: '8.2'
