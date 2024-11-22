@@ -131,9 +131,11 @@ defineEmits(['reset']);
 
 <template>
     <div>
-        <div class="w-full rounded-lg ring-1 dark:ring-white/10">
+        <div
+            class="w-full rounded-lg ring-1 ring-zinc-900/10 dark:ring-white/10"
+        >
             <div
-                class="grid rounded-tl-lg rounded-tr-lg border-b dark:border-b-white/5 dark:bg-white/5"
+                class="grid rounded-tl-lg rounded-tr-lg border-b bg-zinc-900/5 dark:border-b-white/5 dark:bg-white/5"
                 :class="gridClasses"
             >
                 <div
