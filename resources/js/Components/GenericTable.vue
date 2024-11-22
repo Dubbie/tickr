@@ -25,7 +25,7 @@ let abortController = null;
 const entries = ref([]);
 const page = ref(props.options.page || 1);
 const lastPage = ref(null);
-const isLoading = ref(false);
+const isLoading = ref(props.options.apiUrl || false);
 const debounceTimeout = ref(null);
 
 // Reactive filters object
@@ -136,7 +136,7 @@ defineExpose({ refresh });
             >
                 <div v-if="isLoading">
                     <div
-                        v-for="i in filters.perPage"
+                        v-for="i in options.perPage"
                         :key="i"
                         class="grid"
                         :class="gridClasses"
@@ -161,7 +161,7 @@ defineExpose({ refresh });
                         <div
                             v-for="col in columns"
                             :key="col.key"
-                            class="px-3 py-2 text-sm font-medium"
+                            class="truncate px-3 py-2 text-sm font-medium"
                             :class="col.class || ''"
                         >
                             <!-- Scoped Slot for Custom Content -->

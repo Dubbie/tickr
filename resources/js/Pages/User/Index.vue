@@ -37,6 +37,7 @@ const tableColumns = [
 
 const form = useForm({
     query: '',
+    tab: 'open',
 });
 
 const handleCloseDelete = () => {

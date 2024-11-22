@@ -38,13 +38,24 @@ class TicketController extends Controller
         return response()->json($tickets);
     }
 
-    public function counts()
+    public function counts(Request $request)
     {
+        $data = $request->validate([
+            'query' => 'nullable|string',
+        ]);
+
+        $baseQuery = Ticket::query();
+
+        if (!empty($data['query'])) {
+            $baseQuery = $baseQuery->search($data['query']);
+        }
+
+        // Clone the base query for each count to avoid conflicts
         return [
-            'total' => Ticket::count(),
-            'open' => Ticket::forTab('open')->count(),
-            'archived' => Ticket::forTab('archived')->count(),
-            'ttfr' => $this->ticketService->getAverageTimeToFirstReply()
+            'total' => (clone $baseQuery)->count(),
+            'open' => (clone $baseQuery)->forTab('open')->count(),
+            'archived' => (clone $baseQuery)->forTab('archived')->count(),
+            'ttfr' => $this->ticketService->getAverageTimeToFirstReply(),
         ];
     }
 
