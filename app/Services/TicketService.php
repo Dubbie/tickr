@@ -52,7 +52,11 @@ class TicketService
             // If replies is a user not a customer, do specific automations
             if (!$email) {
                 $ticket->status = Ticket::STATUSES['1'];
-                $ticket->time_to_first_reply = $ticket->created_at->diffInMinutes($reply->created_at);
+
+                // Only update if not set yet.
+                if (!$ticket->time_to_first_reply) {
+                    $ticket->time_to_first_reply = $ticket->created_at->diffInMinutes($reply->created_at);
+                }
             }
 
             $ticket->updated_at = now();
