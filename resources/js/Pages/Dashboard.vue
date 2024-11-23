@@ -20,7 +20,7 @@ const chartData = ref({
         {
             label: 'Tickets created',
             data: [40, 20, 12],
-            backgroundColor: '#f87979',
+            backgroundColor: '#bda2f6',
         },
     ],
 });
@@ -100,16 +100,28 @@ const chartOptions = {
     },
     scales: {
         x: {
-            ticks: false,
+            grid: {
+                display: false,
+                lineWidth: 0,
+            },
         },
         y: {
+            alignToPixels: true,
             grid: {
                 borderDash: [1, 1],
                 lineWidth: 2,
-                tickLength: 0,
+                drawTicks: false,
             },
             border: {
-                dash: [2, 4],
+                display: false,
+                dash: function (context) {
+                    if (context.index > 0) {
+                        return [2, 4];
+                    }
+                },
+            },
+            ticks: {
+                padding: 10,
             },
         },
     },
@@ -148,17 +160,23 @@ onMounted(() => {
                 <div class="grid grid-cols-4 items-center gap-x-4">
                     <div>
                         <div class="mb-6">
-                            <p class="text-sm text-zinc-500 dark:text-zinc-400">
+                            <p
+                                class="mb-3 text-sm text-zinc-500 dark:text-zinc-400"
+                            >
                                 Avg. Ticket Created
                             </p>
-                            <p>{{ averageCreated }}</p>
+                            <p class="text-3xl font-semibold">
+                                {{ averageCreated }}
+                            </p>
                         </div>
 
                         <div>
-                            <p class="text-sm text-zinc-500 dark:text-zinc-400">
+                            <p
+                                class="mb-3 text-sm text-zinc-500 dark:text-zinc-400"
+                            >
                                 Avg. Ticket Closed
                             </p>
-                            <p>0</p>
+                            <p class="text-3xl font-semibold">0</p>
                         </div>
                     </div>
 
