@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\GeneratesTicketNumber;
+use App\Traits\TracksStatusChanges;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, GeneratesTicketNumber, TracksStatusChanges;
 
     protected $primaryKey = 'uuid';
 
@@ -49,11 +49,6 @@ class Ticket extends Model
     public function assignee()
     {
         return $this->belongsTo(User::class, 'assigned_to', 'id');
-    }
-
-    public function statusChanges()
-    {
-        return $this->hasMany(StatusChange::class);
     }
 
     public function formattedUpdatedAt(): Attribute
@@ -138,44 +133,5 @@ class Ticket extends Model
                 END
             ")
             ->orderByDesc('created_at');
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($ticket) {
-            // Normalize customer name
-            $customerName = strtoupper(preg_replace('/[^A-Z]/', '', Str::ascii($ticket->customer->name)));
-            $prefix = substr($customerName, 0, 4);
-
-            // Find the latest ticket number for this customer
-            $latestTicket = static::where('ticket_number', 'like', "$prefix-%")
-                ->orderBy('ticket_number', 'desc')
-                ->first();
-
-            // Extract and increment the number
-            $nextNumber = $latestTicket
-                ? ((int) Str::afterLast($latestTicket->ticket_number, '-') + 1)
-                : 1;
-
-            // Format the ticket number
-            $ticket->ticket_number = sprintf('%s-%04d', $prefix, $nextNumber);
-        });
-
-        static::updating(function ($ticket) {
-            $originalStatus = $ticket->getOriginal('status');
-            $newStatus = $ticket->status;
-
-            if ($originalStatus !== $newStatus) {
-                Log::info("Ticket {$ticket->id} status changed from {$originalStatus} to {$newStatus}");
-
-                $ticket->statusChanges()->create([
-                    'old_status' => $originalStatus,
-                    'new_status' => $newStatus,
-                    'changed_at' => now()
-                ]);
-            }
-        });
     }
 }

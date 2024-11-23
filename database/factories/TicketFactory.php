@@ -24,23 +24,6 @@ class TicketFactory extends Factory
         // Get a random customer or create one if none exists
         $customer = Customer::inRandomOrder()->first() ?? Customer::factory()->create();
 
-        // Normalize the customer's name
-        $customerName = strtoupper(preg_replace('/[^A-Z]/', '', Str::ascii($customer->name)));
-        $prefix = substr($customerName, 0, 4); // Limit to first 4 characters
-
-        // Find the latest ticket for this customer to increment the number
-        $latestTicket = Ticket::where('ticket_number', 'like', "$prefix-%")
-            ->orderBy('ticket_number', 'desc')
-            ->first();
-
-        // Increment the ticket number or set to 1 if no tickets exist
-        $nextNumber = $latestTicket
-            ? ((int) Str::afterLast($latestTicket->ticket_number, '-') + 1)
-            : 1;
-
-        // Format the ticket number
-        $ticketNumber = sprintf('%s-%03d', $prefix, $nextNumber);
-
         // Randomize creation and update dates
         $createdAt = $this->faker->dateTimeBetween('-30 days', 'now');
         $updatedAt = $this->faker->dateTimeBetween($createdAt, 'now');
@@ -53,7 +36,6 @@ class TicketFactory extends Factory
         }
 
         return [
-            'ticket_number' => $ticketNumber,
             'customer_uuid' => $customer->uuid,
             'contact_email' => $customer->email,
             'assigned_to' => $assignedTo,
