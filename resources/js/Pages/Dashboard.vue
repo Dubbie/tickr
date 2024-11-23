@@ -63,13 +63,9 @@ onMounted(() => {
             />
         </div>
 
-        <div class="mt-12 grid grid-cols-3 gap-x-12">
-            <div class="col-span-2">
-                <TicketAverageChart />
-            </div>
-            <div>
-                <TicketTTFRChart />
-            </div>
+        <div class="mt-12 grid grid-cols-8 gap-x-12">
+            <TicketAverageChart class="col-span-5" />
+            <TicketTTFRChart class="col-span-3" />
         </div>
     </SidebarLayout>
 </template>

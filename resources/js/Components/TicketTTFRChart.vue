@@ -14,7 +14,7 @@ const chartOptions = {
         tooltip: {
             callbacks: {
                 label: function (tooltipItem) {
-                    return `${tooltipItem.label}: ${tooltipItem.raw} tickets`;
+                    return `${tooltipItem.raw} tickets`;
                 },
             },
         },
@@ -26,10 +26,7 @@ const fetchCategories = async () => {
 
     try {
         const response = await axios.get(route('api.ticket.ttfr'));
-        console.log(response.data);
         categories.value = response.data;
-
-        console.log(categories.value);
 
         updateChart();
     } catch (err) {
@@ -90,16 +87,18 @@ onMounted(() => {
 </script>
 
 <template>
-    <div>
-        <p class="mb-6 text-xl font-semibold">Ticket by First Reply Time</p>
-        <div class="flex items-center gap-x-3">
+    <div class="flex flex-col gap-y-6">
+        <p class="text-xl font-semibold">Ticket by First Reply Time</p>
+
+        <div class="flex grow items-center gap-x-6">
             <PieChart
                 v-if="categories"
                 :chart-data="chartData"
                 :chart-options="chartOptions"
+                class="max-w-80 grow"
             />
 
-            <div class="space-y-4">
+            <div class="flex-1 space-y-4">
                 <div
                     v-for="(value, cat) in categories"
                     :key="cat"

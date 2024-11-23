@@ -114,13 +114,13 @@ onMounted(() => {
             <DateRangeInput v-model="form.range" />
         </div>
 
-        <div class="grid grid-cols-4 items-center gap-x-4">
-            <div>
+        <div class="flex items-center gap-x-6">
+            <div class="w-1/4">
                 <div class="mb-6">
                     <p class="mb-3 text-sm text-zinc-500 dark:text-zinc-400">
                         Avg. Ticket Created
                     </p>
-                    <p class="text-3xl font-semibold">
+                    <p class="font-serif text-3xl font-bold">
                         {{ averageCreated }}
                     </p>
                 </div>
@@ -129,11 +129,11 @@ onMounted(() => {
                     <p class="mb-3 text-sm text-zinc-500 dark:text-zinc-400">
                         Avg. Ticket Closed
                     </p>
-                    <p class="text-3xl font-semibold">0</p>
+                    <p class="font-serif text-3xl font-bold">0</p>
                 </div>
             </div>
 
-            <div class="col-span-3">
+            <div class="flex aspect-video w-3/4 items-center">
                 <BarChart
                     :chart-data="chartData"
                     :chart-options="chartOptions"

@@ -18,7 +18,7 @@ defineProps({
 </script>
 
 <template>
-    <div>
+    <div class="aspect-square w-1/2">
         <Pie :data="chartData" :options="chartOptions" />
     </div>
 </template>
