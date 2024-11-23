@@ -95,7 +95,7 @@ onMounted(() => {
                 v-if="categories"
                 :chart-data="chartData"
                 :chart-options="chartOptions"
-                class="max-w-80 grow"
+                class="max-w-64 grow"
             />
 
             <div class="flex-1 space-y-4">
