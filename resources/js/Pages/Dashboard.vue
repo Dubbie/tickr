@@ -1,9 +1,16 @@
 <script setup>
 import PageTitle from '@/Components/PageTitle.vue';
+import TheCard from '@/Components/TheCard.vue';
 import TheStat from '@/Components/TheStat.vue';
 import TicketAverageChart from '@/Components/TicketAverageChart.vue';
 import TicketTTFRChart from '@/Components/TicketTTFRChart.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
+import {
+    IconCheck,
+    IconClock,
+    IconQuestionMark,
+    IconTicket,
+} from '@tabler/icons-vue';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
@@ -11,18 +18,22 @@ const loading = ref(true);
 const statComponents = ref([
     {
         label: 'Created tickets',
+        icon: IconTicket,
         value: null,
     },
     {
         label: 'Open tickets',
+        icon: IconQuestionMark,
         value: null,
     },
     {
         label: 'Solved tickets',
+        icon: IconCheck,
         value: null,
     },
     {
         label: 'Average First Time Reply',
+        icon: IconClock,
         value: null,
     },
 ]);
@@ -54,18 +65,23 @@ onMounted(() => {
     <SidebarLayout title="Dashboard">
         <PageTitle class="mt-0.5">Dashboard</PageTitle>
 
-        <div class="grid grid-cols-4 gap-x-4">
+        <div class="grid grid-cols-4 gap-x-6">
             <TheStat
                 v-for="stat in statComponents"
                 :key="stat.label"
+                :icon="stat.icon"
                 :title="stat.label"
                 :value="stat.value"
             />
         </div>
 
-        <div class="mt-12 grid grid-cols-8 gap-x-12">
-            <TicketAverageChart class="col-span-5" />
-            <TicketTTFRChart class="col-span-3" />
+        <div class="mt-6 grid grid-cols-8 gap-x-6">
+            <TheCard class="col-span-5">
+                <TicketAverageChart />
+            </TheCard>
+            <TheCard class="col-span-3">
+                <TicketTTFRChart />
+            </TheCard>
         </div>
     </SidebarLayout>
 </template>

@@ -87,7 +87,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-y-6">
+    <div class="flex h-full flex-col gap-y-6">
         <p class="text-xl font-semibold">Ticket by First Reply Time</p>
 
         <div class="flex grow items-center gap-x-6">
