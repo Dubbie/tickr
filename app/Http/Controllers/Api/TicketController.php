@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Services\TicketService;
+use App\Services\TicketStatisticsService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
@@ -15,12 +16,14 @@ use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
+    protected TicketStatisticsService $ticketStatisticsService;
     protected TicketService $ticketService;
 
 
-    public function __construct(TicketService $ticketService)
+    public function __construct(TicketService $ticketService, TicketStatisticsService $ticketStatisticsService)
     {
         $this->ticketService = $ticketService;
+        $this->ticketStatisticsService = $ticketStatisticsService;
     }
 
     public function index(Request $request)
@@ -66,47 +69,16 @@ class TicketController extends Controller
     {
         $range = $request->input('range', 'this_week');
 
-        // Calculate start and end dates based on the range
-        $now = Carbon::now();
-        $startDate = match ($range) {
-            'this_week' => $now->startOfWeek(),
-            'last_week' => $now->subWeek()->startOfWeek(),
-            'this_month' => $now->startOfMonth(),
-            'last_month' => $now->subMonth()->startOfMonth(),
-            default => throw new \InvalidArgumentException('Invalid range'),
-        };
+        $statistics = $this->ticketStatisticsService->getAverages($range);
 
-        $endDate = match ($range) {
-            'this_week', 'last_week' => $startDate->copy()->endOfWeek(),
-            'this_month', 'last_month' => $startDate->copy()->endOfMonth(),
-            default => throw new \InvalidArgumentException('Invalid range'),
-        };
+        return response()->json($statistics);
+    }
 
-        // Fetch ticket counts grouped by day
-        $ticketCounts = DB::table('tickets')
-            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get()
-            ->pluck('count', 'date');
+    public function ttfrStats()
+    {
+        $categories = $this->ticketStatisticsService->getTimeToFirstReplyDistribution();
 
-        // Fill in missing days with zero counts
-        $period = CarbonPeriod::create($startDate, $endDate);
-        $dailyCounts = collect();
-        foreach ($period as $date) {
-            $formattedDate = $date->format('M d');
-            $dailyCounts[$formattedDate] = $ticketCounts[$date->format('Y-m-d')] ?? 0;
-        }
-
-        // Calculate the average
-        $totalTickets = $dailyCounts->sum();
-        $average = $dailyCounts->count() > 0 ? $totalTickets / $dailyCounts->count() : 0;
-
-        return response()->json([
-            'daily_counts' => $dailyCounts,
-            'average' => round($average, 2),
-        ]);
+        return response()->json($categories);
     }
 
     public function show(string $ticketNumber)

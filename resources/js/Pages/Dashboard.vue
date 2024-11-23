@@ -2,8 +2,8 @@
 import BarChart from '@/Components/BarChart.vue';
 import DateRangeInput from '@/Components/DateRangeInput.vue';
 import PageTitle from '@/Components/PageTitle.vue';
-import TheCard from '@/Components/TheCard.vue';
 import TheStat from '@/Components/TheStat.vue';
+import TicketTTFRChart from '@/Components/TicketTTFRChart.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
@@ -14,13 +14,13 @@ const form = useForm({
 });
 
 const averageCreated = ref(0);
+const averageSolved = ref(0);
 const chartData = ref({
     labels: ['January', 'February', 'March'],
     datasets: [
         {
             label: 'Tickets created',
             data: [40, 20, 12],
-            backgroundColor: '#bda2f6',
         },
     ],
 });
@@ -71,17 +71,28 @@ const fetchAverages = async () => {
 
         // Reassign chartData with new values to ensure reactivity
         chartData.value = {
-            labels: Object.keys(response.data.daily_counts),
+            labels: Object.keys(response.data.created.daily_counts),
             datasets: [
                 {
+                    label: 'Tickets solved',
+                    data: Object.values(response.data.solved.daily_counts),
+                    backgroundColor: '#6963b5',
+                },
+                {
                     label: 'Tickets created',
-                    data: Object.values(response.data.daily_counts),
+                    data: Object.values(response.data.created.daily_counts),
+                    backgroundColor: '#bda2f6',
+                    borderRadius: {
+                        topLeft: 12,
+                        topRight: 12,
+                    },
                 },
             ],
         };
 
         // Update average
-        averageCreated.value = response.data.average;
+        averageCreated.value = response.data.created.average;
+        averageSolved.value = response.data.created.solved;
     } catch (err) {
         console.log('Error while loading averages.');
         console.log(err);
@@ -94,7 +105,6 @@ const chartOptions = {
     responsive: true,
     elements: {
         bar: {
-            borderRadius: 10,
             borderSkipped: false,
         },
     },
@@ -104,6 +114,7 @@ const chartOptions = {
                 display: false,
                 lineWidth: 0,
             },
+            stacked: true,
         },
         y: {
             alignToPixels: true,
@@ -123,6 +134,8 @@ const chartOptions = {
             ticks: {
                 padding: 10,
             },
+            stacked: true,
+            beginAtZero: true,
         },
     },
     plugins: {
@@ -151,7 +164,7 @@ onMounted(() => {
 
         <div class="mt-12 grid grid-cols-3 gap-x-12">
             <div class="col-span-2">
-                <div class="flex items-center justify-between">
+                <div class="mb-6 flex items-center justify-between">
                     <p class="text-xl font-semibold">Average tickets created</p>
 
                     <DateRangeInput v-model="form.range" />
@@ -189,9 +202,7 @@ onMounted(() => {
                 </div>
             </div>
             <div>
-                <TheCard>
-                    <p>Circle chart goes here</p>
-                </TheCard>
+                <TicketTTFRChart />
             </div>
         </div>
     </SidebarLayout>

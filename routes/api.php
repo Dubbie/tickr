@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TicketController::class, 'index'])->name('api.ticket.index');
         Route::get('/count', [TicketController::class, 'counts'])->name('api.ticket.counts');
         Route::get('/averages', [TicketController::class, 'averages'])->name('api.ticket.averages');
+        Route::get('/ttfr/stats', [TicketController::class, 'ttfrStats'])->name('api.ticket.ttfr');
         Route::post('/store', [TicketController::class, 'store'])->name('api.ticket.store');
         Route::post('/{ticketNumber}/reply/store', [TicketController::class, 'reply'])->name('api.ticket.reply.store');
         Route::post('/{ticketNumber}/close', [TicketController::class, 'close'])->name('api.ticket.close');
