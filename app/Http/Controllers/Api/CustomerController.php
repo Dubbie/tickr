@@ -26,7 +26,7 @@ class CustomerController extends Controller
         $customersQuery = Customer::query();
 
         if (isset($data['query'])) {
-            $customersQuery = $customersQuery->where('name', 'like', '%' . $data['query'] . '%');
+            $customersQuery = $customersQuery->search($data['query']);
         }
 
         $customersQuery = $customersQuery->withCount('tickets')->orderBy('name');

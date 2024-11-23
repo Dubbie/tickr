@@ -1,4 +1,5 @@
 <script setup>
+import SearchModal from '@/Components/SearchModal.vue';
 import TheSidebar from '@/Components/TheSidebar.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
@@ -31,5 +32,7 @@ const transformedTitle = computed(() => {
                 <slot />
             </div>
         </div>
+
+        <SearchModal />
     </div>
 </template>

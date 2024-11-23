@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,5 +50,14 @@ class Customer extends Model
     public static function generateUniqueLink()
     {
         return Str::random(32);
+    }
+
+    public function scopeSearch(Builder $query, ?string $search): Builder
+    {
+        if (!empty($search)) {
+            $query = $query->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%");
+        }
+
+        return $query;
     }
 }

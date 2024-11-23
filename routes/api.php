@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CustomerTicketController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Middleware\ValidateCustomerLink;
@@ -44,4 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [UserController::class, 'store'])->name('api.user.store');
         Route::delete('/{user}/destroy', [UserController::class, 'destroy'])->name('api.user.destroy');
     });
+
+    // Search
+    Route::get('search', [SearchController::class, 'search'])->name('api.search');
 });
