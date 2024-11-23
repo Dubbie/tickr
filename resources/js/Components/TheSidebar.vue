@@ -6,8 +6,9 @@ import TheButton from './TheButton.vue';
 import { useTheme } from '@/composables/useTheme';
 import Dropdown from './Dropdown.vue';
 import DropdownLink from './DropdownLink.vue';
+import { IconMoonFilled } from '@tabler/icons-vue';
 
-const { theme, toggleTheme } = useTheme();
+const { toggleTheme } = useTheme();
 
 const handleLogout = () => {
     router.post(route('logout'));
@@ -40,9 +41,11 @@ const handleLogout = () => {
         <div class="flex-1"></div>
 
         <nav class="min-h-auto flex flex-col overflow-visible">
-            <TheButton variant="ghost" size="sm" @click="toggleTheme"
-                >{{ theme === 'light' ? 'Dark' : 'Light' }} theme</TheButton
-            >
+            <div class="mx-1">
+                <TheButton variant="ghost" @click="toggleTheme" square>
+                    <IconMoonFilled class="size-5" />
+                </TheButton>
+            </div>
         </nav>
 
         <Dropdown align="bottom-left">
