@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 // Customer routes
 Route::middleware([ValidateCustomerLink::class])->prefix('customer/{link}')->group(function () {
     Route::post('ticket/{ticketNumber}/reply/store', [CustomerTicketController::class, 'reply'])->name('api.customer.ticket.reply.store');
+    Route::post('ticket/{ticketNumber}/resolve', [CustomerTicketController::class, 'markResolved'])->name('api.customer.ticket.resolve');
     Route::get('ticket/{ticketNumber}', [CustomerTicketController::class, 'show'])->name('api.customer.ticket.show');
     Route::get('ticket', [CustomerTicketController::class, 'index'])->name('api.customer.ticket.index');
     Route::post('ticket/store', [CustomerTicketController::class, 'store'])->name('api.customer.ticket.store');

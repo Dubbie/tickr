@@ -139,4 +139,27 @@ class TicketService
 
         return sprintf('%02d:%02d min', $minutes, $seconds);
     }
+
+    public function resolve(Ticket $ticket)
+    {
+        try {
+            $ticket->status = Ticket::STATUSES['2'];
+            $ticket->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ticket resolved.'
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error while resolving ticket.');
+
+            Log::error($e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return response()->json([
+                'message' => 'Error while resolving ticket.',
+                'success' => false,
+            ], 500);
+        }
+    }
 }

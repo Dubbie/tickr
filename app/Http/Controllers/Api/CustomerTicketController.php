@@ -63,4 +63,12 @@ class CustomerTicketController extends Controller
 
         return $this->ticketService->reply($ticket, $customer, $data['message'], $data['email']);
     }
+
+    public function markResolved(string $link, string $ticketNumber)
+    {
+        $customer = Customer::where('unique_link', $link)->first();
+        $ticket = $customer->tickets()->where('ticket_number', $ticketNumber)->first();
+
+        return $this->ticketService->resolve($ticket);
+    }
 }

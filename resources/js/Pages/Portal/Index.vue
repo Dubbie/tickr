@@ -27,11 +27,12 @@ const fetchTickets = async () => {
 };
 
 // Computed properties for ticket filtering
+const archivedStatuses = ['closed', 'resolved'];
 const openTickets = computed(() =>
-    tickets.value.filter((ticket) => ticket.status !== 'closed'),
+    tickets.value.filter((ticket) => !archivedStatuses.includes(ticket.status)),
 );
 const archivedTickets = computed(() =>
-    tickets.value.filter((ticket) => ticket.status === 'closed'),
+    tickets.value.filter((ticket) => archivedStatuses.includes(ticket.status)),
 );
 
 const filteredTickets = computed(() =>

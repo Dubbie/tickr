@@ -48,6 +48,22 @@ const handleReply = async () => {
         savingReply.value = false;
     }
 };
+
+const handleResolve = async () => {
+    try {
+        await axios.post(
+            route('api.customer.ticket.resolve', {
+                link: ticket.customer.unique_link,
+                ticketNumber: ticket.ticket_number,
+            }),
+        );
+
+        emit('update-ticket');
+    } catch (err) {
+        console.log('Error while resolving ticket.');
+        console.log(err);
+    }
+};
 </script>
 
 <template>
@@ -102,7 +118,9 @@ const handleReply = async () => {
                     <TheButton variant="primary" @click="handleReply"
                         >Submit reply</TheButton
                     >
-                    <TheButton>Mark as resolved</TheButton>
+                    <TheButton @click="handleResolve"
+                        >Mark as resolved</TheButton
+                    >
                 </div>
             </template>
             <template v-else>
