@@ -2,9 +2,10 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import TheButton from '@/Components/TheButton.vue';
+import { IconArrowLeft } from '@tabler/icons-vue';
 
 const props = defineProps({
     email: {
@@ -34,6 +35,15 @@ const submit = () => {
 <template>
     <GuestLayout>
         <Head title="Reset Password" />
+
+        <div class="mb-8 text-center">
+            <h1 class="mb-2 text-3xl font-semibold tracking-tight">
+                Set new password
+            </h1>
+            <p class="text-sm text-zinc-600">
+                Your password must be different to previously used passwords.
+            </p>
+        </div>
 
         <form @submit.prevent="submit">
             <div>
@@ -88,13 +98,20 @@ const submit = () => {
                 />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <PrimaryButton
+            <div class="mt-4 flex flex-col gap-y-2">
+                <TheButton
+                    variant="primary"
+                    class="w-full"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Reset Password
-                </PrimaryButton>
+                </TheButton>
+
+                <TheButton variant="ghost" :href="route('login')">
+                    <IconArrowLeft class="size-4" />
+                    <span>Back to log in</span>
+                </TheButton>
             </div>
         </form>
     </GuestLayout>

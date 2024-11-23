@@ -2,9 +2,10 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import TheButton from '@/Components/TheButton.vue';
+import { IconArrowLeft } from '@tabler/icons-vue';
 
 defineProps({
     status: {
@@ -25,15 +26,18 @@ const submit = () => {
     <GuestLayout>
         <Head title="Forgot Password" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email
-            address and we will email you a password reset link that will allow
-            you to choose a new one.
+        <div class="mb-8 text-center">
+            <h1 class="mb-2 text-3xl font-semibold tracking-tight">
+                Forgot password?
+            </h1>
+            <p class="text-sm text-zinc-600">
+                No worries, we'll send you reset instructions.
+            </p>
         </div>
 
         <div
             v-if="status"
-            class="mb-4 text-sm font-medium text-green-600"
+            class="mb-4 text-center text-sm font-medium text-green-600"
         >
             {{ status }}
         </div>
@@ -55,13 +59,23 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <PrimaryButton
+            <div class="mt-4 flex flex-col gap-y-2">
+                <TheButton
+                    variant="primary"
+                    class="w-full"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Email Password Reset Link
-                </PrimaryButton>
+                    Reset password
+                </TheButton>
+                <TheButton
+                    class="w-full"
+                    variant="ghost"
+                    :href="route('login')"
+                >
+                    <IconArrowLeft class="size-4" />
+                    <span>Back to log in</span>
+                </TheButton>
             </div>
         </form>
     </GuestLayout>
