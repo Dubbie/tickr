@@ -115,6 +115,24 @@ class Ticket extends Model
         return $query;
     }
 
+    public function scopeByPriority(Builder $query, array $priorities)
+    {
+        if (!empty($priorities)) {
+            return $query->whereIn('priority', $priorities);
+        }
+
+        return $query;
+    }
+
+    public function scopeByStatus(Builder $query, array $statuses)
+    {
+        if (!empty($statuses)) {
+            return $query->whereIn('status', $statuses);
+        }
+
+        return $query;
+    }
+
     public function scopeDefaultSort(Builder $query)
     {
         return $query

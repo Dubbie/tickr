@@ -33,11 +33,13 @@ class TicketController extends Controller
             'page' => 'required|integer',
             'perPage' => 'required|integer',
             'tab' => 'nullable|string',
+            'priority' => 'nullable|array',
         ]);
 
         $tickets = Ticket::query()
-            ->when($data['query'], fn($query, $search) => $query->search($search))
-            ->when($data['tab'], fn($query, $tab) => $query->forTab($tab))
+            ->when($data['query'] ?? null, fn($query, $search) => $query->search($search))
+            ->when($data['tab'] ?? null, fn($query, $tab) => $query->forTab($tab))
+            ->when($data['priority'] ?? null, fn($query, $priorities) => $query->byPriority($priorities))
             ->defaultSort()
             ->paginate($data['perPage']);
 

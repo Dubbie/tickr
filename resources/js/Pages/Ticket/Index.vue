@@ -1,4 +1,5 @@
 <script setup>
+import DropdownFilter from '@/Components/DropdownFilter.vue';
 import GenericTable from '@/Components/GenericTable.vue';
 import NewTicketModal from '@/Components/NewTicketModal.vue';
 import PageTitle from '@/Components/PageTitle.vue';
@@ -10,7 +11,7 @@ import TicketPriority from '@/Components/TicketPriority.vue';
 import TicketStatus from '@/Components/TicketStatus.vue';
 import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
-import { IconPlus, IconSearch } from '@tabler/icons-vue';
+import { IconExclamationCircle, IconPlus, IconSearch } from '@tabler/icons-vue';
 import { computed, onMounted, ref, watch } from 'vue';
 
 let abortController = null;
@@ -50,6 +51,7 @@ const ticketsTable = ref();
 const form = useForm({
     query: '',
     tab: tabOptions.value[0].name,
+    priority: [],
 });
 
 const columns = [
@@ -88,6 +90,21 @@ const columns = [
     },
 ];
 
+const priorityOptions = [
+    {
+        label: 'Low',
+        value: 'low',
+    },
+    {
+        label: 'Medium',
+        value: 'medium',
+    },
+    {
+        label: 'High',
+        value: 'high',
+    },
+];
+
 const fetchCounts = async () => {
     if (abortController) abortController.abort();
 
@@ -106,6 +123,10 @@ const fetchCounts = async () => {
     } catch (err) {
         console.error('Error fetching ticket counts!', err);
     }
+};
+
+const handleFilterUpdate = (key, newValue) => {
+    form[key] = newValue.value;
 };
 
 watch(
@@ -151,11 +172,22 @@ onMounted(() => {
             </div>
         </div>
 
-        <TabContainer
-            :tabs="tabOptions"
-            :active-tab="form.tab"
-            @switch-tab="form.tab = $event"
-        />
+        <div class="flex items-center gap-x-3">
+            <TabContainer
+                :tabs="tabOptions"
+                :active-tab="form.tab"
+                @switch-tab="form.tab = $event"
+            />
+
+            <div class="flex items-center gap-x-1">
+                <DropdownFilter
+                    label="Priority"
+                    :icon="IconExclamationCircle"
+                    :options="priorityOptions"
+                    @update="handleFilterUpdate('priority', $event)"
+                />
+            </div>
+        </div>
 
         <GenericTable
             ref="ticketsTable"
