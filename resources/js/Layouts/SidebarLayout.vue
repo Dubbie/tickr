@@ -22,7 +22,7 @@ const transformedTitle = computed(() => {
 <template>
     <Head :title="transformedTitle" />
 
-    <div class="min-h-svh bg-white antialiased dark:bg-zinc-800">
+    <div class="min-h-svh bg-white antialiased dark:bg-zinc-900">
         <div class="flex min-h-svh">
             <TheSidebar />
 

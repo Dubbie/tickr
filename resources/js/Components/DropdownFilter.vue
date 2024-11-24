@@ -150,7 +150,7 @@ onBeforeUnmount(() => {
             leave-to-class="scale-90 opacity-0"
         >
             <div
-                class="absolute left-0 top-full z-10 min-w-48 translate-y-1 rounded-lg bg-white text-sm font-medium ring-1 ring-zinc-900/10 dark:bg-zinc-800 dark:ring-white/10"
+                class="absolute left-0 top-full z-10 min-w-48 translate-y-1 rounded-lg bg-white text-sm font-medium ring-1 ring-zinc-900/10 dark:bg-zinc-900 dark:ring-white/10"
                 v-show="isOpen"
                 :id="`${label}-dropdown`"
                 role="menu"

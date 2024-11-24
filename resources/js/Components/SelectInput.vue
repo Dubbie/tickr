@@ -64,7 +64,7 @@ const dropdownPositionClasses = computed(() => {
         v-slot="{ open }"
     >
         <ListboxButton
-            class="w-full rounded-md px-3 py-1.5 text-sm ring-inset dark:bg-white/5 dark:text-zinc-100"
+            class="w-full rounded-md px-3 py-1.5 text-sm ring-inset dark:bg-transparent dark:text-zinc-100"
             :class="{
                 'ring-2 ring-indigo-500': open,
                 'ring-1 ring-zinc-900/10 hover:ring-zinc-900/20 dark:ring-white/10 dark:hover:ring-white/20':

@@ -17,7 +17,7 @@ const handleLogout = () => {
 
 <template>
     <div
-        class="flex max-h-dvh min-h-dvh w-64 flex-col gap-4 border-r border-zinc-900/10 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-900"
+        class="flex max-h-dvh min-h-dvh w-64 flex-col gap-4 border-r border-zinc-900/10 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-950"
     >
         <Link
             :href="route('dashboard')"
