@@ -23,11 +23,13 @@ const tableColumns = [
         key: 'name',
         label: 'Name',
         class: 'text-left',
+        sortable: true,
     },
     {
         key: 'email',
         label: 'Email',
         class: 'text-left',
+        sortable: true,
     },
     {
         key: 'actions',

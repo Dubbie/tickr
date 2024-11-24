@@ -16,7 +16,9 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'query' => 'nullable',
-            'perPage' => 'nullable'
+            'perPage' => 'nullable',
+            'sortField' => 'nullable|string',
+            'sortOrder' => 'nullable|string|in:asc,desc'
         ]);
 
         $perPage = $data['perPage'] ?? null;
@@ -27,7 +29,11 @@ class UserController extends Controller
             $query = $query->search($data['query']);
         }
 
-        $query = $query->orderBy('name');
+        if (isset($data['sortField']) && isset($data['sortOrder'])) {
+            $query = $query->orderBy($data['sortField'], $data['sortOrder']);
+        } else {
+            $query = $query->orderBy('name');
+        }
 
         if ($perPage) {
             return response()->json($query->paginate($perPage));

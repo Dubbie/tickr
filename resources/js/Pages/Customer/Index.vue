@@ -21,15 +21,17 @@ const columns = [
     {
         key: 'name',
         label: 'Name',
+        sortable: true,
     },
     {
         key: 'email',
         label: 'Email',
+        sortable: true,
     },
     {
         key: 'tickets',
         label: 'Tickets',
-        class: 'text-right',
+        class: 'text-right justify-end',
     },
     {
         key: 'actions',

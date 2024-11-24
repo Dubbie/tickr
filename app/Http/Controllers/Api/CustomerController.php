@@ -15,7 +15,9 @@ class CustomerController extends Controller
     {
         $data = $request->validate([
             'query' => 'nullable',
-            'perPage' => 'nullable'
+            'perPage' => 'nullable',
+            'sortField' => 'nullable|string',
+            'sortOrder' => 'nullable|string|in:asc,desc'
         ]);
 
         $perPage = null;
@@ -23,19 +25,26 @@ class CustomerController extends Controller
             $perPage = $data['perPage'];
         }
 
-        $customersQuery = Customer::query();
+        $query = Customer::query();
 
         if (isset($data['query'])) {
-            $customersQuery = $customersQuery->search($data['query']);
+            $query = $query->search($data['query']);
         }
 
-        $customersQuery = $customersQuery->withCount('tickets')->orderBy('name');
+        if (isset($data['sortField']) && isset($data['sortOrder'])) {
+            $query = $query->orderBy($data['sortField'], $data['sortOrder']);
+        } else {
+            $query = $query->orderBy('name');
+        }
+
+        // Attach ticket counts
+        $query = $query->withCount('tickets');
 
         if ($perPage) {
-            return $customersQuery->paginate($perPage);
+            return $query->paginate($perPage);
         }
 
-        return $customersQuery->get();
+        return $query->get();
     }
 
     public function show(Customer $customer)
